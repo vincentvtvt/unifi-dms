@@ -157,7 +157,7 @@ export default function App() {
       {/* NAV */}
       <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:1000,background:T.navBg,backdropFilter:"blur(20px)",borderBottom:`1px solid ${T.border}40`,padding:"10px 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <img src={T.logo} alt="Unifi Business" style={{height:36,cursor:"pointer"}} onClick={()=>scr("hero")} />
-        <WaBtn ico msg="Hi, I'm interested in Unifi Digital Marketing Solution." />
+        <WaBtn ico msg="Hi, I'm interested in Unifi Digital Marketing Solution. Please help me choose the right package." />
       </nav>
 
       {/* HERO */}
@@ -175,7 +175,7 @@ export default function App() {
           </p>
           <div style={{display:"flex",gap:14,justifyContent:"center",flexWrap:"wrap"}}>
             <OBtn text="🤖 Find My Package" onClick={()=>{setQs(0);setSc([0,0,0,0]);setQr(null);scr("advisor");}} />
-            <WaBtn text="Talk to Us" msg="Hi, I'm interested in Unifi Digital Marketing Solution. Please advise on the best package for my business." />
+            <WaBtn text="Talk to Us" msg="Hi, I'm interested in Unifi Digital Marketing Solution. I'd like to find out which package suits my business best." />
           </div>
           <div style={{display:"flex",justifyContent:"center",gap:48,marginTop:56,flexWrap:"wrap"}}>
             {[{l:"Ad Platforms",v:"4+",c:B.primary},{l:"Max Ad Credits",v:"7,000",c:B.orange},{l:"From",v:"RM100/mo",c:B.primary},{l:"Campaign",v:"Up to 12mo",c:"#059669"}].map(s=>
@@ -222,7 +222,7 @@ export default function App() {
                   <div style={{fontSize:11,color:B.orange,fontWeight:600,marginBottom:6,letterSpacing:1}}>YOUR TEAM</div>
                   {p.team.map(e=><div key={e} style={{fontSize:12,color:T.muted,padding:"2px 0"}}>✓ {e}</div>)}
                 </div>}
-                <WaBtn text={`Get ${p.name}`} msg={`Hi! I'm interested in the *${p.name} Pack* (RM${p.mo}/mo, ${p.cr} ad credits). Please share more details.`} sm style={{width:"100%",justifyContent:"center"}} />
+                <WaBtn text={`Get ${p.name}`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center"}} />
               </div>
             </Card>
           )}
@@ -254,7 +254,7 @@ export default function App() {
                 <div><div style={{fontSize:22,fontWeight:800,color:"#059669"}}>{p.camp}</div><div style={{fontSize:11,color:T.muted}}>Campaign</div></div>
               </div>
               <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi! The AI Advisor recommended the *${p.name} Pack* (RM${p.mo}/mo, ${p.cr} credits). I'd like to proceed!`} />
+                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits). The AI Advisor recommended this package for my business. Please proceed with my subscription.`} />
                 <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{background:"none",border:`1px solid ${T.border}`,color:T.muted,padding:"12px 24px",borderRadius:12,fontSize:14,cursor:"pointer",fontFamily:"'Outfit',sans-serif"}}>Retake</button>
               </div>
             </div>
@@ -294,7 +294,7 @@ export default function App() {
                 <div key={l} style={{padding:12,background:sub,borderRadius:10,border:`1px solid ${T.border}30`}}><div style={{fontSize:22,fontWeight:800,color:c}}>{v}</div><div style={{fontSize:11,color:T.muted,marginTop:2}}>{l}</div></div>
               )}
             </div>
-            <WaBtn text="Discuss This Plan" msg={`Hi! ROI Simulator: *${rp.name} Pack* (RM${rp.mo}/mo) with ${rv} video(s). Est. ${Math.round(rem*0.15)} leads. Can we discuss?`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} />
+            <WaBtn text="I'm Interested" msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${rp.name} Pack* (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s) in ROI Simulator`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits for ads. Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} />
           </Card>
         </div>
       </section>
@@ -326,7 +326,7 @@ export default function App() {
               </button>
               {es===i&&<div style={{padding:"0 16px 16px",display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10,animation:"slideUp 0.3s ease"}}>
                 {c.items.map(it=>
-                  <a key={it.n} href={waL(`Hi, I'm interested in *${it.n}* (${it.p}). Please share more details.`)} target="_blank" rel="noopener noreferrer"
+                  <a key={it.n} href={waL(`Hi, I'm interested in Unifi Business *${it.n}* (${it.p}). Please proceed with my subscription.`)} target="_blank" rel="noopener noreferrer"
                     style={{padding:"14px 16px",borderRadius:10,background:sub,border:`1px solid ${T.border}30`,transition:"all 0.2s",display:"block",color:T.text}}
                     onMouseEnter={e=>{e.currentTarget.style.borderColor=B.primary+"50";e.currentTarget.style.transform="translateY(-2px)";}}
                     onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border+"30";e.currentTarget.style.transform="translateY(0)";}}
@@ -345,7 +345,7 @@ export default function App() {
           <div style={{fontSize:48,marginBottom:14}}>🚀</div>
           <h2 style={{fontSize:"clamp(26px,5vw,38px)",fontWeight:900,marginBottom:14}}>Ready to <span style={{color:B.orange}}>Grow</span>?</h2>
           <p style={{color:T.muted,fontSize:16,marginBottom:28,lineHeight:1.7}}>Start from RM100/month. Your dedicated marketing team is one message away.</p>
-          <WaBtn text="Start My Campaign Now" msg="Hi! I'd like to get started with Unifi Digital Marketing Solution. What's the next step?" style={{animation:"glow 2s infinite",fontSize:18,padding:"16px 36px"}} />
+          <WaBtn text="Start My Campaign Now" msg="Hi, I'm interested in Unifi Digital Marketing Solution. I'd like to get started — please help me choose the right package for my business." style={{animation:"glow 2s infinite",fontSize:18,padding:"16px 36px"}} />
           <div style={{marginTop:16,fontSize:12,color:T.muted}}>Valid SSM registration required • 12-month subscription • No hidden fees</div>
         </div>
       </section>
@@ -353,7 +353,8 @@ export default function App() {
       {/* FOOTER */}
       <footer style={{padding:"28px 24px",borderTop:`1px solid ${T.border}`,textAlign:"center"}}>
         <img src={T.logo} alt="Unifi Business" style={{height:32,marginBottom:10}} />
-        <p style={{fontSize:12,color:T.muted}}>Unifi Digital Marketing Solution — Authorized Reseller</p>
+        <p style={{fontSize:12,color:T.muted}}>Authorized Reseller: <span style={{fontWeight:600,color:T.text}}>Synergy Spark Sdn Bhd</span> (1221398-T)</p>
+        <p style={{fontSize:11,color:T.muted,marginTop:4}}>Unifi Digital Marketing Solution</p>
         <p style={{fontSize:11,color:T.muted,marginTop:6}}>Prices exclude 6% SST • Ad credits non-transferable • BM & English</p>
       </footer>
     </div>

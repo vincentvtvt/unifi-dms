@@ -34,10 +34,10 @@ const SOLS = [
 ];
 
 const QZ = [
-  { q:"What's your primary business goal?", o:[{l:"Build brand awareness",s:[3,1,0,0]},{l:"Engage & build loyalty",s:[0,3,1,0]},{l:"Generate leads & sales",s:[0,0,3,1]},{l:"Dominate my market",s:[0,0,1,3]}] },
-  { q:"Do you need video content?", o:[{l:"No, images are enough",s:[3,1,0,0]},{l:"Maybe one video",s:[0,3,1,0]},{l:"Yes, 2–3 videos",s:[0,0,3,1]},{l:"Full video strategy",s:[0,0,0,3]}] },
-  { q:"How long should your campaign run?", o:[{l:"1–2 months test",s:[3,1,0,0]},{l:"3 months",s:[0,3,1,0]},{l:"6 months serious push",s:[0,0,3,1]},{l:"Full year commitment",s:[0,0,0,3]}] },
-  { q:"Monthly budget comfort?", o:[{l:"Under RM150",s:[3,1,0,0]},{l:"RM150 – RM300",s:[0,3,1,0]},{l:"RM300 – RM600",s:[0,0,3,1]},{l:"RM600+",s:[0,0,1,3]}] },
+  { q:"What do you really want for your business?", o:[{l:"Get my name out there",s:[2,1,0,0]},{l:"Build a loyal customer base",s:[0,2,1,1]},{l:"Flood my business with leads & sales",s:[0,0,3,2]},{l:"Become THE brand in my industry",s:[0,0,1,3]}] },
+  { q:"How serious are you about video marketing?", o:[{l:"Not right now",s:[2,1,0,0]},{l:"Worth trying with 1 video",s:[0,2,1,1]},{l:"Yes — video converts best",s:[0,0,3,2]},{l:"Full video-first strategy",s:[0,0,1,3]}] },
+  { q:"How fast do you want to see results?", o:[{l:"Just testing the waters (1–2 months)",s:[2,1,0,0]},{l:"Ready to commit for 3 months",s:[0,2,1,1]},{l:"Go big for 6 months",s:[0,0,3,2]},{l:"All-in for 12 months — dominate",s:[0,0,1,3]}] },
+  { q:"What would you invest monthly to grow your revenue?", o:[{l:"Under RM150 to start small",s:[2,1,0,0]},{l:"RM150–300 for steady growth",s:[0,2,1,1]},{l:"RM300–600 to really push",s:[0,0,3,2]},{l:"RM600+ because ROI matters more than cost",s:[0,0,1,3]}] },
 ];
 
 function Home() {
@@ -115,83 +115,6 @@ function Home() {
           <PartnerLogos T={T} />
         </div>
       </section>
-
-      {/* ═══ HOW IT WORKS ═══ */}
-      <section style={{padding:"80px 24px",maxWidth:1000,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:48}}>
-          <SectionLabel text="How It Works" />
-          <h2 style={{fontSize:"clamp(26px,3.5vw,38px)",fontWeight:800,color:T.text}}>Three steps to launch your campaign</h2>
-        </div>
-        <div className="steps-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:2,background:T.border,borderRadius:16,overflow:"hidden"}}>
-          {[
-            {n:"01",icon:Icons.target,t:"Choose Your Pack",d:"Select from Standard to Pro. Pay monthly over 12 months — no upfront cost."},
-            {n:"02",icon:Icons.users,t:"We Handle Everything",d:"Your dedicated team creates strategy, designs, copy, and launches campaigns."},
-            {n:"03",icon:Icons.chart,t:"Watch Results Flow",d:"Track real-time performance through reports. We optimise for maximum ROI."},
-          ].map((s,i)=>(
-            <div key={s.n} className={`fade-up-d${i+1}`} style={{background:T.card,padding:36,textAlign:"center"}}>
-              <div style={{width:48,height:48,borderRadius:12,background:i===1?T.accent+"0D":T.primary+"0A",display:"inline-flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
-                {s.icon(i===1?T.accent:T.primary,22)}
-              </div>
-              <div style={{fontSize:11,fontWeight:700,color:T.accent,letterSpacing:2,marginBottom:8}}>STEP {s.n}</div>
-              <h3 style={{fontSize:18,fontWeight:700,marginBottom:8,color:T.text}}>{s.t}</h3>
-              <p style={{fontSize:14,color:T.muted,lineHeight:1.6}}>{s.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ═══ PACKAGES ═══ */}
-      <section id="packages" style={{padding:"80px 24px",background:T.sub}}>
-        <div style={{maxWidth:1100,margin:"0 auto"}}>
-          <div style={{textAlign:"center",marginBottom:48}}>
-            <SectionLabel text="DMS Packages" />
-            <h2 style={{fontSize:"clamp(26px,3.5vw,38px)",fontWeight:800,color:T.text}}>Choose your growth plan</h2>
-            <p style={{color:T.muted,fontSize:15,marginTop:8}}>Every plan includes a dedicated 3-person team · 12-month instalment · No upfront fees</p>
-          </div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(248px,1fr))",gap:16}}>
-            {PKG.map((p,i)=>(
-              <Card key={p.name} color={p.color} style={{border:p.pop?`2px solid ${p.color}`:`1px solid ${T.border}`,padding:0,overflow:"hidden"}}>
-                {p.pop&&<div style={{background:p.color,color:"white",textAlign:"center",fontSize:11,fontWeight:700,padding:"6px 0",letterSpacing:1}}>MOST POPULAR</div>}
-                <div style={{padding:24,textAlign:"center"}}>
-                  <div style={{display:"inline-block",padding:"4px 10px",borderRadius:6,background:p.color+"0D",color:p.color,fontSize:11,fontWeight:700,letterSpacing:0.5,marginBottom:8}}>{p.label.toUpperCase()}</div>
-                  <h3 style={{fontSize:20,fontWeight:800,color:T.text}}>{p.name} Pack</h3>
-                  <div style={{fontSize:42,fontWeight:800,margin:"10px 0 2px",color:T.text,letterSpacing:"-0.02em"}}><span style={{fontSize:16,fontWeight:500,color:T.muted}}>RM</span>{p.mo}</div>
-                  <div style={{fontSize:13,color:T.muted,marginBottom:18}}>/month × 12 months</div>
-
-                  <div style={{background:T.sub,borderRadius:10,padding:14,marginBottom:14,textAlign:"left"}}>
-                    {[
-                      ["Ad Credits",p.cr.toLocaleString(),T.primary,Icons.zap],
-                      ["Campaign Duration",p.camp,T.text,Icons.target],
-                      ["Video",p.vid?"Redeemable (680/video)":"Not included",p.vid?"#059669":"#DC2626",Icons.video],
-                    ].map(([l,v,c,ic])=>(
-                      <div key={l} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 0",borderBottom:`1px solid ${T.border}30`,fontSize:13}}>
-                        <span style={{display:"flex",alignItems:"center",gap:6,color:T.muted}}>{ic(T.muted,14)}{l}</span>
-                        <span style={{fontWeight:600,color:c}}>{v}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <button onClick={()=>setEp(ep===i?null:i)} style={{background:"none",border:"none",color:T.primary,fontSize:12,fontWeight:600,cursor:"pointer",marginBottom:14,fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:4,margin:"0 auto 14px"}}
-                  >{ep===i?"Show less":"View details"} {Icons.chevDown(T.primary,14)}</button>
-
-                  {ep===i&&<div style={{textAlign:"left",background:T.sub,borderRadius:10,padding:14,marginBottom:14,animation:"fadeUp 0.3s ease"}}>
-                    <div style={{fontSize:11,fontWeight:700,color:T.accent,marginBottom:8,letterSpacing:1}}>PLATFORMS</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
-                      {p.plat.map(pl=><span key={pl} style={{padding:"3px 10px",borderRadius:6,background:T.primary+"0A",color:T.primary,fontSize:11,fontWeight:600}}>{pl}</span>)}
-                    </div>
-                    <div style={{fontSize:11,fontWeight:700,color:T.accent,marginBottom:8,letterSpacing:1}}>YOUR DEDICATED TEAM</div>
-                    {p.team.map(e=><div key={e} style={{fontSize:12,color:T.muted,padding:"3px 0",display:"flex",alignItems:"center",gap:6}}>{Icons.check("#059669",14)}{e}</div>)}
-                  </div>}
-
-                  <WaBtn text={`Get ${p.name}`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center"}} />
-                </div>
-              </Card>
-            ))}
-          </div>
-          <p style={{textAlign:"center",fontSize:12,color:T.muted,marginTop:20}}>Prices exclude 6% SST · 30% management fee front-loaded · Languages: BM & English</p>
-        </div>
-      </section>
-
       {/* ═══ SMART PACKAGE FINDER ═══ */}
       <section id="advisor" style={{padding:"80px 24px",maxWidth:640,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:32}}>
@@ -247,6 +170,83 @@ function Home() {
             </div>
           );})()}
         </Card>
+      </section>
+
+
+      {/* ═══ HOW IT WORKS ═══ */}
+      <section style={{padding:"80px 24px",maxWidth:1000,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:48}}>
+          <SectionLabel text="How It Works" />
+          <h2 style={{fontSize:"clamp(26px,3.5vw,38px)",fontWeight:800,color:T.text}}>Three steps to launch your campaign</h2>
+        </div>
+        <div className="steps-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:2,background:T.border,borderRadius:16,overflow:"hidden"}}>
+          {[
+            {n:"01",icon:Icons.target,t:"Choose Your Pack",d:"Select from Standard to Pro. Pay monthly over 12 months — no upfront cost."},
+            {n:"02",icon:Icons.users,t:"We Handle Everything",d:"Your dedicated team creates strategy, designs, copy, and launches campaigns."},
+            {n:"03",icon:Icons.chart,t:"Watch Results Flow",d:"Track real-time performance through reports. We optimise for maximum ROI."},
+          ].map((s,i)=>(
+            <div key={s.n} className={`fade-up-d${i+1}`} style={{background:T.card,padding:36,textAlign:"center"}}>
+              <div style={{width:48,height:48,borderRadius:12,background:i===1?T.accent+"0D":T.primary+"0A",display:"inline-flex",alignItems:"center",justifyContent:"center",marginBottom:16}}>
+                {s.icon(i===1?T.accent:T.primary,22)}
+              </div>
+              <div style={{fontSize:11,fontWeight:700,color:T.accent,letterSpacing:2,marginBottom:8}}>STEP {s.n}</div>
+              <h3 style={{fontSize:18,fontWeight:700,marginBottom:8,color:T.text}}>{s.t}</h3>
+              <p style={{fontSize:14,color:T.muted,lineHeight:1.6}}>{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ PACKAGES ═══ */}
+      <section id="packages" style={{padding:"80px 24px",background:T.sub}}>
+        <div style={{maxWidth:1100,margin:"0 auto"}}>
+          <div style={{textAlign:"center",marginBottom:48}}>
+            <SectionLabel text="Digital Marketing Solution (DMS)" />
+            <h2 style={{fontSize:"clamp(26px,3.5vw,38px)",fontWeight:800,color:T.text}}>Choose your growth plan</h2>
+            <p style={{color:T.muted,fontSize:15,marginTop:8}}>Every plan includes a dedicated 3-person team · 12-month instalment · No upfront fees</p>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(248px,1fr))",gap:16}}>
+            {PKG.map((p,i)=>(
+              <Card key={p.name} color={p.color} style={{border:p.pop?`2px solid ${p.color}`:`1px solid ${T.border}`,padding:0,overflow:"hidden"}}>
+                {p.pop&&<div style={{background:p.color,color:"white",textAlign:"center",fontSize:11,fontWeight:700,padding:"6px 0",letterSpacing:1}}>MOST POPULAR</div>}
+                <div style={{padding:24,textAlign:"center"}}>
+                  <div style={{display:"inline-block",padding:"4px 10px",borderRadius:6,background:p.color+"0D",color:p.color,fontSize:11,fontWeight:700,letterSpacing:0.5,marginBottom:8}}>{p.label.toUpperCase()}</div>
+                  <h3 style={{fontSize:20,fontWeight:800,color:T.text}}>{p.name} Pack</h3>
+                  <div style={{fontSize:42,fontWeight:800,margin:"10px 0 2px",color:T.text,letterSpacing:"-0.02em"}}><span style={{fontSize:16,fontWeight:500,color:T.muted}}>RM</span>{p.mo}</div>
+                  <div style={{fontSize:13,color:T.muted,marginBottom:18}}>/month × 12 months</div>
+
+                  <div style={{background:T.sub,borderRadius:10,padding:14,marginBottom:14,textAlign:"left"}}>
+                    {[
+                      ["Ad Credits",p.cr.toLocaleString(),T.primary,Icons.zap],
+                      ["Campaign Duration",p.camp,T.text,Icons.target],
+                      ["Video",p.vid?"Redeemable (680/video)":"Not included",p.vid?"#059669":"#DC2626",Icons.video],
+                    ].map(([l,v,c,ic])=>(
+                      <div key={l} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 0",borderBottom:`1px solid ${T.border}30`,fontSize:13}}>
+                        <span style={{display:"flex",alignItems:"center",gap:6,color:T.muted}}>{ic(T.muted,14)}{l}</span>
+                        <span style={{fontWeight:600,color:c}}>{v}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <button onClick={()=>setEp(ep===i?null:i)} style={{background:"none",border:"none",color:T.primary,fontSize:12,fontWeight:600,cursor:"pointer",marginBottom:14,fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:4,margin:"0 auto 14px"}}
+                  >{ep===i?"Show less":"View details"} {Icons.chevDown(T.primary,14)}</button>
+
+                  {ep===i&&<div style={{textAlign:"left",background:T.sub,borderRadius:10,padding:14,marginBottom:14,animation:"fadeUp 0.3s ease"}}>
+                    <div style={{fontSize:11,fontWeight:700,color:T.accent,marginBottom:8,letterSpacing:1}}>PLATFORMS</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:12}}>
+                      {p.plat.map(pl=><span key={pl} style={{padding:"3px 10px",borderRadius:6,background:T.primary+"0A",color:T.primary,fontSize:11,fontWeight:600}}>{pl}</span>)}
+                    </div>
+                    <div style={{fontSize:11,fontWeight:700,color:T.accent,marginBottom:8,letterSpacing:1}}>YOUR DEDICATED TEAM</div>
+                    {p.team.map(e=><div key={e} style={{fontSize:12,color:T.muted,padding:"3px 0",display:"flex",alignItems:"center",gap:6}}>{Icons.check("#059669",14)}{e}</div>)}
+                  </div>}
+
+                  <WaBtn text={`Get ${p.name}`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center"}} />
+                </div>
+              </Card>
+            ))}
+          </div>
+          <p style={{textAlign:"center",fontSize:12,color:T.muted,marginTop:20}}>Prices exclude 6% SST · 30% management fee front-loaded · Languages: BM & English</p>
+        </div>
       </section>
 
       {/* ═══ ROI SIMULATOR ═══ */}

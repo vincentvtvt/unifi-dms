@@ -8,7 +8,7 @@ const DARK = {
 const LIGHT = {
   bg: "#F5F7FB", card: "#FFFFFF", border: "#E0E6EF",
   text: "#0A1628", muted: "#5A6A80",
-  logo: "/unifi-biz-logo.webp", navBg: "#FFFFFFEA", particleAlpha: "35",
+  logo: "/ub-logo-blue.png", navBg: "#FFFFFFEA", particleAlpha: "35",
 };
 const B = { primary: "#1800E7", orange: "#FF5E00", cyan: "#99B6FF" };
 const WA = "601113115950";
@@ -122,7 +122,7 @@ export default function App() {
   const [es,setEs]=useState(null);
   const [ep,setEp]=useState(null);
   const [tt,setTt]=useState("");
-  const ht="Grow Your Business with AI-Powered Marketing";
+  const ht="Find Your Perfect Unifi Digital Marketing Package";
 
   useEffect(()=>{const m=window.matchMedia("(prefers-color-scheme: dark)");setDk(m.matches);const h=e=>setDk(e.matches);m.addEventListener("change",h);return()=>m.removeEventListener("change",h);},[]);
   const T=dk?DARK:LIGHT;
@@ -232,10 +232,10 @@ export default function App() {
 
       {/* AI ADVISOR */}
       <section id="advisor" style={{padding:"80px 24px",maxWidth:650,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:32}}><Tag t="AI Advisor" /><h2 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800}}>Not Sure Which Pack?</h2><p style={{color:T.muted,fontSize:15,marginTop:8}}>4 quick questions — we'll recommend the best fit</p></div>
+        <div style={{textAlign:"center",marginBottom:32}}><Tag t="Smart Package Finder" /><h2 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800}}>Not Sure Which Pack?</h2><p style={{color:T.muted,fontSize:15,marginTop:8}}>4 quick questions — we'll recommend the best fit</p></div>
         <Card color={B.orange} T={T}>
           <div style={{position:"absolute",left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${B.cyan}25,transparent)`,animation:"scan 3s linear infinite",pointerEvents:"none"}} />
-          {qs===-1&&!qr&&<div style={{textAlign:"center",padding:"32px 0"}}><div style={{fontSize:48,marginBottom:12,animation:"float 3s ease-in-out infinite"}}>🤖</div><h3 style={{fontSize:20,fontWeight:700,marginBottom:10}}>Ready for Your AI Consultation?</h3><p style={{color:T.muted,marginBottom:20,fontSize:14}}>4 questions. 30 seconds. Your perfect package revealed.</p><OBtn text="Start Analysis" onClick={()=>setQs(0)} /></div>}
+          {qs===-1&&!qr&&<div style={{textAlign:"center",padding:"32px 0"}}><div style={{fontSize:48,marginBottom:12,animation:"float 3s ease-in-out infinite"}}>🤖</div><h3 style={{fontSize:20,fontWeight:700,marginBottom:10}}>Ready for a Quick Analysis?</h3><p style={{color:T.muted,marginBottom:20,fontSize:14}}>4 questions. 30 seconds. Your perfect package revealed.</p><OBtn text="Start Analysis" onClick={()=>setQs(0)} /></div>}
           {qs>=0&&!qr&&<div>
             <div style={{display:"flex",gap:4,marginBottom:20}}>{QZ.map((_,i)=><div key={i} style={{flex:1,height:4,borderRadius:2,background:i<=qs?B.orange:T.border,transition:"background 0.3s"}} />)}</div>
             <div style={{fontSize:11,color:B.orange,fontWeight:600,marginBottom:6,letterSpacing:1}}>QUESTION {qs+1}/{QZ.length}</div>
@@ -244,7 +244,7 @@ export default function App() {
           </div>}
           {qr!==null&&(()=>{const p=PKG[qr];return(
             <div style={{textAlign:"center",padding:"16px 0"}}>
-              <div style={{fontSize:13,color:B.primary,fontWeight:600,marginBottom:8,letterSpacing:1}}>⚡ ANALYSIS COMPLETE</div>
+              <div style={{fontSize:13,color:B.primary,fontWeight:600,marginBottom:8,letterSpacing:1}}>⚡ PERFECT MATCH FOUND</div>
               <h3 style={{fontSize:26,fontWeight:800,marginBottom:4}}><span style={{color:p.color}}>{p.icon} {p.name} Pack</span></h3>
               <div style={{display:"inline-block",padding:"3px 12px",borderRadius:6,background:p.color+"12",color:p.color,fontSize:11,fontWeight:700,marginBottom:16}}>{p.label}</div>
               <p style={{color:T.muted,marginBottom:20,fontSize:14}}>{p.desc}</p>
@@ -254,7 +254,7 @@ export default function App() {
                 <div><div style={{fontSize:22,fontWeight:800,color:"#059669"}}>{p.camp}</div><div style={{fontSize:11,color:T.muted}}>Campaign</div></div>
               </div>
               <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits). The AI Advisor recommended this package for my business. Please proceed with my subscription.`} />
+                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits). The Smart Package Finder recommended this package for my business. Please proceed with my subscription.`} />
                 <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{background:"none",border:`1px solid ${T.border}`,color:T.muted,padding:"12px 24px",borderRadius:12,fontSize:14,cursor:"pointer",fontFamily:"'Outfit',sans-serif"}}>Retake</button>
               </div>
             </div>

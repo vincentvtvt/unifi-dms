@@ -4,11 +4,15 @@ export const LIGHT = {
   bg:"#FFFFFF",card:"#FFFFFF",border:"#E5E7EB",text:"#1A1A2E",muted:"#6B7280",
   primary:"#1800E7",accent:"#FF5E00",sub:"#F8F9FC",heroBg:"#F0F2FF",
   logo:"/ub-logo-blue.png",navBg:"rgba(255,255,255,0.95)",navShadow:"0 1px 3px rgba(0,0,0,0.06)",
+  cardShadow:"0 1px 3px rgba(0,0,0,0.04)",cardHover:"0 8px 30px rgba(0,0,0,0.08)",
+  floatShadow:"0 4px 20px rgba(0,0,0,0.1)",
 };
 export const DARK = {
   bg:"#0F1629",card:"#1A2240",border:"#2A3456",text:"#F0F2FF",muted:"#8B95B0",
   primary:"#99B6FF",accent:"#FF5E00",sub:"#141C33",heroBg:"#111B30",
   logo:"/ub-logo-white.png",navBg:"rgba(15,22,41,0.95)",navShadow:"0 1px 3px rgba(0,0,0,0.3)",
+  cardShadow:"0 1px 4px rgba(0,0,0,0.2)",cardHover:"0 8px 30px rgba(0,0,0,0.3)",
+  floatShadow:"0 4px 20px rgba(0,0,0,0.3)",
 };
 export const WA = "601113115950";
 export const waL = (m) => `https://wa.me/${WA}?text=${encodeURIComponent(m)}`;
@@ -56,18 +60,12 @@ export const Icons = {
 /* ─── PARTNER LOGOS as SVG ─── */
 export const PartnerLogos = ({T}) => {
   const c = T.muted;
+  const logos = ["Facebook","Google Ads","TikTok","Instagram","Rev Media"];
   return (
-    <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:36,flexWrap:"wrap",opacity:0.6}}>
-      {/* Facebook */}
-      <svg width="100" height="24" viewBox="0 0 512 106" fill={c}><path d="M19.6 106V57.6H0V38.2h19.6V23c0-19 11.7-29.4 28.8-29.4 8.2 0 15.2.6 17.3.9v19.9h-11.8c-9.3 0-11.1 4.4-11.1 10.9v14h22.2l-2.9 19.4H42.8V106H19.6zm88.3-67.8c-18.5 0-33.5 15-33.5 33.5s15 33.5 33.5 33.5 33.5-15 33.5-33.5-15-33.5-33.5-33.5zm0 55.3c-12 0-21.8-9.8-21.8-21.8s9.8-21.8 21.8-21.8 21.8 9.8 21.8 21.8-9.8 21.8-21.8 21.8z"/><text x="160" y="80" fontFamily="sans-serif" fontSize="72" fontWeight="700">Facebook</text></svg>
-      {/* Google */}
-      <svg width="80" height="28" viewBox="0 0 272 92" fill={c}><text x="0" y="72" fontFamily="sans-serif" fontSize="78" fontWeight="500">Google</text></svg>
-      {/* TikTok */}
-      <svg width="72" height="22" viewBox="0 0 250 70" fill={c}><text x="0" y="56" fontFamily="sans-serif" fontSize="64" fontWeight="700">TikTok</text></svg>
-      {/* Instagram */}
-      <svg width="90" height="22" viewBox="0 0 320 70" fill={c}><text x="0" y="56" fontFamily="sans-serif" fontSize="60" fontWeight="500">Instagram</text></svg>
-      {/* Rev Media */}
-      <svg width="85" height="22" viewBox="0 0 300 70" fill={c}><text x="0" y="56" fontFamily="sans-serif" fontSize="58" fontWeight="600">Rev Media</text></svg>
+    <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:32,flexWrap:"wrap",opacity:0.55}}>
+      {logos.map(name=>(
+        <span key={name} style={{fontSize:15,fontWeight:700,color:c,letterSpacing:"-0.02em",whiteSpace:"nowrap"}}>{name}</span>
+      ))}
     </div>
   );
 };
@@ -77,9 +75,9 @@ export const Card = ({children,color,style={},hover=true}) => {
   const T = useTheme();
   const c = color || T.border;
   return (
-    <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:14,padding:28,position:"relative",overflow:"hidden",transition:"all 0.25s ease",boxShadow:"0 1px 3px rgba(0,0,0,0.04)",...style}}
-      onMouseEnter={hover?e=>{e.currentTarget.style.borderColor=c;e.currentTarget.style.boxShadow=`0 8px 30px rgba(0,0,0,0.08)`;e.currentTarget.style.transform="translateY(-3px)";}:undefined}
-      onMouseLeave={hover?e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.boxShadow="0 1px 3px rgba(0,0,0,0.04)";e.currentTarget.style.transform="translateY(0)";}:undefined}
+    <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:14,padding:28,position:"relative",overflow:"hidden",transition:"all 0.25s ease",boxShadow:T.cardShadow,...style}}
+      onMouseEnter={hover?e=>{e.currentTarget.style.borderColor=c;e.currentTarget.style.boxShadow=T.cardHover;e.currentTarget.style.transform="translateY(-3px)";}:undefined}
+      onMouseLeave={hover?e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.boxShadow=T.cardShadow;e.currentTarget.style.transform="translateY(0)";}:undefined}
     >{children}</div>
   );
 };

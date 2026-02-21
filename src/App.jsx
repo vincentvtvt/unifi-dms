@@ -16,7 +16,7 @@ const PKG = [
 const STORIES = [
   { title:"Kelantan Food Business",bef:"Sold locally at Pasar Siti Khadijah only.",aft:"Targeted Facebook & Instagram ads boosted sales by 49% in one cycle.",tag:"Standard Pack",metric:"+49%",metricLabel:"Sales Growth",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop" },
   { title:"Property Agent",bef:"Relied on walk-ins. Leads were slow and expensive.",aft:"Google + TikTok video drove 3x more qualified leads in 3 months.",tag:"Prime Pack",metric:"3x",metricLabel:"Lead Volume",img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop" },
-  { title:"Sabah Artisan Crafts",bef:"Zero online presence. Rural location limited reach.",aft:"Expanded nationwide. Sales surged 165% via Facebook and Rev Media.",tag:"Premium Pack",metric:"+165%",metricLabel:"Sales Increase",img:"https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=400&h=260&fit=crop" },
+  { title:"Sabah Artisan Crafts",bef:"Zero online presence. Rural location limited reach.",aft:"Expanded nationwide. Sales surged 165% via Facebook and Rev Media.",tag:"Premium Pack",metric:"+165%",metricLabel:"Sales Increase",img:"https://images.unsplash.com/photo-1528283648649-33347faa5d9e?w=400&h=260&fit=crop" },
   { title:"Pest Control Service",bef:"Only northern states. Marketing limited to flyers.",aft:"12-month Google + Facebook strategy doubled sales, expanded to new states.",tag:"Pro Pack",metric:"2x",metricLabel:"Revenue Doubled",img:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=260&fit=crop" },
 ];
 
@@ -71,7 +71,7 @@ function Home() {
               <span style={{fontSize:12,fontWeight:600,color:T.accent}}>Malaysia's First Instalment-Based Marketing</span>
             </div>
             <h1 style={{fontSize:"clamp(32px,4.5vw,52px)",fontWeight:800,lineHeight:1.12,marginBottom:16,color:T.text,letterSpacing:"-0.02em"}}>
-              Grow your business with<br/><span style={{color:T.accent}}>digital marketing</span><br/>that actually works.
+              Grow your business with<br/><span style={{color:T.accent,fontSize:"clamp(38px,5.5vw,64px)"}}>Digital Marketing</span><br/>that actually works.
             </h1>
             <p style={{fontSize:17,color:T.muted,lineHeight:1.7,marginBottom:28,maxWidth:460}}>
               A dedicated campaign manager, designer & copywriter run your ads across Facebook, Google, TikTok & Rev Media — from just RM100/month.
@@ -95,13 +95,13 @@ function Home() {
           {/* Right - Hero visual */}
           <div className="fade-up-d2" style={{flex:"1 1 380px",position:"relative"}}>
             <div style={{background:`linear-gradient(135deg, ${T.primary}12, ${T.accent}08)`,borderRadius:20,padding:32,position:"relative",overflow:"hidden"}}>
-              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=500&h=380&fit=crop" alt="Malaysian business team" style={{width:"100%",borderRadius:14,objectFit:"cover",display:"block"}} onError={e=>{e.target.style.display="none";}} />
+              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=500&h=380&fit=crop" alt="Malaysian business team" style={{width:"100%",borderRadius:14,objectFit:"cover",display:"block"}} onError={e=>{e.target.style.opacity="0";}} />
               {/* Floating stat cards */}
-              <div style={{position:"absolute",top:16,right:16,background:T.card,borderRadius:10,padding:"10px 14px",boxShadow:"0 4px 20px rgba(0,0,0,0.1)",display:"flex",alignItems:"center",gap:8}}>
+              <div style={{position:"absolute",top:16,right:16,background:T.card,borderRadius:10,padding:"10px 14px",boxShadow:T.floatShadow,display:"flex",alignItems:"center",gap:8}}>
                 {Icons.trending("#059669",18)}
                 <div><div style={{fontSize:16,fontWeight:800,color:"#059669"}}>+49%</div><div style={{fontSize:10,color:T.muted}}>Avg. Sales Boost</div></div>
               </div>
-              <div style={{position:"absolute",bottom:16,left:16,background:T.card,borderRadius:10,padding:"10px 14px",boxShadow:"0 4px 20px rgba(0,0,0,0.1)",display:"flex",alignItems:"center",gap:8}}>
+              <div style={{position:"absolute",bottom:16,left:16,background:T.card,borderRadius:10,padding:"10px 14px",boxShadow:T.floatShadow,display:"flex",alignItems:"center",gap:8}}>
                 {Icons.zap(T.accent,18)}
                 <div><div style={{fontSize:16,fontWeight:800,color:T.text}}>4 Platforms</div><div style={{fontSize:10,color:T.muted}}>Simultaneous Campaigns</div></div>
               </div>
@@ -313,10 +313,10 @@ function Home() {
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:18}}>
           {STORIES.map(s=>(
             <Card key={s.title} style={{padding:0,overflow:"hidden"}}>
-              <div style={{height:160,background:`linear-gradient(135deg, ${T.primary}15, ${T.accent}10)`,position:"relative",overflow:"hidden"}}>
-                <img src={s.img} alt={s.title} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.display="none";}} />
-                <div style={{position:"absolute",top:12,left:12,background:T.card,borderRadius:8,padding:"6px 10px",fontSize:11,fontWeight:700,color:T.accent,boxShadow:"0 2px 8px rgba(0,0,0,0.1)"}}>{s.tag}</div>
-                <div style={{position:"absolute",bottom:12,right:12,background:T.card,borderRadius:10,padding:"8px 14px",boxShadow:"0 2px 8px rgba(0,0,0,0.1)",textAlign:"center"}}>
+              <div style={{height:160,background:`linear-gradient(135deg, ${T.primary}20, ${T.accent}15)`,position:"relative",overflow:"hidden"}}>
+                <img src={s.img} alt={s.title} style={{width:"100%",height:"100%",objectFit:"cover",position:"relative",zIndex:1}} onError={e=>{e.target.style.opacity="0";}} />
+                <div style={{position:"absolute",top:12,left:12,background:T.card,borderRadius:8,padding:"6px 10px",fontSize:11,fontWeight:700,color:T.accent,boxShadow:T.floatShadow}}>{s.tag}</div>
+                <div style={{position:"absolute",bottom:12,right:12,background:T.card,borderRadius:10,padding:"8px 14px",boxShadow:T.floatShadow,textAlign:"center"}}>
                   <div style={{fontSize:22,fontWeight:800,color:"#059669"}}>{s.metric}</div>
                   <div style={{fontSize:9,color:T.muted,fontWeight:600}}>{s.metricLabel}</div>
                 </div>
@@ -356,22 +356,31 @@ function Home() {
                 <div style={{transition:"transform 0.3s",transform:expandSol===idx?"rotate(180deg)":"rotate(0)"}}>{Icons.chevDown(T.muted,18)}</div>
               </button>
               {expandSol===idx&&(
-                <div style={{border:`1px solid ${T.border}`,borderTop:"none",borderRadius:"0 0 12px 12px",padding:16,display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:12,animation:"fadeUp 0.3s ease",background:T.card}}>
+                <div style={{border:`1px solid ${T.border}`,borderTop:"none",borderRadius:"0 0 12px 12px",padding:16,display:"flex",flexDirection:"column",gap:10,animation:"fadeUp 0.3s ease",background:T.card}}>
                   {cat.items.map(it=>(
-                    <div key={it.n} onClick={()=>it.link?navigate(it.link):window.open(waL(`Hi, I'm interested in Unifi Business *${it.n}* (${it.p}). Please proceed.`),"_blank")}
-                      style={{padding:18,borderRadius:10,border:`1px solid ${T.border}`,background:T.sub,cursor:"pointer",transition:"all 0.2s"}}
-                      onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 4px 16px rgba(0,0,0,0.06)";}}
-                      onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="none";}}
+                    <div key={it.n}
+                      style={{padding:18,borderRadius:10,border:`1px solid ${T.border}`,background:T.sub,transition:"all 0.2s",display:"flex",alignItems:"center",justifyContent:"space-between",gap:14}}
+                      onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;e.currentTarget.style.boxShadow=T.cardHover;}}
+                      onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.boxShadow="none";}}
                     >
-                      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-                        <div style={{width:36,height:36,borderRadius:10,background:T.primary+"0A",display:"flex",alignItems:"center",justifyContent:"center"}}>{it.icon(T.primary,18)}</div>
-                        <div>
+                      <div style={{display:"flex",alignItems:"center",gap:12,flex:1,minWidth:0}}>
+                        <div style={{width:36,height:36,borderRadius:10,background:T.primary+"0A",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{it.icon(T.primary,18)}</div>
+                        <div style={{minWidth:0}}>
                           <div style={{fontWeight:700,fontSize:14,color:T.text}}>{it.n}</div>
-                          <div style={{fontSize:12,fontWeight:700,color:T.accent}}>{it.p}</div>
+                          <div style={{fontSize:12,color:T.muted,lineHeight:1.4,marginTop:2}}>{it.d}</div>
+                          <div style={{fontSize:12,fontWeight:700,color:T.accent,marginTop:2}}>{it.p}</div>
                         </div>
                       </div>
-                      <p style={{fontSize:12,color:T.muted,lineHeight:1.5}}>{it.d}</p>
-                      {it.link&&<div style={{marginTop:8,fontSize:12,fontWeight:600,color:T.primary,display:"flex",alignItems:"center",gap:4}}>View plans {Icons.arrow(T.primary,14)}</div>}
+                      {it.link?
+                        <button onClick={()=>navigate(it.link)} style={{flexShrink:0,padding:"8px 16px",borderRadius:8,border:`1px solid ${T.primary}`,background:T.primary+"0A",color:T.primary,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5,transition:"all 0.2s",whiteSpace:"nowrap"}}
+                          onMouseEnter={e=>{e.currentTarget.style.background=T.primary;e.currentTarget.style.color="white";}}
+                          onMouseLeave={e=>{e.currentTarget.style.background=T.primary+"0A";e.currentTarget.style.color=T.primary;}}
+                        >View Plans {Icons.arrow("currentColor",13)}</button>
+                        :<button onClick={()=>window.open(waL(`Hi, I'm interested in Unifi Business *${it.n}* (${it.p}). Please proceed.`),"_blank")} style={{flexShrink:0,padding:"8px 16px",borderRadius:8,border:`1px solid #25D366`,background:"#25D36610",color:"#25D366",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5,transition:"all 0.2s",whiteSpace:"nowrap"}}
+                          onMouseEnter={e=>{e.currentTarget.style.background="#25D366";e.currentTarget.style.color="white";}}
+                          onMouseLeave={e=>{e.currentTarget.style.background="#25D36610";e.currentTarget.style.color="#25D366";}}
+                        >Enquire</button>
+                      }
                     </div>
                   ))}
                 </div>

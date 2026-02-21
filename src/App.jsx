@@ -16,7 +16,7 @@ const PKG = [
 const STORIES = [
   { title:"Kelantan Food Business",bef:"Sold locally at Pasar Siti Khadijah only.",aft:"Targeted Facebook & Instagram ads boosted sales by 49% in one cycle.",tag:"Standard Pack",metric:"+49%",metricLabel:"Sales Growth",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop" },
   { title:"Property Agent",bef:"Relied on walk-ins. Leads were slow and expensive.",aft:"Google + TikTok video drove 3x more qualified leads in 3 months.",tag:"Prime Pack",metric:"3x",metricLabel:"Lead Volume",img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop" },
-  { title:"Sabah Artisan Crafts",bef:"Zero online presence. Rural location limited reach.",aft:"Expanded nationwide. Sales surged 165% via Facebook and Rev Media.",tag:"Premium Pack",metric:"+165%",metricLabel:"Sales Increase",img:"https://images.unsplash.com/photo-1528283648649-33347faa5d9e?w=400&h=260&fit=crop" },
+  { title:"Boutique Café Chain",bef:"Single outlet in PJ. Struggled to attract new customers beyond walk-ins.",aft:"Instagram + Facebook ads drove 2x foot traffic. Opened 2nd branch within 6 months.",tag:"Premium Pack",metric:"2x",metricLabel:"Foot Traffic",img:"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=260&fit=crop" },
   { title:"Pest Control Service",bef:"Only northern states. Marketing limited to flyers.",aft:"12-month Google + Facebook strategy doubled sales, expanded to new states.",tag:"Pro Pack",metric:"2x",metricLabel:"Revenue Doubled",img:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=260&fit=crop" },
 ];
 

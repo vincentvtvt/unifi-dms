@@ -2,21 +2,21 @@ import { useState, useEffect, useRef } from "react";
 
 const DARK = {
   bg: "#0A1628", card: "#111D33", border: "#1E303E",
-  text: "#E8F0FE", muted: "#8BA3C7",
+  text: "#E8F0FE", muted: "#8BA3C7", primary: "#99B6FF",
   logo: "/ub-logo-white.png", navBg: "#0A1628E8", particleAlpha: "60",
 };
 const LIGHT = {
   bg: "#F5F7FB", card: "#FFFFFF", border: "#E0E6EF",
-  text: "#0A1628", muted: "#5A6A80",
+  text: "#0A1628", muted: "#5A6A80", primary: "#1800E7",
   logo: "/ub-logo-blue.png", navBg: "#FFFFFFEA", particleAlpha: "35",
 };
-const B = { primary: "#1800E7", orange: "#FF5E00", cyan: "#99B6FF" };
+const B = { orange: "#FF5E00", cyan: "#99B6FF" };
 const WA = "601113115950";
 const waL = (m) => `https://wa.me/${WA}?text=${encodeURIComponent(m)}`;
 
 const PKG = [
   { name:"Standard", label:"Awareness", mo:100, cr:840, color:"#4A90D9", icon:"⚡", camp:"1.5 - 2 months", plat:"Facebook, Google Ads, Instagram, TikTok", desc:"Perfect for businesses ready to scale their reach across multiple platforms.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","TikTok (Purely ad setting)"], vid:false },
-  { name:"Premium", label:"Engagement", mo:200, cr:1680, color:"#1800E7", icon:"🚀", camp:"Up to 3 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Ideal for building customer interaction and loyalty.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
+  { name:"Premium", label:"Engagement", mo:200, cr:1680, color:"#5B8DEF", icon:"🚀", camp:"Up to 3 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Ideal for building customer interaction and loyalty.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
   { name:"Prime", label:"Sales Conversion", mo:450, cr:3500, color:"#FF5E00", icon:"🔥", camp:"5 - 6 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Great for converting leads and boosting revenue.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
   { name:"Pro", label:"2x Sales Conversion", mo:900, cr:7000, color:"#FF3D00", icon:"💎", pop:true, camp:"Up to 12 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Double up the effectiveness of your campaign to maximise your returns.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
 ];
@@ -24,7 +24,7 @@ const PKG = [
 const STORIES = [
   { icon:"🍜", title:"From Warung to Nationwide", bef:"A Kelantan food business only sold locally at Pasar Siti Khadijah.", aft:"Targeted Facebook & Instagram ads boosted sales by 49% in one campaign cycle.", tag:"Standard Pack", color:"#4A90D9" },
   { icon:"🏡", title:"Property Agent Goes Digital", bef:"Relied on walk-ins and word of mouth. Leads were slow.", aft:"Google Ads + TikTok video drove 3x more qualified leads. Closed 5 extra units in 3 months.", tag:"Prime Pack", color:B.orange },
-  { icon:"🎨", title:"Sabah Artisan Goes Global", bef:"Rural craft business with zero online presence.", aft:"Expanded reach nationwide. Sales surged 165% across Facebook and Rev Media.", tag:"Premium Pack", color:B.primary },
+  { icon:"🎨", title:"Sabah Artisan Goes Global", bef:"Rural craft business with zero online presence.", aft:"Expanded reach nationwide. Sales surged 165% across Facebook and Rev Media.", tag:"Premium Pack", color:"#99B6FF" },
   { icon:"🏢", title:"Service Company Dominates Search", bef:"Pest control only served northern states. Relied on flyers.", aft:"12-month Google + Facebook strategy doubled sales and expanded to new states.", tag:"Pro Pack", color:"#FF3D00" },
 ];
 
@@ -66,7 +66,7 @@ const Particles = ({ T }) => {
     const ctx = c.getContext("2d"); let id; let ps = [];
     const rs = () => { c.width = c.offsetWidth; c.height = c.offsetHeight; };
     rs(); window.addEventListener("resize", rs);
-    for (let i = 0; i < 50; i++) ps.push({ x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*2+0.5, cl:Math.random()>0.5?B.cyan:B.primary });
+    for (let i = 0; i < 50; i++) ps.push({ x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4, r:Math.random()*2+0.5, cl:Math.random()>0.5?B.cyan:T.primary });
     const dr = () => {
       ctx.clearRect(0,0,c.width,c.height);
       ps.forEach((p,i) => {
@@ -77,7 +77,7 @@ const Particles = ({ T }) => {
         ctx.fillStyle=p.cl+T.particleAlpha; ctx.fill();
         ps.slice(i+1).forEach(p2 => {
           const d=Math.sqrt((p.x-p2.x)**2+(p.y-p2.y)**2);
-          if(d<100){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.strokeStyle=B.primary+Math.floor((1-d/100)*20).toString(16).padStart(2,"0");ctx.lineWidth=0.5;ctx.stroke();}
+          if(d<100){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.strokeStyle=T.primary+Math.floor((1-d/100)*20).toString(16).padStart(2,"0");ctx.lineWidth=0.5;ctx.stroke();}
         });
       });
       id=requestAnimationFrame(dr);
@@ -88,12 +88,15 @@ const Particles = ({ T }) => {
   return <canvas ref={ref} style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}} />;
 };
 
-const Card = ({children,color=B.primary,T,style={}}) => (
-  <div style={{background:T.card,border:`1px solid ${color}20`,borderRadius:16,padding:24,position:"relative",overflow:"hidden",transition:"all 0.3s ease",...style}}
-    onMouseEnter={e=>{e.currentTarget.style.borderColor=color+"60";e.currentTarget.style.boxShadow=`0 0 25px ${color}12`;e.currentTarget.style.transform="translateY(-2px)";}}
-    onMouseLeave={e=>{e.currentTarget.style.borderColor=color+"20";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="translateY(0)";}}
+const Card = ({children,color,T,style={}}) => {
+  const c = color || T.primary;
+  return (
+  <div style={{background:T.card,border:`1px solid ${c}20`,borderRadius:16,padding:24,position:"relative",overflow:"hidden",transition:"all 0.3s ease",...style}}
+    onMouseEnter={e=>{e.currentTarget.style.borderColor=c+"60";e.currentTarget.style.boxShadow=`0 0 25px ${c}12`;e.currentTarget.style.transform="translateY(-2px)";}}
+    onMouseLeave={e=>{e.currentTarget.style.borderColor=c+"20";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="translateY(0)";}}
   >{children}</div>
-);
+  );
+};
 
 const Tag = ({t}) => <div style={{display:"inline-block",padding:"6px 16px",borderRadius:20,border:`1px solid ${B.orange}35`,color:B.orange,fontSize:12,fontWeight:600,letterSpacing:2,textTransform:"uppercase",marginBottom:14,background:B.orange+"08"}}>{t}</div>;
 
@@ -140,7 +143,7 @@ export default function App() {
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Outfit',sans-serif}
         ::selection{background:${B.orange}40;color:white}
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:${T.bg}}::-webkit-scrollbar-thumb{background:${B.primary}40;border-radius:3px}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:${T.bg}}::-webkit-scrollbar-thumb{background:${T.primary}40;border-radius:3px}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
         @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
         @keyframes glow{0%,100%{box-shadow:0 0 20px #25D36620}50%{box-shadow:0 0 40px #25D36640}}
@@ -149,7 +152,7 @@ export default function App() {
         .fade-in{animation:slideUp 0.6s ease forwards}
         .qo{background:${T.card};border:1px solid ${T.border};padding:14px 18px;border-radius:12px;cursor:pointer;transition:all 0.2s;color:${T.text};text-align:left;font-size:15px;width:100%;font-family:'Outfit',sans-serif}
         .qo:hover{border-color:${B.orange};background:${B.orange}0D;transform:translateX(4px)}
-        .rs{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;outline:none;cursor:pointer;background:linear-gradient(to right,${B.primary},${B.orange})}
+        .rs{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;outline:none;cursor:pointer;background:linear-gradient(to right,${T.primary},${B.orange})}
         .rs::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:${B.orange};border:3px solid ${T.bg};box-shadow:0 0 10px ${B.orange}60}
         a{text-decoration:none}
       `}</style>
@@ -163,10 +166,10 @@ export default function App() {
       {/* HERO */}
       <section id="hero" style={{position:"relative",minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",padding:"100px 24px 60px",overflow:"hidden"}}>
         <Particles T={T} />
-        <div style={{position:"absolute",inset:0,background:`radial-gradient(ellipse at 30% 50%,${B.primary}0A 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,${B.orange}06 0%,transparent 50%)`}} />
+        <div style={{position:"absolute",inset:0,background:`radial-gradient(ellipse at 30% 50%,${T.primary}0A 0%,transparent 60%),radial-gradient(ellipse at 70% 80%,${B.orange}06 0%,transparent 50%)`}} />
         <div style={{position:"relative",zIndex:1,textAlign:"center",maxWidth:780,width:"100%"}} className="fade-in">
-          <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 18px",borderRadius:20,border:`1px solid ${B.cyan}30`,background:B.cyan+"08",marginBottom:24,fontSize:13,color:B.primary,fontWeight:500}}>
-            <span style={{width:8,height:8,borderRadius:"50%",background:B.primary,animation:"pulse 2s infinite"}} />
+          <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"8px 18px",borderRadius:20,border:`1px solid ${B.cyan}30`,background:B.cyan+"08",marginBottom:24,fontSize:13,color:T.primary,fontWeight:500}}>
+            <span style={{width:8,height:8,borderRadius:"50%",background:T.primary,animation:"pulse 2s infinite"}} />
             Malaysia's First Instalment-Based Marketing Plan
           </div>
           <h1 style={{fontSize:"clamp(32px,6vw,56px)",fontWeight:900,lineHeight:1.1,marginBottom:20}}>{tt}<span style={{animation:"pulse 1s infinite",color:B.orange}}>|</span></h1>
@@ -178,7 +181,7 @@ export default function App() {
             <WaBtn text="Talk to Us" msg="Hi, I'm interested in Unifi Digital Marketing Solution. I'd like to find out which package suits my business best." />
           </div>
           <div style={{display:"flex",justifyContent:"center",gap:48,marginTop:56,flexWrap:"wrap"}}>
-            {[{l:"Ad Platforms",v:"4+",c:B.primary},{l:"Max Ad Credits",v:"7,000",c:B.orange},{l:"From",v:"RM100/mo",c:B.primary},{l:"Campaign",v:"Up to 12mo",c:"#059669"}].map(s=>
+            {[{l:"Ad Platforms",v:"4+",c:T.primary},{l:"Max Ad Credits",v:"7,000",c:B.orange},{l:"From",v:"RM100/mo",c:T.primary},{l:"Campaign",v:"Up to 12mo",c:"#059669"}].map(s=>
               <div key={s.l} style={{textAlign:"center"}}><div style={{fontSize:26,fontWeight:800,color:s.c}}>{s.v}</div><div style={{fontSize:12,color:T.muted,marginTop:4}}>{s.l}</div></div>
             )}
           </div>
@@ -190,7 +193,7 @@ export default function App() {
         <div style={{textAlign:"center",marginBottom:40}}><Tag t="How It Works" /><h2 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800}}>3 Simple Steps to Launch</h2></div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:20}}>
           {[{s:"01",i:"📋",t:"Choose Your Pack",d:"Pick from Standard to Pro based on your goals and budget. Pay monthly over 12 months."},{s:"02",i:"🎯",t:"We Handle Everything",d:"Your dedicated team creates strategy, designs, copy, and launches campaigns for you."},{s:"03",i:"📈",t:"Watch Results Flow",d:"Track performance through reports. Your campaign manager optimises for maximum results."}].map(s=>
-            <Card key={s.s} color={B.primary} T={T}><div style={{fontSize:11,fontWeight:700,color:B.orange,marginBottom:8,letterSpacing:2}}>STEP {s.s}</div><div style={{fontSize:32,marginBottom:10}}>{s.i}</div><h3 style={{fontSize:18,fontWeight:700,marginBottom:8}}>{s.t}</h3><p style={{fontSize:14,color:T.muted,lineHeight:1.6}}>{s.d}</p></Card>
+            <Card key={s.s} color={T.primary} T={T}><div style={{fontSize:11,fontWeight:700,color:B.orange,marginBottom:8,letterSpacing:2}}>STEP {s.s}</div><div style={{fontSize:32,marginBottom:10}}>{s.i}</div><h3 style={{fontSize:18,fontWeight:700,marginBottom:8}}>{s.t}</h3><p style={{fontSize:14,color:T.muted,lineHeight:1.6}}>{s.d}</p></Card>
           )}
         </div>
       </section>
@@ -208,7 +211,7 @@ export default function App() {
                 <div style={{fontSize:40,fontWeight:900,margin:"12px 0 2px"}}><span style={{fontSize:16,fontWeight:500,color:T.muted}}>RM</span>{p.mo}</div>
                 <div style={{fontSize:13,color:T.muted,marginBottom:16}}>/month × 12 months</div>
                 <div style={{background:sub,borderRadius:12,padding:14,marginBottom:14,textAlign:"left"}}>
-                  {[["Ad Credits",p.cr.toLocaleString(),B.primary],["Campaign",p.camp,T.text],["Video",p.vid?"✅ Redeemable (680/video)":"❌ Not included",p.vid?"#059669":T.muted],["Max Videos",p.vid?Math.floor(p.cr/680).toString():"—","#7C3AED"]].map(([l,v,c])=>
+                  {[["Ad Credits",p.cr.toLocaleString(),T.primary],["Campaign",p.camp,T.text],["Video",p.vid?"✅ Redeemable (680/video)":"❌ Not included",p.vid?"#059669":T.muted],["Max Videos",p.vid?Math.floor(p.cr/680).toString():"—","#7C3AED"]].map(([l,v,c])=>
                     <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:`1px solid ${T.border}30`,fontSize:13}}><span style={{color:T.muted}}>{l}</span><span style={{fontWeight:600,color:c}}>{v}</span></div>
                   )}
                 </div>
@@ -244,13 +247,13 @@ export default function App() {
           </div>}
           {qr!==null&&(()=>{const p=PKG[qr];return(
             <div style={{textAlign:"center",padding:"16px 0"}}>
-              <div style={{fontSize:13,color:B.primary,fontWeight:600,marginBottom:8,letterSpacing:1}}>⚡ PERFECT MATCH FOUND</div>
+              <div style={{fontSize:13,color:T.primary,fontWeight:600,marginBottom:8,letterSpacing:1}}>⚡ PERFECT MATCH FOUND</div>
               <h3 style={{fontSize:26,fontWeight:800,marginBottom:4}}><span style={{color:p.color}}>{p.icon} {p.name} Pack</span></h3>
               <div style={{display:"inline-block",padding:"3px 12px",borderRadius:6,background:p.color+"12",color:p.color,fontSize:11,fontWeight:700,marginBottom:16}}>{p.label}</div>
               <p style={{color:T.muted,marginBottom:20,fontSize:14}}>{p.desc}</p>
               <div style={{display:"flex",justifyContent:"center",gap:28,marginBottom:24,flexWrap:"wrap"}}>
                 <div><div style={{fontSize:22,fontWeight:800,color:B.orange}}>RM{p.mo}</div><div style={{fontSize:11,color:T.muted}}>/month</div></div>
-                <div><div style={{fontSize:22,fontWeight:800,color:B.primary}}>{p.cr.toLocaleString()}</div><div style={{fontSize:11,color:T.muted}}>Ad Credits</div></div>
+                <div><div style={{fontSize:22,fontWeight:800,color:T.primary}}>{p.cr.toLocaleString()}</div><div style={{fontSize:11,color:T.muted}}>Ad Credits</div></div>
                 <div><div style={{fontSize:22,fontWeight:800,color:"#059669"}}>{p.camp}</div><div style={{fontSize:11,color:T.muted}}>Campaign</div></div>
               </div>
               <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
@@ -266,15 +269,15 @@ export default function App() {
       <section id="simulator" style={{padding:"80px 24px",maxWidth:900,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:32}}><Tag t="ROI Simulator" /><h2 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800}}>Simulate Your Campaign</h2></div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:20}}>
-          <Card color={B.primary} T={T}>
-            <h4 style={{fontSize:13,fontWeight:600,color:B.primary,marginBottom:18,letterSpacing:1}}>⚙️ CONFIGURE</h4>
+          <Card color={T.primary} T={T}>
+            <h4 style={{fontSize:13,fontWeight:600,color:T.primary,marginBottom:18,letterSpacing:1}}>⚙️ CONFIGURE</h4>
             <div style={{marginBottom:24}}>
               <div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,color:T.muted}}>Package</span><span style={{fontSize:16,fontWeight:800,color:B.orange}}>{rp.name} — RM{rp.mo}/mo</span></div>
               <input type="range" className="rs" min={0} max={3} step={1} value={rb} onChange={e=>{setRb(+e.target.value);setRv(0);}} />
               <div style={{display:"flex",justifyContent:"space-between",marginTop:6}}>{PKG.map((p,i)=><button key={p.name} onClick={()=>{setRb(i);setRv(0);}} style={{background:rb===i?B.orange+"18":"transparent",border:`1px solid ${rb===i?B.orange:T.border}`,color:rb===i?B.orange:T.muted,padding:"3px 8px",borderRadius:6,fontSize:10,cursor:"pointer",fontWeight:600,fontFamily:"'Outfit',sans-serif"}}>{p.name}</button>)}</div>
             </div>
             {rp.vid?<div style={{marginBottom:20}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,color:T.muted}}>Videos</span><span style={{fontSize:16,fontWeight:800,color:B.primary}}>{rv}</span></div>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:10}}><span style={{fontSize:14,color:T.muted}}>Videos</span><span style={{fontSize:16,fontWeight:800,color:T.primary}}>{rv}</span></div>
               <input type="range" className="rs" min={0} max={Math.floor(rp.cr/680)} step={1} value={rv} onChange={e=>setRv(+e.target.value)} />
               <div style={{fontSize:11,color:T.muted,marginTop:4}}>Each video = 680 ad credits</div>
             </div>:<p style={{fontSize:13,color:T.muted,fontStyle:"italic",marginBottom:16}}>Video not available on Standard.</p>}
@@ -282,7 +285,7 @@ export default function App() {
               <div style={{fontSize:12,color:T.muted,marginBottom:6}}>Credit Allocation</div>
               <div style={{height:16,borderRadius:8,background:T.border,overflow:"hidden",display:"flex"}}>
                 {vc>0&&<div style={{width:`${(vc/rp.cr)*100}%`,background:"linear-gradient(90deg,#DC2626,#EF4444)",transition:"width 0.4s"}} />}
-                <div style={{width:`${(rem/rp.cr)*100}%`,background:`linear-gradient(90deg,${B.primary},${B.cyan})`,transition:"width 0.4s"}} />
+                <div style={{width:`${(rem/rp.cr)*100}%`,background:`linear-gradient(90deg,${T.primary},${B.cyan})`,transition:"width 0.4s"}} />
               </div>
               <div style={{display:"flex",justifyContent:"space-between",marginTop:4,fontSize:11,color:T.muted}}><span>🎬 Video: {vc}</span><span>📢 Ads: {rem}</span></div>
             </div>
@@ -290,7 +293,7 @@ export default function App() {
           <Card color={B.orange} T={T}>
             <h4 style={{fontSize:13,fontWeight:600,color:B.orange,marginBottom:18,letterSpacing:1}}>📊 PROJECTED RESULTS</h4>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-              {[["Total Credits",rp.cr.toLocaleString(),B.primary],["For Ads",rem.toLocaleString(),rem>0?"#059669":"#DC2626"],["Est. Impressions",(rem*120).toLocaleString(),B.primary],["Est. Clicks",Math.round(rem*3.5).toLocaleString(),B.orange],["Est. Leads",Math.round(rem*0.15).toLocaleString(),"#7C3AED"],["Max Videos",rp.vid?Math.floor(rp.cr/680).toString():"N/A","#D97706"]].map(([l,v,c])=>
+              {[["Total Credits",rp.cr.toLocaleString(),T.primary],["For Ads",rem.toLocaleString(),rem>0?"#059669":"#DC2626"],["Est. Impressions",(rem*120).toLocaleString(),T.primary],["Est. Clicks",Math.round(rem*3.5).toLocaleString(),B.orange],["Est. Leads",Math.round(rem*0.15).toLocaleString(),"#7C3AED"],["Max Videos",rp.vid?Math.floor(rp.cr/680).toString():"N/A","#D97706"]].map(([l,v,c])=>
                 <div key={l} style={{padding:12,background:sub,borderRadius:10,border:`1px solid ${T.border}30`}}><div style={{fontSize:22,fontWeight:800,color:c}}>{v}</div><div style={{fontSize:11,color:T.muted,marginTop:2}}>{l}</div></div>
               )}
             </div>
@@ -328,7 +331,7 @@ export default function App() {
                 {c.items.map(it=>
                   <a key={it.n} href={waL(`Hi, I'm interested in Unifi Business *${it.n}* (${it.p}). Please proceed with my subscription.`)} target="_blank" rel="noopener noreferrer"
                     style={{padding:"14px 16px",borderRadius:10,background:sub,border:`1px solid ${T.border}30`,transition:"all 0.2s",display:"block",color:T.text}}
-                    onMouseEnter={e=>{e.currentTarget.style.borderColor=B.primary+"50";e.currentTarget.style.transform="translateY(-2px)";}}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary+"50";e.currentTarget.style.transform="translateY(-2px)";}}
                     onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border+"30";e.currentTarget.style.transform="translateY(0)";}}
                   ><span style={{fontSize:22}}>{it.i}</span><div style={{fontWeight:600,fontSize:13,marginTop:6,marginBottom:2}}>{it.n}</div><div style={{fontSize:11,color:T.muted,marginBottom:6}}>{it.d}</div><div style={{fontSize:12,fontWeight:700,color:B.orange}}>{it.p}</div></a>
                 )}
@@ -340,7 +343,7 @@ export default function App() {
 
       {/* CTA */}
       <section style={{padding:"80px 24px",textAlign:"center",position:"relative",overflow:"hidden"}}>
-        <div style={{position:"absolute",inset:0,background:`radial-gradient(ellipse at center,${B.primary}08 0%,transparent 60%)`}} />
+        <div style={{position:"absolute",inset:0,background:`radial-gradient(ellipse at center,${T.primary}08 0%,transparent 60%)`}} />
         <div style={{position:"relative",zIndex:1,maxWidth:550,margin:"0 auto"}}>
           <div style={{fontSize:48,marginBottom:14}}>🚀</div>
           <h2 style={{fontSize:"clamp(26px,5vw,38px)",fontWeight:900,marginBottom:14}}>Ready to <span style={{color:B.orange}}>Grow</span>?</h2>

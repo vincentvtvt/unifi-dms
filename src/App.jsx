@@ -2,9 +2,9 @@ import { useState, useEffect, useRef } from "react";
 
 // ─── CONSTANTS ───
 const COLORS = {
-  primary: "#005CB9",
-  orange: "#FF6B00",
-  cyan: "#88E8FF",
+  primary: "#1800E7",
+  orange: "#FF5E00",
+  cyan: "#99B6FF",
   dark: "#0A1628",
   darkCard: "#111D33",
   darkBorder: "#1E303E",
@@ -308,7 +308,7 @@ export default function App() {
 
       {/* ─── NAV ─── */}
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: COLORS.dark + "E8", backdropFilter: "blur(20px)", borderBottom: `1px solid ${COLORS.darkBorder}40`, padding: "10px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <img src="/unifi-biz-logo.webp" alt="Unifi Business" style={{ height: 36, cursor: "pointer" }} onClick={() => scrollTo("hero")} />
+        <img src="/unifi-biz-logo.webp" alt="Unifi Business" style={{ height: 36, cursor: "pointer", filter: "brightness(0) invert(1)" }} onClick={() => scrollTo("hero")} />
         <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
           {[["Packages", "packages"], ["Simulator", "simulator"], ["Stories", "stories"], ["Solutions", "solutions"]].map(([label, id]) => (
             <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", color: COLORS.textMuted, fontSize: 13, fontWeight: 500, padding: "8px 12px", borderRadius: 8, cursor: "pointer", fontFamily: "'Outfit',sans-serif", transition: "color 0.2s" }}
@@ -662,7 +662,7 @@ export default function App() {
 
       {/* ─── FOOTER ─── */}
       <footer style={{ padding: "28px 24px", borderTop: `1px solid ${COLORS.darkBorder}`, textAlign: "center" }}>
-        <img src="/unifi-biz-logo.webp" alt="Unifi Business" style={{ height: 32, marginBottom: 10, filter: "brightness(1.2)" }} />
+        <img src="/unifi-biz-logo.webp" alt="Unifi Business" style={{ height: 32, marginBottom: 10, filter: "brightness(0) invert(1)" }} />
         <p style={{ fontSize: 12, color: COLORS.textMuted }}>Unifi Digital Marketing Solution — Authorized Reseller</p>
         <p style={{ fontSize: 11, color: COLORS.textMuted, marginTop: 6 }}>Prices exclude 6% SST • Ad credits non-transferable • Campaign languages: BM & English</p>
       </footer>

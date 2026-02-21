@@ -17,8 +17,8 @@ const waL = (m) => `https://wa.me/${WA}?text=${encodeURIComponent(m)}`;
 const PKG = [
   { name:"Standard", label:"Awareness", mo:100, cr:840, color:"#4A90D9", icon:"⚡", camp:"1.5 - 2 months", plat:"Facebook, Google Ads, Instagram, TikTok", desc:"Perfect for businesses ready to scale their reach across multiple platforms.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","TikTok (Purely ad setting)"], vid:false },
   { name:"Premium", label:"Engagement", mo:200, cr:1680, color:"#1800E7", icon:"🚀", camp:"Up to 3 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Ideal for building customer interaction and loyalty.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
-  { name:"Prime", label:"Sales Conversion", mo:450, cr:3500, color:"#FF5E00", icon:"🔥", pop:true, camp:"5 - 6 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Great for converting leads and boosting revenue.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
-  { name:"Pro", label:"2x Sales Conversion", mo:900, cr:7000, color:"#FF3D00", icon:"💎", camp:"Up to 12 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Double up the effectiveness of your campaign to maximise your returns.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
+  { name:"Prime", label:"Sales Conversion", mo:450, cr:3500, color:"#FF5E00", icon:"🔥", camp:"5 - 6 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Great for converting leads and boosting revenue.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
+  { name:"Pro", label:"2x Sales Conversion", mo:900, cr:7000, color:"#FF3D00", icon:"💎", pop:true, camp:"Up to 12 months", plat:"Facebook, Google Ads, TikTok, Rev Media", desc:"Double up the effectiveness of your campaign to maximise your returns.", team:["Dedicated Campaign Manager","Graphic Design","Copywriter","Video as a service (680 ad credit)"], vid:true },
 ];
 
 const STORIES = [
@@ -208,7 +208,7 @@ export default function App() {
                 <div style={{fontSize:40,fontWeight:900,margin:"12px 0 2px"}}><span style={{fontSize:16,fontWeight:500,color:T.muted}}>RM</span>{p.mo}</div>
                 <div style={{fontSize:13,color:T.muted,marginBottom:16}}>/month × 12 months</div>
                 <div style={{background:sub,borderRadius:12,padding:14,marginBottom:14,textAlign:"left"}}>
-                  {[["Ad Credits",p.cr.toLocaleString(),B.primary],["Campaign",p.camp,T.text],["Video",p.vid?"✅ Included (680/video)":"❌ Not included",p.vid?"#059669":T.muted],["Max Videos",p.vid?Math.floor(p.cr/680).toString():"—","#7C3AED"]].map(([l,v,c])=>
+                  {[["Ad Credits",p.cr.toLocaleString(),B.primary],["Campaign",p.camp,T.text],["Video",p.vid?"✅ Redeemable (680/video)":"❌ Not included",p.vid?"#059669":T.muted],["Max Videos",p.vid?Math.floor(p.cr/680).toString():"—","#7C3AED"]].map(([l,v,c])=>
                     <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:`1px solid ${T.border}30`,fontSize:13}}><span style={{color:T.muted}}>{l}</span><span style={{fontWeight:600,color:c}}>{v}</span></div>
                   )}
                 </div>

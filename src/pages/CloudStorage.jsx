@@ -34,7 +34,7 @@ export default function CloudStorage() {
         </div>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get Cloud Storage" msg="Hi, I'm interested in Unifi Cloud Storage. Please help me choose the right plan." />
+        <WaBtn text="Get Cloud Storage" msg="Hi *UnifiBiz*, I'm interested in Unifi Cloud Storage. Please help me choose the right plan." />
       </section>
     </>
   );

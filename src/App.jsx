@@ -164,7 +164,7 @@ function Home() {
                 <div><div style={{fontSize:22,fontWeight:800,color:"#059669"}}>{p.camp}</div><div style={{fontSize:11,color:T.muted}}>Campaign</div></div>
               </div>
               <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits). The Smart Package Finder recommended this for my business. Please proceed.`} />
+                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${p.name} Pack (RM${p.mo}/month, ${p.cr} ad credits). The Smart Package Finder recommended this for my business. Please proceed.`} />
                 <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{background:"none",border:`1px solid ${T.border}`,color:T.muted,padding:"12px 20px",borderRadius:10,fontSize:14,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:500}}>Retake Quiz</button>
               </div>
             </div>
@@ -240,7 +240,7 @@ function Home() {
                     {p.team.map(e=><div key={e} style={{fontSize:12,color:T.muted,padding:"3px 0",display:"flex",alignItems:"center",gap:6}}>{Icons.check("#059669",14)}{e}</div>)}
                   </div>}
 
-                  <WaBtn text={`Get ${p.name}`} msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${p.name} Pack* (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center"}} />
+                  <WaBtn text={`Get ${p.name}`} msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${p.name} Pack (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center"}} />
                 </div>
               </Card>
             ))}
@@ -298,7 +298,7 @@ function Home() {
                   </div>
                 )}
               </div>
-              <WaBtn text="I'm Interested in This Plan" msg={`Hi, I'm interested in Unifi Digital Marketing Solution *${rp.name} Pack* (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s)`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits. Please proceed.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} />
+              <WaBtn text="I'm Interested in This Plan" msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${rp.name} Pack (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s)`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits. Please proceed.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} />
             </Card>
           </div>
         </div>
@@ -396,7 +396,7 @@ function Home() {
           <SectionLabel text="Get Started" />
           <h2 style={{fontSize:"clamp(28px,4vw,42px)",fontWeight:800,marginBottom:14,color:T.text}}>Ready to grow your business?</h2>
           <p style={{color:T.muted,fontSize:16,marginBottom:28,lineHeight:1.7}}>Join 500+ Malaysian SMEs already running campaigns across Facebook, Google, TikTok & Rev Media.</p>
-          <WaBtn text="Start My Campaign" msg="Hi, I'm interested in Unifi Digital Marketing Solution. I'd like to get started — please help me choose the right package." style={{fontSize:16,padding:"16px 32px"}} />
+          <WaBtn text="Start My Campaign" msg="Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. I'd like to get started — please help me choose the right package." style={{fontSize:16,padding:"16px 32px"}} />
           <div style={{marginTop:16,fontSize:12,color:T.muted}}>SSM registration required · 12-month subscription · No hidden fees</div>
         </div>
       </section>

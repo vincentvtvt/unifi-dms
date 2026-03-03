@@ -52,7 +52,7 @@ export default function Broadband() {
         <p style={{textAlign:"center",fontSize:12,color:T.muted,marginTop:16}}>Prices exclude 6% SST · Free installation for selected areas · Subject to coverage</p>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get Recommendation" msg="Hi, I'm interested in Unifi Business Broadband. Please help me choose the right plan." />
+        <WaBtn text="Get Recommendation" msg="Hi *UnifiBiz*, I'm interested in Unifi Business Broadband. Please help me choose the right plan." />
       </section>
     </>
   );

@@ -106,7 +106,7 @@ export const PrimaryBtn = ({text,onClick,style={}}) => {
 };
 
 export const FloatingWA = () => (
-  <a href={waL("Hi, I'm interested in Unifi Digital Marketing Solution. Please help me choose the right package.")} target="_blank" rel="noopener noreferrer"
+  <a href={waL("Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. Please help me choose the right package.")} target="_blank" rel="noopener noreferrer"
     style={{position:"fixed",bottom:24,right:24,zIndex:999,width:56,height:56,borderRadius:28,background:"#25D366",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 20px rgba(37,211,102,0.4)",transition:"all 0.3s ease",cursor:"pointer"}}
     onMouseEnter={e=>{e.currentTarget.style.transform="scale(1.1)";e.currentTarget.style.boxShadow="0 6px 28px rgba(37,211,102,0.5)";}}
     onMouseLeave={e=>{e.currentTarget.style.transform="scale(1)";e.currentTarget.style.boxShadow="0 4px 20px rgba(37,211,102,0.4)";}}
@@ -124,7 +124,7 @@ export const Nav = () => {
         <button onClick={T.__toggle} style={{background:"none",border:`1px solid ${T.border}`,borderRadius:8,padding:"6px 8px",cursor:"pointer",display:"flex",alignItems:"center",color:T.muted,transition:"all 0.2s"}}
           onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;}}
         >{T.__dk?Icons.sun():Icons.moon()}</button>
-        <WaBtn text="Contact Us" msg="Hi, I'm interested in Unifi Digital Marketing Solution. Please help me choose the right package." sm />
+        <WaBtn text="Contact Us" msg="Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. Please help me choose the right package." sm />
       </div>
     </nav>
   );
@@ -178,7 +178,7 @@ export const PlanCard = ({plan,popular,color}) => {
         <div style={{fontSize:36,fontWeight:800,margin:"8px 0 2px",color:T.text}}><span style={{fontSize:14,fontWeight:500,color:T.muted}}>RM</span>{plan.price}</div>
         <div style={{fontSize:12,color:T.muted,marginBottom:16}}>/month{plan.contract?` · ${plan.contract}`:""}</div>
         {plan.highlight&&!popular&&<div style={{background:T.accent+"0A",border:`1px solid ${T.accent}20`,borderRadius:8,padding:"6px 10px",marginBottom:12,fontSize:11,color:T.accent,fontWeight:600}}>{plan.highlight}</div>}
-        <WaBtn text="I'm Interested" msg={`Hi, I'm interested in Unifi Business *${plan.name}*${plan.speed?` (${plan.speed})`:""} at RM${plan.price}/month. Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center",fontSize:13}} />
+        <WaBtn text="I'm Interested" msg={`Hi *UnifiBiz*, I'm interested in Unifi Business ${plan.name}${plan.speed?` (${plan.speed})`:""} at RM${plan.price}/month. Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center",fontSize:13}} />
       </div>
     </Card>
   );

@@ -32,7 +32,7 @@ export default function Mobile() {
         </Card>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get UNI5G Business" msg="Hi, I'm interested in UNI5G Business mobile plan. Please help me choose." />
+        <WaBtn text="Get UNI5G Business" msg="Hi *UnifiBiz*, I'm interested in UNI5G Business mobile plan. Please help me choose." />
       </section>
     </>
   );

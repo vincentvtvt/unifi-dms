@@ -33,7 +33,7 @@ export default function AirBiz() {
         </div>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get Air Biz 5G" msg="Hi, I'm interested in Unifi Air Biz 5G. Please help me choose the right plan." />
+        <WaBtn text="Get Air Biz 5G" msg="Hi *UnifiBiz*, I'm interested in Unifi Air Biz 5G. Please help me choose the right plan." />
       </section>
     </>
   );

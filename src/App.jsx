@@ -77,7 +77,7 @@ function Home() {
               A dedicated campaign manager, designer & copywriter run your ads across Facebook, Google, TikTok & Rev Media — from just RM100/month.
             </p>
             <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:32}}>
-              <PrimaryBtn text="Find My Package" onClick={()=>{setQs(0);setSc([0,0,0,0]);setQr(null);scr("advisor");}} />
+              <span data-track="hero_quiz"><PrimaryBtn text="Find My Package" onClick={()=>{setQs(0);setSc([0,0,0,0]);setQr(null);scr("advisor");}} /></span>
               <a href="#packages" onClick={e=>{e.preventDefault();scr("packages");}} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"14px 24px",borderRadius:10,border:`1px solid ${T.border}`,color:T.text,fontSize:15,fontWeight:600,transition:"all 0.2s"}}
                 onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;e.currentTarget.style.color=T.primary;}}
                 onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.text;}}
@@ -130,7 +130,7 @@ function Home() {
               </div>
               <h3 style={{fontSize:20,fontWeight:700,marginBottom:8,color:T.text}}>Find your perfect match</h3>
               <p style={{color:T.muted,marginBottom:24,fontSize:14}}>Takes less than 30 seconds.</p>
-              <PrimaryBtn text="Start Now" onClick={()=>setQs(0)} />
+              <span data-track="quiz_start"><PrimaryBtn text="Start Now" onClick={()=>setQs(0)} /></span>
             </div>
           )}
           {qs>=0&&!qr&&(
@@ -298,7 +298,7 @@ function Home() {
                   </div>
                 )}
               </div>
-              <WaBtn text="I'm Interested in This Plan" msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${rp.name} Pack (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s)`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits. Please proceed.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} />
+              <span data-track="roi_interested"><WaBtn text="I'm Interested in This Plan" msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${rp.name} Pack (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s)`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits. Please proceed.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} /></span>
             </Card>
           </div>
         </div>
@@ -396,7 +396,7 @@ function Home() {
           <SectionLabel text="Get Started" />
           <h2 style={{fontSize:"clamp(28px,4vw,42px)",fontWeight:800,marginBottom:14,color:T.text}}>Ready to grow your business?</h2>
           <p style={{color:T.muted,fontSize:16,marginBottom:28,lineHeight:1.7}}>Join 500+ Malaysian SMEs already running campaigns across Facebook, Google, TikTok & Rev Media.</p>
-          <WaBtn text="Start My Campaign" msg="Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. I'd like to get started — please help me choose the right package." style={{fontSize:16,padding:"16px 32px"}} />
+          <span data-track="bottom_campaign"><WaBtn text="Start My Campaign" msg="Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. I'd like to get started — please help me choose the right package." style={{fontSize:16,padding:"16px 32px"}} /></span>
           <div style={{marginTop:16,fontSize:12,color:T.muted}}>SSM registration required · 12-month subscription · No hidden fees</div>
         </div>
       </section>

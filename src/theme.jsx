@@ -22,15 +22,7 @@ export const useTheme = () => useContext(ThemeCtx);
 export const useToggleTheme = () => useContext(ThemeCtx).__toggle;
 
 export function ThemeProvider({ children }) {
-  const [dk,setDk] = useState(false);
-  useEffect(()=>{
-    const m=window.matchMedia("(prefers-color-scheme: dark)");
-    setDk(m.matches);
-    const h=e=>setDk(e.matches);
-    m.addEventListener("change",h);
-    return()=>m.removeEventListener("change",h);
-  },[]);
-  const val = dk ? { ...DARK, __toggle:()=>setDk(!dk), __dk:dk } : { ...LIGHT, __toggle:()=>setDk(!dk), __dk:dk };
+  const val = { ...LIGHT, __toggle:()=>{}, __dk:false };
   return <ThemeCtx.Provider value={val}>{children}</ThemeCtx.Provider>;
 }
 
@@ -121,9 +113,6 @@ export const Nav = () => {
         <img src={T.logo} alt="Unifi Business" style={{height:32}} />
       </a>
       <div style={{display:"flex",alignItems:"center",gap:16}}>
-        <button onClick={T.__toggle} style={{background:"none",border:`1px solid ${T.border}`,borderRadius:8,padding:"6px 8px",cursor:"pointer",display:"flex",alignItems:"center",color:T.muted,transition:"all 0.2s"}}
-          onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;}}
-        >{T.__dk?Icons.sun():Icons.moon()}</button>
         <WaBtn text="Contact Us" msg="Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. Please help me choose the right package." sm />
       </div>
     </nav>

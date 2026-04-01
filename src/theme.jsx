@@ -167,7 +167,7 @@ export const PlanCard = ({plan,popular,color}) => {
         <div style={{fontSize:36,fontWeight:800,margin:"8px 0 2px",color:T.text}}><span style={{fontSize:14,fontWeight:500,color:T.muted}}>RM</span>{plan.price}</div>
         <div style={{fontSize:12,color:T.muted,marginBottom:16}}>/month{plan.contract?` · ${plan.contract}`:""}</div>
         {plan.highlight&&!popular&&<div style={{background:T.accent+"0A",border:`1px solid ${T.accent}20`,borderRadius:8,padding:"6px 10px",marginBottom:12,fontSize:11,color:T.accent,fontWeight:600}}>{plan.highlight}</div>}
-        <WaBtn text="I'm Interested" msg={`Hi *UnifiBiz*, I'm interested in Unifi Business ${plan.name}${plan.speed?` (${plan.speed})`:""} at RM${plan.price}/month. Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center",fontSize:13}} />
+        <WaBtn text="I'm Interested" msg={`Hi *UnifiBiz*, I'm interested in Unifi Business ${plan.name}${plan.speed?` (${plan.speed})`:""} at RM${plan.price}/month. Need to find out more about it.`} sm style={{width:"100%",justifyContent:"center",fontSize:13}} />
       </div>
     </Card>
   );

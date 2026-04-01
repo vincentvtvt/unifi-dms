@@ -240,7 +240,7 @@ function Home() {
                     {p.team.map(e=><div key={e} style={{fontSize:12,color:T.muted,padding:"3px 0",display:"flex",alignItems:"center",gap:6}}>{Icons.check("#059669",14)}{e}</div>)}
                   </div>}
 
-                  <WaBtn text={`Get ${p.name}`} msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${p.name} Pack (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Please proceed with my subscription.`} sm style={{width:"100%",justifyContent:"center"}} />
+                  <WaBtn text={`Get ${p.name}`} msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${p.name} Pack (RM${p.mo}/month, ${p.cr} ad credits, ${p.camp} campaign). Need to understand more about it.`} sm style={{width:"100%",justifyContent:"center"}} />
                 </div>
               </Card>
             ))}

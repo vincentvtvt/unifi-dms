@@ -164,7 +164,7 @@ function Home() {
                 <div><div style={{fontSize:22,fontWeight:800,color:"#059669"}}>{p.camp}</div><div style={{fontSize:11,color:T.muted}}>Campaign</div></div>
               </div>
               <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
-                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${p.name} Pack (RM${p.mo}/month, ${p.cr} ad credits). The Smart Package Finder recommended this for my business. Please proceed.`} />
+                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${p.name} Pack (RM${p.mo}/month, ${p.cr} ad credits). The Smart Package Finder recommended this for my business. `} />
                 <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{background:"none",border:`1px solid ${T.border}`,color:T.muted,padding:"12px 20px",borderRadius:10,fontSize:14,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontWeight:500}}>Retake Quiz</button>
               </div>
             </div>
@@ -298,7 +298,7 @@ function Home() {
                   </div>
                 )}
               </div>
-              <span data-track="roi_interested"><WaBtn text="I'm Interested in This Plan" msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${rp.name} Pack (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s)`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits. Please proceed.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} /></span>
+              <span data-track="roi_interested"><WaBtn text="I'm Interested in This Plan" msg={`Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution ${rp.name} Pack (RM${rp.mo}/month)${rv>0?`, with ${rv} video(s)`:``}. Estimated ${Math.round(rem*0.15)} leads with ${rem} ad credits.`} sm style={{width:"100%",justifyContent:"center",marginTop:16}} /></span>
             </Card>
           </div>
         </div>
@@ -376,7 +376,7 @@ function Home() {
                           onMouseEnter={e=>{e.currentTarget.style.background=T.primary;e.currentTarget.style.color="white";}}
                           onMouseLeave={e=>{e.currentTarget.style.background=T.primary+"0A";e.currentTarget.style.color=T.primary;}}
                         >View Plans {Icons.arrow("currentColor",13)}</button>
-                        :<button onClick={()=>window.open(waL(`Hi, I'm interested in Unifi Business *${it.n}* (${it.p}). Please proceed.`),"_blank")} style={{flexShrink:0,padding:"8px 16px",borderRadius:8,border:`1px solid #25D366`,background:"#25D36610",color:"#25D366",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5,transition:"all 0.2s",whiteSpace:"nowrap"}}
+                        :<button onClick={()=>window.open(waL(`Hi, I'm interested in Unifi Business *${it.n}* (${it.p}). `),"_blank")} style={{flexShrink:0,padding:"8px 16px",borderRadius:8,border:`1px solid #25D366`,background:"#25D36610",color:"#25D366",fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",display:"flex",alignItems:"center",gap:5,transition:"all 0.2s",whiteSpace:"nowrap"}}
                           onMouseEnter={e=>{e.currentTarget.style.background="#25D366";e.currentTarget.style.color="white";}}
                           onMouseLeave={e=>{e.currentTarget.style.background="#25D36610";e.currentTarget.style.color="#25D366";}}
                         >Enquire</button>

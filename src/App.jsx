@@ -74,14 +74,17 @@ function Home() {
               Grow your business with<br/><span style={{color:T.accent,fontSize:"clamp(38px,5.5vw,64px)"}}>Digital Marketing</span><br/>that actually works.
             </h1>
             <p style={{fontSize:17,color:T.muted,lineHeight:1.7,marginBottom:28,maxWidth:460}}>
-              A dedicated campaign manager, designer & copywriter run your ads across Facebook, Google, TikTok & Rev Media — from just RM100/month.
+              <strong style={{color:T.text}}>Book a free 20-min consultation</strong> with our marketing team. We'll review your business and recommend exactly what works — from just RM100/month if you decide to proceed.
             </p>
-            <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:32}}>
-              <span data-track="hero_quiz"><PrimaryBtn text="Find My Package" onClick={()=>{setQs(0);setSc([0,0,0,0]);setQr(null);scr("advisor");}} /></span>
-              <a href="#packages" onClick={e=>{e.preventDefault();scr("packages");}} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"14px 24px",borderRadius:10,border:`1px solid ${T.border}`,color:T.text,fontSize:15,fontWeight:600,transition:"all 0.2s"}}
+            <div style={{display:"flex",gap:12,flexWrap:"wrap",marginBottom:20}}>
+              <span data-track="hero_free_consult"><WaBtn text="Free Marketing Consultation" msg="Hi *UnifiBiz*, I'd like to book a FREE marketing consultation call. I want to understand how digital marketing can grow my business before committing to any package." style={{fontSize:15,padding:"14px 24px"}} /></span>
+              <span data-track="hero_quiz"><button onClick={()=>{setQs(0);setSc([0,0,0,0]);setQr(null);scr("advisor");}} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"14px 24px",borderRadius:10,border:`1px solid ${T.border}`,background:"transparent",color:T.text,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"}}
                 onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;e.currentTarget.style.color=T.primary;}}
                 onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.text;}}
-              >View Plans {Icons.arrow(T.primary,16)}</a>
+              >Take the 30-sec Quiz {Icons.arrow(T.primary,16)}</button></span>
+            </div>
+            <div style={{fontSize:12,color:T.muted,marginBottom:24,display:"flex",alignItems:"center",gap:6}}>
+              {Icons.check("#059669",14)}<span><strong style={{color:T.text}}>No obligation.</strong> Talk to a real marketing expert — free, zero commitment.</span>
             </div>
             {/* Trust strip */}
             <div className="hero-stats" style={{display:"flex",alignItems:"center",gap:16,fontSize:12,color:T.muted,flexWrap:"wrap"}}>
@@ -249,6 +252,31 @@ function Home() {
         </div>
       </section>
 
+      {/* ═══ FREE CONSULTATION BANNER ═══ */}
+      <section style={{padding:"48px 24px"}}>
+        <div style={{maxWidth:860,margin:"0 auto",background:`linear-gradient(135deg, #25D36610, ${T.accent}08)`,border:`2px solid #25D36640`,borderRadius:20,padding:"36px 32px",textAlign:"center",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",top:-40,right:-40,width:160,height:160,borderRadius:"50%",background:"#25D36610",pointerEvents:"none"}} />
+          <div style={{position:"relative"}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 14px",borderRadius:999,background:"#25D36618",marginBottom:16}}>
+              <span style={{width:7,height:7,borderRadius:"50%",background:"#25D366",animation:"pulse 2s infinite"}} />
+              <span style={{fontSize:12,fontWeight:700,color:"#25D366",letterSpacing:0.5}}>100% FREE · NO OBLIGATION</span>
+            </div>
+            <h2 style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:800,color:T.text,marginBottom:10,letterSpacing:"-0.02em"}}>
+              Not sure which plan? <span style={{color:"#059669"}}>Talk to us free.</span>
+            </h2>
+            <p style={{color:T.muted,fontSize:15,lineHeight:1.6,marginBottom:24,maxWidth:540,margin:"0 auto 24px"}}>
+              Book a <strong style={{color:T.text}}>free 20-minute consultation</strong> with our marketing team. We'll review your business, explain how digital marketing works for your industry, and recommend what actually fits — no pressure to buy.
+            </p>
+            <div style={{display:"flex",gap:16,justifyContent:"center",flexWrap:"wrap",marginBottom:20,fontSize:13,color:T.muted}}>
+              <span style={{display:"flex",alignItems:"center",gap:5}}>{Icons.check("#059669",15)}<span>Real expert, not a bot</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}>{Icons.check("#059669",15)}<span>20 minutes, done on WhatsApp</span></span>
+              <span style={{display:"flex",alignItems:"center",gap:5}}>{Icons.check("#059669",15)}<span>Zero commitment</span></span>
+            </div>
+            <span data-track="mid_free_consult"><WaBtn text="Book My Free Consultation" msg="Hi *UnifiBiz*, I'd like to book the FREE 20-minute marketing consultation. I want expert advice on how digital marketing can grow my business before deciding on any package." style={{fontSize:16,padding:"16px 32px"}} /></span>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ ROI SIMULATOR ═══ */}
       <section style={{padding:"80px 24px",background:T.sub}}>
         <div style={{maxWidth:900,margin:"0 auto"}}>
@@ -392,12 +420,18 @@ function Home() {
 
       {/* ═══ FINAL CTA ═══ */}
       <section style={{padding:"80px 24px",background:`linear-gradient(135deg, ${T.primary}08, ${T.accent}06)`,textAlign:"center"}}>
-        <div style={{maxWidth:520,margin:"0 auto"}}>
+        <div style={{maxWidth:560,margin:"0 auto"}}>
           <SectionLabel text="Get Started" />
-          <h2 style={{fontSize:"clamp(28px,4vw,42px)",fontWeight:800,marginBottom:14,color:T.text}}>Ready to grow your business?</h2>
-          <p style={{color:T.muted,fontSize:16,marginBottom:28,lineHeight:1.7}}>Join 500+ Malaysian SMEs already running campaigns across Facebook, Google, TikTok & Rev Media.</p>
-          <span data-track="bottom_campaign"><WaBtn text="Start My Campaign" msg="Hi *UnifiBiz*, I'm interested in Unifi Digital Marketing Solution. I'd like to get started — please help me choose the right package." style={{fontSize:16,padding:"16px 32px"}} /></span>
-          <div style={{marginTop:16,fontSize:12,color:T.muted}}>SSM registration required · 12-month subscription · No hidden fees</div>
+          <h2 style={{fontSize:"clamp(28px,4vw,42px)",fontWeight:800,marginBottom:14,color:T.text}}>Let's grow your business together</h2>
+          <p style={{color:T.muted,fontSize:16,marginBottom:28,lineHeight:1.7}}>Start with a <strong style={{color:T.text}}>free marketing consultation</strong> — no package selection required. Join 500+ Malaysian SMEs already running campaigns.</p>
+          <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginBottom:16}}>
+            <span data-track="bottom_free_consult"><WaBtn text="Book Free Consultation" msg="Hi *UnifiBiz*, I'd like to book the FREE 20-minute marketing consultation. I want expert advice before committing to any package." style={{fontSize:16,padding:"16px 32px"}} /></span>
+            <span data-track="bottom_campaign"><button onClick={()=>document.getElementById("packages")?.scrollIntoView({behavior:"smooth"})} style={{display:"inline-flex",alignItems:"center",gap:6,padding:"16px 28px",borderRadius:10,border:`1px solid ${T.border}`,background:"transparent",color:T.text,fontSize:15,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor=T.primary;e.currentTarget.style.color=T.primary;}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.color=T.text;}}
+            >I know what I want →</button></span>
+          </div>
+          <div style={{fontSize:12,color:T.muted}}>Free consultation · No credit card · SSM required only if you sign up</div>
         </div>
       </section>
     </>

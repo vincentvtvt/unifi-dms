@@ -6,34 +6,56 @@ import AirBiz from "./pages/AirBiz";
 import Mobile from "./pages/Mobile";
 import CloudStorage from "./pages/CloudStorage";
 
-/* ═══════════════════════════════════════════
-   SOLUTION CATALOG — 3 tabs only (AI is a standalone spotlight)
-   ═══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   SOLUTION CATALOG
+   Data sourced from biz.unifi.com.my (May 2026)
+   ═══════════════════════════════════════════════════ */
 const SOLUTIONS = [
   {
     id:"connectivity", cat:"Connectivity", tagline:"Get online. Stay connected.",
     icon:Icons.wifi, color:"#0EA5E9",
     items:[
-      { n:"Business Broadband", p:"From RM129/mo", d:"Up to 2Gbps fibre · Free WiFi 6/7 router included", icon:Icons.globe, link:"/broadband", badge:"Free Router" },
-      { n:"UNI5G Business Mobile", p:"From RM39/mo", d:"Unlimited 5G data · Free smartphone with every line", icon:Icons.phone, link:"/mobile", badge:"Free Phone" },
-      { n:"Unifi Air Biz 5G", p:"From RM99/mo", d:"Wireless 5G broadband · Plug & play, no wiring needed", icon:Icons.wifi, link:"/air-biz", badge:"No Installation" },
+      {
+        n:"Business Broadband",
+        p:"From RM129/mo",
+        d:"Up to 2Gbps fibre with free WiFi 6/7 router. Subscribe to 1Gbps/2Gbps and get a free iPad 11.",
+        icon:Icons.globe, link:"/broadband", badge:"Free Router + iPad"
+      },
+      {
+        n:"UNI5G Biz 59",
+        p:"From RM59/mo",
+        d:"Free 5G smartphone (e.g. Samsung Galaxy A16 5G) + unlimited 5G/4G data. 0% instalment, no credit card needed.",
+        icon:Icons.phone, link:"/mobile", badge:"Free 5G Phone"
+      },
+      {
+        n:"UNI5G Biz 99",
+        p:"RM99/mo",
+        d:"100GB 5G + 4G data, unlimited calls, free flagship 5G phone. Best value for field sales teams.",
+        icon:Icons.phone, link:"/mobile", badge:"Free 5G Phone"
+      },
+      {
+        n:"Unifi Air Biz 5G",
+        p:"From RM99/mo",
+        d:"Wireless 5G broadband. Plug & play — free 5G router or MiFi included. No wiring, no installation wait.",
+        icon:Icons.wifi, link:"/air-biz", badge:"Free 5G Router"
+      },
     ]
   },
   {
     id:"marketing", cat:"Digital Marketing", tagline:"Reach customers across 4 platforms.",
     icon:Icons.trending, color:"#F97316",
     items:[
-      { n:"Standard Pack", p:"RM100/mo", d:"1.5–2 month campaign · 840 ad credits · 4 platforms", icon:Icons.target, wa:true, pkg:"Standard" },
-      { n:"Premium Pack", p:"RM200/mo", d:"3-month campaign · 1,680 credits · Video included", icon:Icons.target, wa:true, pkg:"Premium" },
-      { n:"Prime Pack", p:"RM450/mo", d:"5–6 month campaign · 3,500 credits · Video included", icon:Icons.target, wa:true, pkg:"Prime" },
-      { n:"Pro Pack", p:"RM900/mo", d:"12-month campaign · 7,000 credits · Maximum ROI", icon:Icons.chart, wa:true, pkg:"Pro", pop:true },
+      { n:"Standard Pack", p:"RM100/mo", d:"1.5\u20132 month campaign \u00B7 840 ad credits \u00B7 4 platforms", icon:Icons.target, wa:true, pkg:"Standard" },
+      { n:"Premium Pack", p:"RM200/mo", d:"3-month campaign \u00B7 1,680 credits \u00B7 Video included", icon:Icons.target, wa:true, pkg:"Premium" },
+      { n:"Prime Pack", p:"RM450/mo", d:"5\u20136 month campaign \u00B7 3,500 credits \u00B7 Video included", icon:Icons.target, wa:true, pkg:"Prime" },
+      { n:"Pro Pack", p:"RM900/mo", d:"12-month campaign \u00B7 7,000 credits \u00B7 Maximum ROI", icon:Icons.chart, wa:true, pkg:"Pro", pop:true },
     ]
   },
   {
     id:"digital", cat:"Cloud & Security", tagline:"Protect data. Sell online.",
     icon:Icons.cloud, color:"#059669",
     items:[
-      { n:"Cloud Storage", p:"From RM11/mo", d:"500GB–5TB · Local MY data residency", icon:Icons.cloud, link:"/cloud-storage" },
+      { n:"Cloud Storage", p:"From RM11/mo", d:"500GB\u20135TB with local Malaysian data residency", icon:Icons.cloud, link:"/cloud-storage" },
       { n:"eCommerce Hub", p:"From RM49/mo", d:"All-in-one online store management", icon:Icons.chart, wa:true },
       { n:"Kaspersky Security", p:"From RM30/mo", d:"Business-grade endpoint cybersecurity", icon:Icons.shield, wa:true },
     ]
@@ -46,27 +68,27 @@ const BUNDLES = [
     name:"Kedai Baru",
     tagline:"Everything to open shop",
     who:"New businesses, retail shops, F&B outlets",
-    items:["Business Broadband","UNI5G Business Mobile","Standard Marketing Pack"],
-    highlight:"Free router + free smartphone",
-    from:"RM268/mo",
+    items:["Business Broadband (free router)","UNI5G Biz 59 (free 5G phone)","Standard Marketing Pack"],
+    highlight:"Free router + free 5G smartphone included",
+    from:"RM288/mo",
     color:"#0EA5E9",
-    msg:"Hi, I'm interested in the *Kedai Baru Bundle* (Broadband + Mobile + Marketing). Can you share more details?"
+    msg:"Hi, I'm interested in the *Kedai Baru Bundle* (Broadband + Mobile with free phone + Marketing). Can you share more details?"
   },
   {
     name:"Sales Machine",
     tagline:"Equip your sales team",
     who:"Agents, field sales, service businesses",
-    items:["3–5 Mobile lines (free phones)","AI WhatsApp Chatbot","Premium Marketing Pack"],
-    highlight:"AI chatbot qualifies leads while you close",
-    from:"RM517/mo",
+    items:["3\u20135 UNI5G Biz lines (free phones each)","AI WhatsApp Chatbot (BotKu)","Premium Marketing Pack"],
+    highlight:"Every salesperson gets a free 5G phone + AI chatbot qualifies leads 24/7",
+    from:"RM577/mo",
     color:"#8B5CF6",
-    msg:"Hi, I'm interested in the *Sales Machine Bundle* (Mobile lines + AI Chatbot + Marketing). Tell me more!"
+    msg:"Hi, I'm interested in the *Sales Machine Bundle* (Multiple mobile lines with free phones + AI Chatbot + Marketing). Tell me more!"
   },
   {
     name:"Go Digital",
     tagline:"Take your business online",
     who:"Traditional businesses going digital",
-    items:["Business Broadband","Cloud Storage","eCommerce Hub","AI WhatsApp Chatbot"],
+    items:["Business Broadband (free router)","Cloud Storage","eCommerce Hub","AI WhatsApp Chatbot (BotKu)"],
     highlight:"AI handles enquiries, you handle fulfilment",
     from:"RM389/mo",
     color:"#059669",
@@ -77,8 +99,8 @@ const BUNDLES = [
 /* ═══ SUCCESS STORIES ═══ */
 const STORIES = [
   { title:"Kelantan Food Business", bef:"Sold locally at Pasar Siti Khadijah only.", aft:"Broadband + Facebook ads boosted online orders by 49% in one cycle.", tag:"Kedai Baru Bundle", metric:"+49%", metricLabel:"Sales Growth", img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop" },
-  { title:"Property Agent Team", bef:"Relied on walk-ins. Leads were slow and expensive.", aft:"5G mobile + AI chatbot + TikTok video drove 3x more qualified leads.", tag:"Sales Machine", metric:"3x", metricLabel:"Lead Volume", img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop" },
-  { title:"Boutique Café Chain", bef:"Single outlet in PJ. Marketing limited to word-of-mouth.", aft:"Full digital setup — broadband, cloud POS, Instagram ads — opened 2nd branch in 6 months.", tag:"Go Digital", metric:"2x", metricLabel:"Foot Traffic", img:"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=260&fit=crop" },
+  { title:"Property Agent Team", bef:"Relied on walk-ins. Leads were slow and expensive.", aft:"5G mobile for every agent + AI chatbot + TikTok video drove 3x more qualified leads.", tag:"Sales Machine", metric:"3x", metricLabel:"Lead Volume", img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop" },
+  { title:"Boutique Caf\u00E9 Chain", bef:"Single outlet in PJ. Marketing limited to word-of-mouth.", aft:"Full digital setup \u2014 broadband, cloud POS, Instagram ads \u2014 opened 2nd branch in 6 months.", tag:"Go Digital", metric:"2x", metricLabel:"Foot Traffic", img:"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=260&fit=crop" },
   { title:"Pest Control Service", bef:"Only northern states. Marketing limited to flyers.", aft:"AI chatbot handled 60% of enquiries. 12-month campaign doubled coverage area.", tag:"Sales Machine", metric:"2x", metricLabel:"Revenue Doubled", img:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=260&fit=crop" },
 ];
 
@@ -87,24 +109,24 @@ const QZ = [
   { q:"What's your biggest business challenge right now?", o:[
     { l:"I need reliable internet & connectivity", s:[3,0,0,0] },
     { l:"I can't keep up with customer enquiries", s:[0,3,1,0] },
-    { l:"Not enough customers — I need more leads", s:[0,1,3,0] },
+    { l:"Not enough customers \u2014 I need more leads", s:[0,1,3,0] },
     { l:"I want to go fully digital (online store, cloud, etc.)", s:[0,1,0,3] },
   ]},
   { q:"How many staff does your business have?", o:[
     { l:"Just me (solopreneur)", s:[1,2,1,1] },
-    { l:"2–5 people", s:[2,1,2,1] },
-    { l:"6–20 people", s:[2,1,2,2] },
+    { l:"2\u20135 people", s:[2,1,2,1] },
+    { l:"6\u201320 people", s:[2,1,2,2] },
     { l:"20+ people", s:[3,1,2,2] },
   ]},
   { q:"Do you currently have business internet?", o:[
-    { l:"No — using personal WiFi / mobile data", s:[3,0,0,1] },
+    { l:"No \u2014 using personal WiFi / mobile data", s:[3,0,0,1] },
     { l:"Yes, but it's slow or unreliable", s:[2,0,0,0] },
-    { l:"Yes, it's fine — I need other solutions", s:[0,1,2,1] },
+    { l:"Yes, it's fine \u2014 I need other solutions", s:[0,1,2,1] },
   ]},
   { q:"What's your monthly budget for business tools?", o:[
     { l:"Under RM300", s:[2,1,1,0] },
-    { l:"RM300 – RM600", s:[1,2,2,1] },
-    { l:"RM600+ — I want the full package", s:[1,2,2,3] },
+    { l:"RM300 \u2013 RM600", s:[1,2,2,1] },
+    { l:"RM600+ \u2014 I want the full package", s:[1,2,2,3] },
   ]},
 ];
 
@@ -141,7 +163,7 @@ function Home() {
 
   const handleItemAction = (it) => {
     if (it.link) navigate(it.link);
-    else if (it.wa || it.pkg) window.open(waL(`Hi, I'm interested in *${it.n}* (${it.p}). Can you share more details?`), "_blank");
+    else if (it.wa || it.pkg) window.open(waL("Hi, I'm interested in *" + it.n + "* (" + it.p + "). Can you share more details?"), "_blank");
   };
 
   return (
@@ -154,7 +176,7 @@ function Home() {
         <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", flexWrap:"wrap", gap:48, alignItems:"center" }}>
           {/* Left */}
           <div className="fade-up" style={{ flex:"1 1 440px", maxWidth:560 }}>
-            <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 14px", borderRadius:8, background:T.accent+"0D", border:`1px solid ${T.accent}20`, marginBottom:20 }}>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 14px", borderRadius:8, background:T.accent+"0D", border:"1px solid " + T.accent + "20", marginBottom:20 }}>
               <span style={{ width:7, height:7, borderRadius:"50%", background:T.accent }} />
               <span style={{ fontSize:12, fontWeight:600, color:T.accent }}>Official Unifi Business Partner</span>
             </div>
@@ -163,7 +185,7 @@ function Home() {
               <span style={{ color:T.accent, fontSize:"clamp(36px,5vw,58px)" }}>Everything your<br/>business needs.</span>
             </h1>
             <p style={{ fontSize:17, color:T.muted, lineHeight:1.7, marginBottom:28, maxWidth:480 }}>
-              Get <strong style={{ color:T.text }}>free smartphones, free routers, AI chatbot</strong> and digital marketing — all from one partner. Malaysian SMEs trust us to set up their entire business infrastructure.
+              Get <strong style={{ color:T.text }}>free 5G smartphones, free routers, AI chatbot</strong> and digital marketing — all from one partner. Malaysian SMEs trust us to set up their entire business infrastructure.
             </p>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:20 }}>
               <button onClick={() => scr("solutions")}
@@ -174,7 +196,7 @@ function Home() {
                 Explore Solutions {Icons.arrow("white",16)}
               </button>
               <button onClick={() => { setQs(0); setSc([0,0,0,0]); setQr(null); scr("finder"); }}
-                style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"14px 24px", borderRadius:10, border:`1px solid ${T.border}`, background:"transparent", color:T.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }}
+                style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"14px 24px", borderRadius:10, border:"1px solid " + T.border, background:"transparent", color:T.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = T.primary; e.currentTarget.style.color = T.primary; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.text; }}
               >
@@ -191,9 +213,9 @@ function Home() {
             </div>
           </div>
 
-          {/* Right — Image carousel with floating stat cards */}
+          {/* Right — Image carousel */}
           <div className="fade-up-d2" style={{ flex:"1 1 380px", position:"relative" }}>
-            <div style={{ borderRadius:20, overflow:"hidden", position:"relative", background:`linear-gradient(135deg, ${T.primary}12, ${T.accent}08)`, padding:6 }}>
+            <div style={{ borderRadius:20, overflow:"hidden", position:"relative", background:"linear-gradient(135deg, " + T.primary + "12, " + T.accent + "08)", padding:6 }}>
               <div style={{ position:"relative", borderRadius:16, overflow:"hidden", height:340 }}>
                 {HERO_IMAGES.map((img, i) => (
                   <img key={i} src={img.src} alt={img.alt}
@@ -207,7 +229,6 @@ function Home() {
                 <div style={{ position:"absolute", bottom:0, left:0, right:0, height:100, background:"linear-gradient(to top, rgba(0,0,0,0.45), transparent)", pointerEvents:"none" }} />
               </div>
 
-              {/* Floating cards */}
               <div style={{ position:"absolute", top:16, right:16, background:T.card, borderRadius:10, padding:"10px 14px", boxShadow:T.floatShadow, display:"flex", alignItems:"center", gap:8, zIndex:2 }}>
                 {Icons.trending("#059669",18)}
                 <div><div style={{ fontSize:16, fontWeight:800, color:"#059669" }}>+49%</div><div style={{ fontSize:10, color:T.muted }}>Avg. Sales Boost</div></div>
@@ -218,10 +239,9 @@ function Home() {
               </div>
               <div style={{ position:"absolute", bottom:16, right:16, background:T.card, borderRadius:10, padding:"10px 14px", boxShadow:T.floatShadow, display:"flex", alignItems:"center", gap:8, zIndex:2 }}>
                 {Icons.phone("#0EA5E9",18)}
-                <div><div style={{ fontSize:16, fontWeight:800, color:T.text }}>Free</div><div style={{ fontSize:10, color:T.muted }}>Devices</div></div>
+                <div><div style={{ fontSize:16, fontWeight:800, color:T.text }}>Free</div><div style={{ fontSize:10, color:T.muted }}>5G Phones</div></div>
               </div>
             </div>
-            {/* Dots */}
             <div style={{ display:"flex", justifyContent:"center", gap:6, marginTop:12 }}>
               {HERO_IMAGES.map((_, i) => (
                 <button key={i} onClick={() => setHeroIdx(i)}
@@ -241,7 +261,7 @@ function Home() {
       </section>
 
 
-      {/* ═══ SOLUTIONS — 3 tabs (Connectivity, Marketing, Cloud) ═══ */}
+      {/* ═══ SOLUTIONS ═══ */}
       <section id="solutions" style={{ padding:"80px 24px", maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:40 }}>
           <SectionLabel text="Business Solutions" />
@@ -255,8 +275,8 @@ function Home() {
               style={{
                 display:"flex", alignItems:"center", gap:6, padding:"10px 18px", borderRadius:10, cursor:"pointer",
                 fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:600, transition:"all 0.2s",
-                border: activeSol === s.id ? `2px solid ${s.color}` : `1px solid ${T.border}`,
-                background: activeSol === s.id ? s.color+"0A" : T.card,
+                border: activeSol === s.id ? "2px solid " + s.color : "1px solid " + T.border,
+                background: activeSol === s.id ? s.color + "0A" : T.card,
                 color: activeSol === s.id ? s.color : T.muted,
               }}
             >
@@ -270,9 +290,9 @@ function Home() {
             <div style={{ marginBottom:20, textAlign:"center" }}>
               <span style={{ fontSize:14, color:sol.color, fontWeight:600 }}>{sol.tagline}</span>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(280px, 1fr))", gap:16 }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(260px, 1fr))", gap:16 }}>
               {sol.items.map(it => (
-                <Card key={it.n} style={{ padding:0, overflow:"hidden", border: it.pop ? `2px solid ${sol.color}` : undefined }}>
+                <Card key={it.n} style={{ padding:0, overflow:"hidden", border: it.pop ? "2px solid " + sol.color : undefined }}>
                   {it.badge && (
                     <div style={{ background:sol.color, color:"white", textAlign:"center", fontSize:11, fontWeight:700, padding:"5px 0", letterSpacing:1 }}>{it.badge}</div>
                   )}
@@ -295,7 +315,7 @@ function Home() {
                         width:"100%", padding:"12px 16px", borderRadius:10, cursor:"pointer",
                         fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:600, transition:"all 0.2s",
                         display:"flex", alignItems:"center", justifyContent:"center", gap:6,
-                        border:`1px solid ${sol.color}`, background:sol.color+"0A", color:sol.color,
+                        border:"1px solid " + sol.color, background:sol.color+"0A", color:sol.color,
                       }}
                       onMouseEnter={e => { e.currentTarget.style.background = sol.color; e.currentTarget.style.color = "white"; }}
                       onMouseLeave={e => { e.currentTarget.style.background = sol.color+"0A"; e.currentTarget.style.color = sol.color; }}
@@ -311,12 +331,12 @@ function Home() {
       </section>
 
 
-      {/* ═══ AI CHATBOT SPOTLIGHT — dedicated section, links to botku.ai ═══ */}
-      <section style={{ padding:"80px 24px", background:`linear-gradient(135deg, #8B5CF608, #8B5CF603)` }}>
+      {/* ═══ AI CHATBOT SPOTLIGHT ═══ */}
+      <section style={{ padding:"80px 24px", background:"linear-gradient(135deg, #8B5CF608, #8B5CF603)" }}>
         <div style={{ maxWidth:900, margin:"0 auto", display:"flex", flexWrap:"wrap", gap:40, alignItems:"center" }}>
           <div style={{ flex:"1 1 360px" }}>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 14px", borderRadius:8, background:"#8B5CF612", border:"1px solid #8B5CF620", marginBottom:16 }}>
-              <span style={{ fontSize:12, fontWeight:700, color:"#8B5CF6" }}>\uD83E\uDD16 AI WHATSAPP CHATBOT</span>
+              <span style={{ fontSize:12, fontWeight:700, color:"#8B5CF6" }}>{"🤖"} AI WHATSAPP CHATBOT</span>
             </div>
             <h2 style={{ fontSize:"clamp(26px,3.5vw,38px)", fontWeight:800, color:T.text, marginBottom:14 }}>
               Your AI employee that<br/>never sleeps
@@ -343,7 +363,7 @@ function Home() {
                 onMouseEnter={e => e.currentTarget.style.background = "#7C3AED"}
                 onMouseLeave={e => e.currentTarget.style.background = "#8B5CF6"}
               >
-                Explore BotKu.ai \u2192
+                {"Explore BotKu.ai \u2192"}
               </button>
               <span style={{ fontSize:15, fontWeight:700, color:"#8B5CF6" }}>From RM200/mo</span>
             </div>
@@ -351,12 +371,15 @@ function Home() {
 
           {/* Chat mockup */}
           <div style={{ flex:"1 1 300px", maxWidth:380 }}>
-            <div style={{ background:T.card, border:`1px solid ${T.border}`, borderRadius:16, padding:20, boxShadow:T.floatShadow }}>
-              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16, paddingBottom:12, borderBottom:`1px solid ${T.border}` }}>
-                <div style={{ width:36, height:36, borderRadius:"50%", background:"#8B5CF612", display:"flex", alignItems:"center", justifyContent:"center" }}>\uD83E\uDD16</div>
+            <div style={{ background:T.card, border:"1px solid " + T.border, borderRadius:16, padding:20, boxShadow:T.floatShadow }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16, paddingBottom:12, borderBottom:"1px solid " + T.border }}>
+                <div style={{ width:36, height:36, borderRadius:"50%", background:"#8B5CF612", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18 }}>{"🤖"}</div>
                 <div>
                   <div style={{ fontSize:14, fontWeight:700, color:T.text }}>BotKu AI</div>
-                  <div style={{ fontSize:11, color:"#059669" }}>\u25CF Online 24/7</div>
+                  <div style={{ fontSize:11, color:"#059669", display:"flex", alignItems:"center", gap:4 }}>
+                    <span style={{ width:6, height:6, borderRadius:"50%", background:"#059669", display:"inline-block" }} />
+                    Online 24/7
+                  </div>
                 </div>
               </div>
               {[
@@ -386,13 +409,13 @@ function Home() {
         <div style={{ maxWidth:1100, margin:"0 auto" }}>
           <div style={{ textAlign:"center", marginBottom:40 }}>
             <SectionLabel text="Starter Bundles" />
-            <h2 style={{ fontSize:"clamp(26px,3.5vw,38px)", fontWeight:800, color:T.text }}>Don't pick one — bundle everything</h2>
+            <h2 style={{ fontSize:"clamp(26px,3.5vw,38px)", fontWeight:800, color:T.text }}>{"Don't pick one — bundle everything"}</h2>
             <p style={{ color:T.muted, fontSize:15, marginTop:8 }}>Curated combos for common business needs. One partner, one bill.</p>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(300px, 1fr))", gap:18 }}>
             {BUNDLES.map(b => (
-              <Card key={b.name} style={{ padding:0, overflow:"hidden", border:`1px solid ${b.color}30` }}>
-                <div style={{ background:`linear-gradient(135deg, ${b.color}15, ${b.color}05)`, padding:"24px 24px 16px" }}>
+              <Card key={b.name} style={{ padding:0, overflow:"hidden", border:"1px solid " + b.color + "30" }}>
+                <div style={{ background:"linear-gradient(135deg, " + b.color + "15, " + b.color + "05)", padding:"24px 24px 16px" }}>
                   <div style={{ display:"inline-block", padding:"4px 10px", borderRadius:6, background:b.color+"15", color:b.color, fontSize:11, fontWeight:700, letterSpacing:0.5, marginBottom:8 }}>
                     {b.tagline.toUpperCase()}
                   </div>
@@ -410,10 +433,10 @@ function Home() {
                       </div>
                     ))}
                   </div>
-                  <div style={{ padding:"10px 14px", borderRadius:8, background:b.color+"08", border:`1px solid ${b.color}15`, marginBottom:16 }}>
-                    <div style={{ fontSize:12, fontWeight:700, color:b.color }}>\u2728 {b.highlight}</div>
+                  <div style={{ padding:"10px 14px", borderRadius:8, background:b.color+"08", border:"1px solid " + b.color + "15", marginBottom:16 }}>
+                    <div style={{ fontSize:12, fontWeight:700, color:b.color }}>{"✨"} {b.highlight}</div>
                   </div>
-                  <WaBtn text={`Get ${b.name} Bundle`} msg={b.msg} sm style={{ width:"100%", justifyContent:"center" }} />
+                  <WaBtn text={"Get " + b.name + " Bundle"} msg={b.msg} sm style={{ width:"100%", justifyContent:"center" }} />
                 </div>
               </Card>
             ))}
@@ -431,14 +454,14 @@ function Home() {
         <div className="steps-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:2, background:T.border, borderRadius:16, overflow:"hidden" }}>
           {[
             { n:"01", icon:Icons.target, t:"Tell Us What You Need", d:"Pick individual solutions or a bundle. Not sure? Take the 30-second quiz or talk to our team." },
-            { n:"02", icon:Icons.users, t:"We Set Everything Up", d:"Broadband installation, device delivery, chatbot training, ad campaigns — we handle it all." },
+            { n:"02", icon:Icons.users, t:"We Set Everything Up", d:"Broadband installation, device delivery, chatbot training, ad campaigns \u2014 we handle it all." },
             { n:"03", icon:Icons.chart, t:"Focus on Your Business", d:"Your AI chatbot handles enquiries. Your ads run. Your team is connected. You grow." },
           ].map((s,i) => (
-            <div key={s.n} className={`fade-up-d${i+1}`} style={{ background:T.card, padding:36, textAlign:"center" }}>
+            <div key={s.n} className={"fade-up-d" + (i+1)} style={{ background:T.card, padding:36, textAlign:"center" }}>
               <div style={{ width:48, height:48, borderRadius:12, background:i===1?T.accent+"0D":T.primary+"0A", display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}>
                 {s.icon(i===1?T.accent:T.primary,22)}
               </div>
-              <div style={{ fontSize:11, fontWeight:700, color:T.accent, letterSpacing:2, marginBottom:8 }}>STEP {s.n}</div>
+              <div style={{ fontSize:11, fontWeight:700, color:T.accent, letterSpacing:2, marginBottom:8 }}>{"STEP " + s.n}</div>
               <h3 style={{ fontSize:18, fontWeight:700, marginBottom:8, color:T.text }}>{s.t}</h3>
               <p style={{ fontSize:14, color:T.muted, lineHeight:1.6 }}>{s.d}</p>
             </div>
@@ -455,7 +478,7 @@ function Home() {
             <h2 style={{ fontSize:"clamp(26px,3.5vw,38px)", fontWeight:800, color:T.text }}>Not sure what you need?</h2>
             <p style={{ color:T.muted, fontSize:15, marginTop:8 }}>Answer 4 quick questions — we'll recommend the perfect bundle.</p>
           </div>
-          <Card hover={false} style={{ border:`1px solid ${T.border}`, padding:32 }}>
+          <Card hover={false} style={{ border:"1px solid " + T.border, padding:32 }}>
             {qs === -1 && !qr && (
               <div style={{ textAlign:"center", padding:"24px 0" }}>
                 <div style={{ width:64, height:64, borderRadius:16, background:T.accent+"0D", display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}>
@@ -471,12 +494,12 @@ function Home() {
                 <div style={{ display:"flex", gap:4, marginBottom:24 }}>
                   {QZ.map((_,i) => <div key={i} style={{ flex:1, height:3, borderRadius:2, background:i<=qs?T.accent:T.border, transition:"background 0.3s" }} />)}
                 </div>
-                <div style={{ fontSize:11, fontWeight:700, color:T.accent, letterSpacing:1, marginBottom:6 }}>QUESTION {qs+1} OF {QZ.length}</div>
+                <div style={{ fontSize:11, fontWeight:700, color:T.accent, letterSpacing:1, marginBottom:6 }}>{"QUESTION " + (qs+1) + " OF " + QZ.length}</div>
                 <h3 style={{ fontSize:18, fontWeight:700, marginBottom:18, color:T.text }}>{QZ[qs].q}</h3>
                 <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
                   {QZ[qs].o.map((o,i) => (
                     <button key={i} onClick={() => qa(o.s)}
-                      style={{ background:T.sub, border:`1px solid ${T.border}`, padding:"14px 18px", borderRadius:10, cursor:"pointer", transition:"all 0.2s", color:T.text, textAlign:"left", fontSize:14, fontFamily:"'DM Sans',sans-serif", display:"flex", alignItems:"center", gap:10 }}
+                      style={{ background:T.sub, border:"1px solid " + T.border, padding:"14px 18px", borderRadius:10, cursor:"pointer", transition:"all 0.2s", color:T.text, textAlign:"left", fontSize:14, fontFamily:"'DM Sans',sans-serif", display:"flex", alignItems:"center", gap:10 }}
                       onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent; e.currentTarget.style.background = T.accent+"08"; }}
                       onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.background = T.sub; }}
                     >
@@ -509,9 +532,9 @@ function Home() {
                     {b.from} <span style={{ fontSize:13, fontWeight:500, color:T.muted }}>combined</span>
                   </div>
                   <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
-                    <WaBtn text={`Get ${b.name} Bundle`} msg={b.msg} />
+                    <WaBtn text={"Get " + b.name + " Bundle"} msg={b.msg} />
                     <button onClick={() => { setQs(-1); setSc([0,0,0,0]); setQr(null); }}
-                      style={{ background:"none", border:`1px solid ${T.border}`, color:T.muted, padding:"12px 20px", borderRadius:10, fontSize:14, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", fontWeight:500 }}
+                      style={{ background:"none", border:"1px solid " + T.border, color:T.muted, padding:"12px 20px", borderRadius:10, fontSize:14, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", fontWeight:500 }}
                     >Retake Quiz</button>
                   </div>
                 </div>
@@ -531,7 +554,7 @@ function Home() {
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:18 }}>
           {STORIES.map(s => (
             <Card key={s.title} style={{ padding:0, overflow:"hidden" }}>
-              <div style={{ height:160, background:`linear-gradient(135deg, ${T.primary}20, ${T.accent}15)`, position:"relative", overflow:"hidden" }}>
+              <div style={{ height:160, background:"linear-gradient(135deg, " + T.primary + "20, " + T.accent + "15)", position:"relative", overflow:"hidden" }}>
                 <img src={s.img} alt={s.title} style={{ width:"100%", height:"100%", objectFit:"cover", position:"relative", zIndex:1 }} onError={e => { e.target.style.opacity="0"; }} />
                 <div style={{ position:"absolute", top:12, left:12, background:T.card, borderRadius:8, padding:"6px 10px", fontSize:11, fontWeight:700, color:T.accent, boxShadow:T.floatShadow }}>{s.tag}</div>
                 <div style={{ position:"absolute", bottom:12, right:12, background:T.card, borderRadius:10, padding:"8px 14px", boxShadow:T.floatShadow, textAlign:"center" }}>
@@ -557,12 +580,12 @@ function Home() {
 
 
       {/* ═══ FINAL CTA ═══ */}
-      <section style={{ padding:"80px 24px", background:`linear-gradient(135deg, ${T.primary}08, ${T.accent}06)`, textAlign:"center" }}>
+      <section style={{ padding:"80px 24px", background:"linear-gradient(135deg, " + T.primary + "08, " + T.accent + "06)", textAlign:"center" }}>
         <div style={{ maxWidth:560, margin:"0 auto" }}>
           <SectionLabel text="Get Started" />
           <h2 style={{ fontSize:"clamp(28px,4vw,42px)", fontWeight:800, marginBottom:14, color:T.text }}>One partner for your entire business</h2>
           <p style={{ color:T.muted, fontSize:16, marginBottom:28, lineHeight:1.7 }}>
-            Internet, devices, AI chatbot, marketing — <strong style={{ color:T.text }}>everything your business needs</strong> from a single trusted partner.
+            Internet, free devices, AI chatbot, marketing — <strong style={{ color:T.text }}>everything your business needs</strong> from a single trusted partner.
           </p>
           <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap", marginBottom:16 }}>
             <button onClick={() => scr("solutions")}
@@ -573,12 +596,12 @@ function Home() {
               Browse Solutions {Icons.arrow("white",16)}
             </button>
             <button onClick={() => scr("bundles")}
-              style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"16px 28px", borderRadius:10, border:`1px solid ${T.border}`, background:"transparent", color:T.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }}
+              style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"16px 28px", borderRadius:10, border:"1px solid " + T.border, background:"transparent", color:T.text, fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = T.primary; e.currentTarget.style.color = T.primary; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.text; }}
-            >View Bundles \u2192</button>
+            >{"View Bundles \u2192"}</button>
           </div>
-          <div style={{ fontSize:12, color:T.muted }}>Free consultation \u00B7 No credit card \u00B7 SSM required only if you sign up</div>
+          <div style={{ fontSize:12, color:T.muted }}>{"Free consultation \u00B7 No credit card \u00B7 SSM required only if you sign up"}</div>
         </div>
       </section>
     </>

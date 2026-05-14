@@ -7,67 +7,66 @@ import Mobile from "./pages/Mobile";
 import CloudStorage from "./pages/CloudStorage";
 
 /* ═══════════════════════════════════════════════════════
-   SOLUTION CATALOG — 4 tabs: Internet, Mobile, Marketing, Cloud
-   Mobile is its own tab with phone images
+   SOLUTION CATALOG — all items have lifestyle images
    ═══════════════════════════════════════════════════════ */
 const SOLUTIONS = [
   {
     id:"internet", cat:"Internet", tagline:"Fibre & wireless broadband for your business.",
     icon:Icons.wifi, color:"#0EA5E9",
-    layout:"card", // standard card layout
     items:[
       {
         n:"Business Broadband",
         p:"From RM129/mo",
         d:"Up to 2Gbps fibre with free WiFi 6/7 router. Subscribe to 1Gbps/2Gbps and get a free iPad 11.",
-        icon:Icons.globe, link:"/broadband", badge:"Free Router + iPad"
+        img:"https://images.unsplash.com/photo-1497215842964-222b430dc094?w=480&h=280&fit=crop",
+        link:"/broadband", badge:"Free Router + iPad"
       },
       {
         n:"Unifi Air Biz 5G",
         p:"From RM99/mo",
-        d:"Wireless 5G broadband. Plug & play — free 5G router or MiFi included. No wiring, no installation wait.",
-        icon:Icons.wifi, link:"/air-biz", badge:"Free 5G Router"
+        d:"Wireless 5G broadband. Plug & play — free 5G router or MiFi. No wiring, no installation wait. Perfect for pop-ups & new outlets.",
+        img:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=480&h=280&fit=crop",
+        link:"/air-biz", badge:"Free 5G Router"
       },
     ]
   },
   {
     id:"mobile", cat:"Mobile", tagline:"Free 5G smartphones with every business line.",
     icon:Icons.phone, color:"#6366F1",
-    layout:"phone", // special phone card layout with images
     items:[
       {
         n:"UNI5G Biz 59",
         p:"RM59/mo",
+        sub:"Samsung Galaxy A16 5G",
         d:"Free 5G smartphone with 0% instalment. Unlimited 5G/4G data, unlimited calls. No credit card needed.",
-        phone:"Samsung Galaxy A16 5G",
-        phoneImg:"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=400&fit=crop",
-        badge:"FREE Phone",
+        img:"https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=480&h=280&fit=crop",
+        badge:"FREE 5G Phone",
         link:"/mobile",
       },
       {
         n:"UNI5G Biz 99",
         p:"RM99/mo",
-        d:"100GB 5G + 4G data, unlimited calls. Choose from flagship 5G phones — Redmi, vivo, Samsung. Best for field teams.",
-        phone:"Choose your 5G phone",
-        phoneImg:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=400&fit=crop",
+        sub:"Choose your flagship phone",
+        d:"100GB 5G + 4G data, unlimited calls. Pick from Samsung, Redmi, vivo flagships. Best for field sales teams.",
+        img:"https://images.unsplash.com/photo-1560264280-88b68371db39?w=480&h=280&fit=crop",
         badge:"FREE Flagship Phone",
         link:"/mobile",
       },
       {
         n:"UNI5G Biz 39",
         p:"RM39/mo",
-        d:"30GB 5G + 4G data, unlimited calls. Entry-level plan — no device included. Perfect as supplementary line.",
-        phone:"SIM only",
-        phoneImg:"https://images.unsplash.com/photo-1556656793-08538906a9f8?w=300&h=400&fit=crop",
+        sub:"SIM only \u2014 add to your existing phone",
+        d:"30GB 5G + 4G data, unlimited calls. Entry-level plan with no device. Great as supplementary line for staff.",
+        img:"https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?w=480&h=280&fit=crop",
         badge:"From RM39",
         link:"/mobile",
       },
       {
         n:"Go Bookit Bundle",
         p:"RM99/mo",
-        d:"UNI5G Biz 99 + free Samsung Galaxy A16 5G + Go Bookit appointment system. Only RM3.30/day.",
-        phone:"Samsung Galaxy A16 5G",
-        phoneImg:"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=300&h=400&fit=crop",
+        sub:"Phone + appointment system",
+        d:"UNI5G Biz 99 + free Samsung Galaxy A16 5G + Go Bookit appointment app. Only RM3.30/day for your service business.",
+        img:"https://images.unsplash.com/photo-1553877522-43269d4ea984?w=480&h=280&fit=crop",
         badge:"FREE Phone + App",
         link:"/mobile",
       },
@@ -76,22 +75,62 @@ const SOLUTIONS = [
   {
     id:"marketing", cat:"Digital Marketing", tagline:"Reach customers across 4 platforms.",
     icon:Icons.trending, color:"#F97316",
-    layout:"card",
     items:[
-      { n:"Standard Pack", p:"RM100/mo", d:"1.5\u20132 month campaign \u00B7 840 ad credits \u00B7 Facebook, Google, Instagram, TikTok", icon:Icons.target, wa:true, pkg:"Standard" },
-      { n:"Premium Pack", p:"RM200/mo", d:"3-month campaign \u00B7 1,680 credits \u00B7 Video production included", icon:Icons.target, wa:true, pkg:"Premium" },
-      { n:"Prime Pack", p:"RM450/mo", d:"5\u20136 month campaign \u00B7 3,500 credits \u00B7 Video included", icon:Icons.target, wa:true, pkg:"Prime" },
-      { n:"Pro Pack", p:"RM900/mo", d:"12-month campaign \u00B7 7,000 credits \u00B7 Maximum ROI", icon:Icons.chart, wa:true, pkg:"Pro", pop:true },
+      {
+        n:"Standard Pack", p:"RM100/mo",
+        sub:"Awareness \u00B7 1.5\u20132 months",
+        d:"840 ad credits across Facebook, Google, Instagram & TikTok. Dedicated campaign team included.",
+        img:"https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=480&h=280&fit=crop",
+        wa:true, pkg:"Standard"
+      },
+      {
+        n:"Premium Pack", p:"RM200/mo",
+        sub:"Engagement \u00B7 3 months",
+        d:"1,680 credits + video production. Build customer interaction and loyalty across 4 platforms.",
+        img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=480&h=280&fit=crop",
+        wa:true, pkg:"Premium"
+      },
+      {
+        n:"Prime Pack", p:"RM450/mo",
+        sub:"Sales Conversion \u00B7 5\u20136 months",
+        d:"3,500 credits + video. Extended campaign reach to convert leads into paying customers.",
+        img:"https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=480&h=280&fit=crop",
+        wa:true, pkg:"Prime"
+      },
+      {
+        n:"Pro Pack", p:"RM900/mo",
+        sub:"2x Sales \u00B7 12 months",
+        d:"7,000 credits + video. Maximum impact with the largest credit pool and longest campaign.",
+        img:"https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=480&h=280&fit=crop",
+        wa:true, pkg:"Pro", pop:true
+      },
     ]
   },
   {
     id:"digital", cat:"Cloud & Security", tagline:"Protect data. Sell online.",
     icon:Icons.cloud, color:"#059669",
-    layout:"card",
     items:[
-      { n:"Cloud Storage", p:"From RM11/mo", d:"500GB\u20135TB with local Malaysian data residency", icon:Icons.cloud, link:"/cloud-storage" },
-      { n:"eCommerce Hub", p:"From RM49/mo", d:"All-in-one online store management", icon:Icons.chart, wa:true },
-      { n:"Kaspersky Security", p:"From RM30/mo", d:"Business-grade endpoint cybersecurity", icon:Icons.shield, wa:true },
+      {
+        n:"Cloud Storage", p:"From RM11/mo",
+        sub:"500GB \u2013 5TB",
+        d:"Local Malaysian data residency. Access your business files securely from anywhere.",
+        img:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=480&h=280&fit=crop",
+        link:"/cloud-storage"
+      },
+      {
+        n:"eCommerce Hub", p:"From RM49/mo",
+        sub:"All-in-one online store",
+        d:"Manage products, orders, payments and delivery in one platform. Start selling online fast.",
+        img:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=480&h=280&fit=crop",
+        wa:true
+      },
+      {
+        n:"Kaspersky Security", p:"From RM30/mo",
+        sub:"Business-grade protection",
+        d:"Endpoint cybersecurity for your devices. Protect against ransomware, phishing & data breaches.",
+        img:"https://images.unsplash.com/photo-1563986768609-322da13575f2?w=480&h=280&fit=crop",
+        wa:true
+      },
     ]
   },
 ];
@@ -165,7 +204,7 @@ function Home() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = "#6366F1"; e.currentTarget.style.color = "#6366F1"; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.text; }}
               >
-                {Icons.phone("#6366F1",16)} Free Phones
+                {Icons.phone("#6366F1",16)} Free 5G Phones
               </button>
             </div>
 
@@ -184,10 +223,7 @@ function Home() {
               <div style={{ position:"relative", borderRadius:16, overflow:"hidden", height:340 }}>
                 {HERO_IMAGES.map((img, i) => (
                   <img key={i} src={img.src} alt={img.alt}
-                    style={{
-                      position:"absolute", top:0, left:0, width:"100%", height:"100%", objectFit:"cover",
-                      opacity: heroIdx === i ? 1 : 0, transition:"opacity 0.8s ease",
-                    }}
+                    style={{ position:"absolute", top:0, left:0, width:"100%", height:"100%", objectFit:"cover", opacity: heroIdx === i ? 1 : 0, transition:"opacity 0.8s ease" }}
                     onError={e => { e.target.style.opacity = "0"; }}
                   />
                 ))}
@@ -209,10 +245,7 @@ function Home() {
             <div style={{ display:"flex", justifyContent:"center", gap:6, marginTop:12 }}>
               {HERO_IMAGES.map((_, i) => (
                 <button key={i} onClick={() => setHeroIdx(i)}
-                  style={{ width: heroIdx === i ? 24 : 8, height:8, borderRadius:4, border:"none", cursor:"pointer", transition:"all 0.3s",
-                    background: heroIdx === i ? T.accent : T.border,
-                  }}
-                />
+                  style={{ width: heroIdx === i ? 24 : 8, height:8, borderRadius:4, border:"none", cursor:"pointer", transition:"all 0.3s", background: heroIdx === i ? T.accent : T.border }} />
               ))}
             </div>
           </div>
@@ -225,7 +258,7 @@ function Home() {
       </section>
 
 
-      {/* ═══ SOLUTIONS — 4 tabs ═══ */}
+      {/* ═══ SOLUTIONS — unified image card layout for all tabs ═══ */}
       <section id="solutions" style={{ padding:"80px 24px", maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:40 }}>
           <SectionLabel text="Business Solutions" />
@@ -250,90 +283,57 @@ function Home() {
           ))}
         </div>
 
-        {/* Content */}
+        {/* Unified image card grid */}
         {activeCat && (
           <div>
             <div style={{ marginBottom:24, textAlign:"center" }}>
               <span style={{ fontSize:14, color:activeCat.color, fontWeight:600 }}>{activeCat.tagline}</span>
             </div>
-
-            {/* ── PHONE LAYOUT (Mobile tab) ── */}
-            {activeCat.layout === "phone" ? (
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(240px, 1fr))", gap:18 }}>
-                {activeCat.items.map(it => (
-                  <Card key={it.n} style={{ padding:0, overflow:"hidden", textAlign:"center" }}>
-                    {it.badge && (
-                      <div style={{ background:activeCat.color, color:"white", fontSize:11, fontWeight:700, padding:"6px 0", letterSpacing:1 }}>{it.badge}</div>
-                    )}
-                    {/* Phone image */}
-                    <div style={{ height:200, background:"linear-gradient(180deg, " + activeCat.color + "08, " + activeCat.color + "03)", display:"flex", alignItems:"center", justifyContent:"center", overflow:"hidden", position:"relative" }}>
-                      <img src={it.phoneImg} alt={it.phone}
-                        style={{ height:"100%", width:"100%", objectFit:"cover", transition:"transform 0.3s" }}
-                        onError={e => { e.target.style.display = "none"; }}
-                        onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
-                        onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                      />
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(260px, 1fr))", gap:18 }}>
+              {activeCat.items.map(it => (
+                <Card key={it.n} style={{ padding:0, overflow:"hidden", border: it.pop ? "2px solid " + activeCat.color : undefined }}>
+                  {/* Badge */}
+                  {(it.badge || it.pop) && (
+                    <div style={{ background:activeCat.color, color:"white", textAlign:"center", fontSize:11, fontWeight:700, padding:"6px 0", letterSpacing:1 }}>
+                      {it.pop ? "MOST POPULAR" : it.badge}
                     </div>
-                    <div style={{ padding:"20px 20px 24px" }}>
-                      <div style={{ fontSize:12, fontWeight:600, color:activeCat.color, marginBottom:4 }}>{it.phone}</div>
-                      <div style={{ fontSize:18, fontWeight:800, color:T.text, marginBottom:2 }}>{it.n}</div>
-                      <div style={{ fontSize:22, fontWeight:800, color:T.accent, marginBottom:10 }}>{it.p}</div>
-                      <p style={{ fontSize:13, color:T.muted, lineHeight:1.6, marginBottom:18 }}>{it.d}</p>
-                      <button onClick={() => handleItemAction(it)}
-                        style={{
-                          width:"100%", padding:"12px 16px", borderRadius:10, cursor:"pointer",
-                          fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:600, transition:"all 0.2s",
-                          display:"flex", alignItems:"center", justifyContent:"center", gap:6,
-                          border:"1px solid " + activeCat.color, background:activeCat.color+"0A", color:activeCat.color,
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = activeCat.color; e.currentTarget.style.color = "white"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = activeCat.color+"0A"; e.currentTarget.style.color = activeCat.color; }}
-                      >
-                        {"View Plans \u2192"}
-                      </button>
+                  )}
+                  {/* Lifestyle image */}
+                  <div style={{ height:170, overflow:"hidden", position:"relative" }}>
+                    <img src={it.img} alt={it.n}
+                      style={{ width:"100%", height:"100%", objectFit:"cover", transition:"transform 0.4s" }}
+                      onError={e => { e.target.parentElement.style.background = "linear-gradient(135deg, " + activeCat.color + "15, " + activeCat.color + "05)"; e.target.style.display = "none"; }}
+                      onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"}
+                      onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                    />
+                    {/* Price overlay */}
+                    <div style={{ position:"absolute", bottom:10, right:10, background:T.card, borderRadius:8, padding:"6px 12px", boxShadow:T.floatShadow }}>
+                      <div style={{ fontSize:16, fontWeight:800, color:activeCat.color }}>{it.p}</div>
                     </div>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              /* ── STANDARD CARD LAYOUT ── */
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(260px, 1fr))", gap:16 }}>
-                {activeCat.items.map(it => (
-                  <Card key={it.n} style={{ padding:0, overflow:"hidden", border: it.pop ? "2px solid " + activeCat.color : undefined }}>
-                    {it.badge && (
-                      <div style={{ background:activeCat.color, color:"white", textAlign:"center", fontSize:11, fontWeight:700, padding:"5px 0", letterSpacing:1 }}>{it.badge}</div>
+                  </div>
+                  {/* Content */}
+                  <div style={{ padding:"18px 20px 22px" }}>
+                    {it.sub && (
+                      <div style={{ fontSize:11, fontWeight:600, color:activeCat.color, marginBottom:4, letterSpacing:0.3 }}>{it.sub}</div>
                     )}
-                    {it.pop && (
-                      <div style={{ background:activeCat.color, color:"white", textAlign:"center", fontSize:11, fontWeight:700, padding:"5px 0", letterSpacing:1 }}>MOST POPULAR</div>
-                    )}
-                    <div style={{ padding:24 }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:14 }}>
-                        <div style={{ width:42, height:42, borderRadius:10, background:activeCat.color+"12", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                          {it.icon(activeCat.color, 20)}
-                        </div>
-                        <div>
-                          <div style={{ fontSize:16, fontWeight:700, color:T.text }}>{it.n}</div>
-                          <div style={{ fontSize:14, fontWeight:700, color:T.accent }}>{it.p}</div>
-                        </div>
-                      </div>
-                      <p style={{ fontSize:13, color:T.muted, lineHeight:1.6, marginBottom:18 }}>{it.d}</p>
-                      <button onClick={() => handleItemAction(it)}
-                        style={{
-                          width:"100%", padding:"12px 16px", borderRadius:10, cursor:"pointer",
-                          fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:600, transition:"all 0.2s",
-                          display:"flex", alignItems:"center", justifyContent:"center", gap:6,
-                          border:"1px solid " + activeCat.color, background:activeCat.color+"0A", color:activeCat.color,
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = activeCat.color; e.currentTarget.style.color = "white"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = activeCat.color+"0A"; e.currentTarget.style.color = activeCat.color; }}
-                      >
-                        {it.link ? "View Plans \u2192" : "Enquire \u2192"}
-                      </button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
+                    <h3 style={{ fontSize:17, fontWeight:700, color:T.text, marginBottom:8 }}>{it.n}</h3>
+                    <p style={{ fontSize:13, color:T.muted, lineHeight:1.6, marginBottom:16 }}>{it.d}</p>
+                    <button onClick={() => handleItemAction(it)}
+                      style={{
+                        width:"100%", padding:"11px 16px", borderRadius:10, cursor:"pointer",
+                        fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:600, transition:"all 0.2s",
+                        display:"flex", alignItems:"center", justifyContent:"center", gap:6,
+                        border:"1px solid " + activeCat.color, background:activeCat.color+"0A", color:activeCat.color,
+                      }}
+                      onMouseEnter={e => { e.currentTarget.style.background = activeCat.color; e.currentTarget.style.color = "white"; }}
+                      onMouseLeave={e => { e.currentTarget.style.background = activeCat.color+"0A"; e.currentTarget.style.color = activeCat.color; }}
+                    >
+                      {it.link ? "View Plans \u2192" : "Enquire \u2192"}
+                    </button>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         )}
       </section>

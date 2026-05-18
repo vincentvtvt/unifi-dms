@@ -14,7 +14,7 @@ export const DARK = {
   cardShadow:"0 1px 4px rgba(0,0,0,0.2)",cardHover:"0 8px 30px rgba(0,0,0,0.3)",
   floatShadow:"0 4px 20px rgba(0,0,0,0.3)",
 };
-export const WA = "601113115950";
+export const WA = "601155501315";
 export const waL = (m) => `https://wa.me/${WA}?text=${encodeURIComponent(m)}`;
 
 const ThemeCtx = createContext();

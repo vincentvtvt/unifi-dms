@@ -569,7 +569,7 @@ function Home() {
             <WaBtn text="WhatsApp Apply Now" msg="Hi, I'd like to apply for a Unifi product. Can you help?" utm="final_cta" style={{ fontSize:15, padding:"14px 28px" }} />
             <button onClick={()=>window.open("https://botku.ai","_blank")} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"14px 24px", borderRadius:10, border:"1px solid rgba(255,255,255,0.3)", background:"rgba(255,255,255,0.1)", color:"white", fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>{"🤖 AI Chatbot →"}</button>
           </div>
-          <div style={{ fontSize:11, color:"rgba(255,255,255,0.55)" }}>Free consultation · Mon–Sat · SSM required only if you sign up</div>
+          <div style={{ fontSize:11, color:"rgba(255,255,255,0.55)" }}>Free consultation · Available 24/7 · SSM required only for business plans</div>
         </div>
       </section>
     </>

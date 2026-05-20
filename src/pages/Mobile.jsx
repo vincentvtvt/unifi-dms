@@ -1,38 +1,56 @@
-import { useTheme, Icons as I, Card, WaBtn, PageHero, PlanCard, SpecTable } from "../theme";
+import { useTheme, Icons as I, Card, SectionLabel, WaBtn, PlanCard, PageHero } from "../theme";
 
-const PLANS=[
-  {name:"UNI5G Business 39",speed:"5G Mobile",price:"39",contract:"24 months / No contract (SIM)"},
-  {name:"UNI5G Business 69",speed:"5G Mobile",price:"69",contract:"24 months / No contract (SIM)",highlight:"Exclusive Offer"},
-  {name:"UNI5G Business 99",speed:"5G Mobile",price:"99",contract:"24 months / No contract (SIM)",highlight:"Exclusive Offer"},
+const UB = { blue:"#0033A1", sky:"#00A3E0", orange:"#FF6B00", green:"#00B67A", red:"#E5002B" };
+
+const PLANS = [
+  {name:"Uni5G 39",speed:"SIM Only",price:"39",highlight:"RM1.30/day"},
+  {name:"Uni5G 69",speed:"Unlimited 5G",price:"69",highlight:"Best Value"},
+  {name:"Unifi Air 99",speed:"Wireless BB",price:"99",highlight:"Free Router"},
 ];
-const SPECS=[
-  {label:"Special Offer",values:["230GB data (30+100+100GB for RM1)","FREE Samsung Flagship 5G","FREE Samsung Flagship 5G"]},
-  {label:"Data",values:["30GB (5G & 4G)","Unlimited 5G + 60GB 4G","Unlimited (5G & 4G)"]},
-  {label:"Hotspot",values:["30GB","60GB","100GB"]},
-  {label:"Calls",values:["Unlimited","Unlimited","Unlimited"]},
-  {label:"SMS",values:["RM0.15/SMS","RM0.15/SMS","RM0.15/SMS"]},
-  {label:"Add-On Data",values:["10GB RM10 / 50GB RM45","10GB RM10 / 50GB RM45","10GB RM10 / 50GB RM45"]},
-];
+const PHONES = ["OPPO A6t 5G","nubia Neo 3 5G","REDMI 15C 5G","Samsung Galaxy A17 5G","HONOR 400 Smart 5G"];
 
 export default function Mobile() {
   const T = useTheme();
   return (
     <>
-      <PageHero icon={I.phone(T.primary,28)} tag="Business Mobile" title="UNI5G Business Plans" subtitle="Unlimited 5G mobile with free flagship smartphones. Keep your team connected everywhere." />
-      <section style={{padding:"0 24px 60px",maxWidth:900,margin:"0 auto"}}>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:16,marginBottom:32}}>
-          {PLANS.map((p,i)=><PlanCard key={p.name} plan={p} popular={p.highlight} color={i===2?"#FF3D00":undefined} />)}
+      <PageHero icon={I.phone(T.primary,28)} tag="Mobile & 5G" title="Unifi Mobile Plans" subtitle="5G data from RM39/mo. Free 5G smartphone for existing Unifi customers." />
+      <section style={{padding:"0 24px 40px",maxWidth:900,margin:"0 auto"}}>
+        <SectionLabel text="5G Plans" />
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:14,marginBottom:32}}>
+          {PLANS.map(p=><PlanCard key={p.name} plan={p} popular={p.highlight} />)}
         </div>
-        <Card hover={false}><h3 style={{fontSize:17,fontWeight:700,marginBottom:4}}>Plan Comparison</h3><SpecTable specs={SPECS} plans={PLANS} /></Card>
-        <Card hover={false} style={{marginTop:20,background:T.accent+"06",border:`1px solid ${T.accent}15`}}>
-          <div style={{display:"flex",alignItems:"center",gap:12}}>
-            {I.phone(T.accent,24)}
-            <div><h3 style={{fontSize:16,fontWeight:700,color:T.text}}>FREE Samsung 5G Smartphones</h3><p style={{fontSize:13,color:T.muted,marginTop:4}}>Business 69 and 99 plans include a free Samsung flagship with 24-month contract.</p></div>
+
+        <Card hover={false} style={{border:`2px solid ${UB.green}`,marginBottom:32}}>
+          <div style={{display:"flex",flexWrap:"wrap",gap:20,alignItems:"center"}}>
+            <div style={{flex:"1 1 300px"}}>
+              <div style={{display:"inline-block",padding:"4px 10px",borderRadius:6,background:UB.green+"12",color:UB.green,fontSize:11,fontWeight:700,marginBottom:8}}>FREE SMARTPHONE PROMO</div>
+              <h3 style={{fontSize:20,fontWeight:800,marginBottom:6}}>Uni5G RM99 → Pay only RM69/mo</h3>
+              <p style={{fontSize:14,color:T.muted,lineHeight:1.6,marginBottom:12}}>RM30 rebate for existing Unifi customers. Unlimited 5G + 100GB hotspot + free 5G phone. 24-month contract.</p>
+              <div style={{fontSize:13,fontWeight:600,marginBottom:8}}>Choose your free phone:</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
+                {PHONES.map(p=><span key={p} style={{padding:"5px 10px",borderRadius:6,background:T.sub,border:`1px solid ${T.border}`,fontSize:11,fontWeight:500}}>{p}</span>)}
+              </div>
+              <WaBtn text="Claim Free Phone" msg="Hi, I'm an existing Unifi customer. I'd like to claim the free smartphone promo with Uni5G RM99 (RM69 with rebate)." utm="free_phone" />
+            </div>
           </div>
         </Card>
+
+        <Card hover={false} style={{background:T.sub}}>
+          <h4 style={{fontSize:15,fontWeight:700,marginBottom:8}}>Who's eligible for the free phone?</h4>
+          <div style={{fontSize:13,color:T.muted,lineHeight:1.8}}>
+            {[
+              "Existing Unifi Mobile (Uni5G) customer → directly eligible",
+              "Existing Unifi Home + Mobile → directly eligible",
+              "Existing Unifi Home only → sign up 1 new Uni5G line to qualify",
+              "No Unifi at all → sign up Uni5G first, 6 months on-time payment, then eligible",
+            ].map(r=><div key={r} style={{display:"flex",gap:6,marginBottom:4}}>{I.check(UB.green,13)}<span>{r}</span></div>)}
+          </div>
+        </Card>
+
+        <p style={{textAlign:"center",fontSize:11,color:T.muted,marginTop:20}}>Advance payment required on same day. Prices exclude 6% SST.</p>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get UNI5G Business" msg="Hi, I'm interested in UNI5G Business mobile plan. Please help me choose." />
+        <WaBtn text="Check My Eligibility" msg="Hi, I'd like to check if I'm eligible for the Unifi free smartphone promo. Can you help?" utm="mobile_page" />
       </section>
     </>
   );

@@ -89,7 +89,7 @@ export const Footer = () => {
     <div style={{maxWidth:1000,margin:"0 auto",display:"flex",flexWrap:"wrap",gap:32,justifyContent:"space-between"}}>
       <div style={{minWidth:200}}><a href="/"><img src={T.logo} alt="Unifi Business" style={{height:26,marginBottom:10}} /></a><p style={{fontSize:12,color:T.muted}}>Your one-stop Unifi partner.<br/>All products. One WhatsApp.</p></div>
       <div style={{minWidth:160}}><div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:8}}>Products</div>{["Broadband","Mobile","Air Biz","Cloud Storage","DMS"].map(n=><a key={n} href={"/"+n.toLowerCase().replace(/\s/g,"-")} style={{display:"block",fontSize:12,color:T.muted,textDecoration:"none",padding:"3px 0"}}>{n}</a>)}</div>
-      <div style={{minWidth:180}}><div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:8}}>Contact</div><p style={{fontSize:12,color:T.muted}}>WhatsApp: +60 11-1311 5950</p><p style={{fontSize:12,color:T.muted,marginTop:4}}>Mon–Sat · Closed public holidays</p><p style={{fontSize:12,color:T.muted,marginTop:4}}>All 13 states + 3 FT</p></div>
+      <div style={{minWidth:180}}><div style={{fontSize:12,fontWeight:700,color:T.text,marginBottom:8}}>Contact</div><p style={{fontSize:12,color:T.muted}}>WhatsApp: +60 11-1311 5950</p><p style={{fontSize:12,color:T.muted,marginTop:4}}>Available 24/7 via WhatsApp</p><p style={{fontSize:12,color:T.muted,marginTop:4}}>All 13 states + 3 FT</p></div>
     </div>
     <div style={{maxWidth:1000,margin:"24px auto 0",paddingTop:16,borderTop:`1px solid ${T.border}`,textAlign:"center"}}>
       <p style={{fontSize:12,color:T.muted,fontWeight:600}}>Authorized Reseller: Synergy Spark Sdn Bhd (SSM 1221398-T)</p>

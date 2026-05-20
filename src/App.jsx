@@ -238,7 +238,7 @@ function Home() {
               <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:6 }}>
                 {[1,2,3,4,5].map(i=><svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
                 <span style={{ fontSize:13, color:"white", fontWeight:600, marginLeft:2 }}>4.8/5</span>
-                <span style={{ fontSize:12, color:"rgba(255,255,255,0.6)" }}>from 500+ customers</span>
+                <span style={{ fontSize:12, color:"rgba(255,255,255,0.6)" }}>from 140,000+ customers</span>
               </div>
             </div>
             <div className="hero-stats-strip" style={{ display:"flex", gap:16, flexWrap:"wrap", fontSize:12, color:"rgba(255,255,255,0.65)" }}>
@@ -275,7 +275,7 @@ function Home() {
       {/* ═══ NEW: TRUST STRIP ═══ */}
       <section style={{ background:T.sub, borderBottom:`1px solid ${T.border}`, padding:"16px 20px" }}>
         <div style={{ maxWidth:900, margin:"0 auto", display:"flex", justifyContent:"space-around", flexWrap:"wrap", gap:16 }}>
-          {[[Icons.shield,"SSM-Registered","Synergy Spark Sdn Bhd"],[Icons.users,"500+ Customers","Served nationwide"],[Icons.map,"All 13 States","+ 3 Federal Territories"],[Icons.zap,"24-Hour Processing","Fast activation"]].map(([ic,t,d])=>
+          {[[Icons.shield,"SSM-Registered","Synergy Spark Sdn Bhd"],[Icons.users,"140,000+ Customers","Over 15 years nationwide"],[Icons.map,"All 13 States","+ 3 Federal Territories"],[Icons.zap,"24-Hour Processing","Fast activation"]].map(([ic,t,d])=>
             <div key={t} style={{ display:"flex", alignItems:"center", gap:10, padding:"4px 0" }}>
               <div style={{ width:36, height:36, borderRadius:10, background:UB.blue+"0D", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{ic(UB.blue,18)}</div>
               <div><div style={{ fontSize:13, fontWeight:700, color:T.text }}>{t}</div><div style={{ fontSize:11, color:T.muted }}>{d}</div></div>
@@ -287,7 +287,7 @@ function Home() {
       {/* ═══ STAT COUNTERS ═══ */}
       <section style={{ padding:"32px 20px", background:T.card, borderBottom:`1px solid ${T.border}` }}>
         <div style={{ maxWidth:700, margin:"0 auto", display:"flex", justifyContent:"space-around", flexWrap:"wrap", gap:20 }}>
-          {[["500+","INSTALLATIONS",UB.blue],["4.8/5","RATING",UB.orange],["<30s","REPLY TIME",UB.green]].map(([v,l,c])=>
+          {[["140,000+","INSTALLATIONS",UB.blue],["15","YEARS TRUSTED",UB.navy],["4.8/5","RATING",UB.orange],["<30s","REPLY TIME",UB.green]].map(([v,l,c])=>
             <div key={l} style={{ textAlign:"center", minWidth:120 }}>
               <div style={{ fontSize:"clamp(28px,4vw,42px)", fontWeight:800, color:c, letterSpacing:"-0.02em" }}>{v}</div>
               <div style={{ fontSize:11, color:T.muted, fontWeight:600, letterSpacing:1.5, marginTop:2 }}>{l}</div>

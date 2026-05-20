@@ -212,18 +212,18 @@ function Home() {
               <span style={{ fontSize:12, fontWeight:600, color:"white" }}>Official Unifi Partner — Home & Business</span>
             </div>
             <h1 style={{ fontSize:"clamp(30px,5vw,54px)", fontWeight:800, lineHeight:1.08, marginBottom:16, color:"white", letterSpacing:"-0.02em" }}>
-              Get Your Unifi.<br/>Free devices included.<br/><span style={{ color:UB.sky }}>From RM39/mo.</span>
+              Free TV. Free iPad.<br/>Free months. Free phone.<br/><span style={{ color:UB.sky }}>From RM89/mo.</span>
             </h1>
             <p style={{ fontSize:"clamp(15px,2vw,17px)", color:"rgba(255,255,255,0.8)", lineHeight:1.7, marginBottom:24, maxWidth:460 }}>
-              Home fibre, business broadband, 5G mobile, digital marketing — every plan includes <strong style={{ color:"white" }}>free devices</strong>. One partner for home and business.
+              Every Unifi plan comes with <strong style={{ color:"white" }}>free devices or free months</strong>. Home fibre, business broadband, 5G mobile — one partner for everything.
             </p>
             <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:16 }}>
-              {[["Free Router","#25D366"],["Free 5G Phone","#25D366"],["24hr Setup",UB.sky],["Up to 6mo FREE",UB.orange]].map(([t,c])=>
+              {[["Free 43\"–75\" TV","#25D366"],["Free iPad 11\"","#25D366"],["Up to 6 months FREE",UB.orange],["Free 5G Phone",UB.sky]].map(([t,c])=>
                 <span key={t} style={{ padding:"5px 12px", borderRadius:20, background:c+"20", border:`1px solid ${c}40`, color:"white", fontSize:11, fontWeight:600 }}>{t}</span>
               )}
             </div>
             <div className="cta-flex" style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom:16 }}>
-              <a href={waL("Hi, I'd like to check coverage and apply for Unifi. Can you help?","hero")} target="_blank" rel="noopener noreferrer"
+              <a href={waL("I want to check coverage and apply for Unifi.","hero")} target="_blank" rel="noopener noreferrer"
                 style={{ display:"inline-flex", alignItems:"center", gap:10, padding:"16px 28px", borderRadius:12, background:"#25D366", color:"white", fontSize:16, fontWeight:700, cursor:"pointer", border:"none", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s", boxShadow:"0 4px 20px rgba(37,211,102,0.35)", textDecoration:"none" }}
                 onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 8px 30px rgba(37,211,102,0.45)";}}
                 onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="0 4px 20px rgba(37,211,102,0.35)";}}>
@@ -342,7 +342,7 @@ function Home() {
                     <div style={{ marginBottom:12 }}>
                       {p.feat.map(f=><div key={f} style={{ fontSize:11, color:T.muted, padding:"2px 0", display:"flex", alignItems:"flex-start", gap:5 }}>{Icons.check(UB.green,11)}<span>{f}</span></div>)}
                     </div>
-                    <WaBtn text="Apply Now" msg={`Hi, I'd like to apply for *${p.name}* (RM${p.price}/mo). ${p.tag}.`} utm={`plan_${p.name.replace(/\s/g,"_")}`} sm style={{ width:"100%", justifyContent:"center", fontSize:11, padding:"8px" }} />
+                    <WaBtn text="Apply Now" msg={`I want to apply for *${p.name}* (RM${p.price}/mo). ${p.tag}.`} utm={`plan_${p.name.replace(/\s/g,"_")}`} sm style={{ width:"100%", justifyContent:"center", fontSize:11, padding:"8px" }} />
                   </div>
                 </div>
               ))}
@@ -431,7 +431,7 @@ function Home() {
                   <h3 style={{ fontSize:20, fontWeight:800 }}>{p.name} Pack — <span style={{ color:p.color }}>RM{p.mo}/mo</span></h3>
                   <div style={{ fontSize:12, color:T.muted, margin:"6px 0 14px" }}>{p.cr.toLocaleString()} credits · {p.camp}</div>
                   <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap" }}>
-                    <WaBtn text={`Get ${p.name}`} msg={`Hi, the Package Finder recommended DMS *${p.name} Pack* (RM${p.mo}/mo). Please proceed.`} utm="dms_finder" sm />
+                    <WaBtn text={`Get ${p.name}`} msg={`The Package Finder recommended DMS *${p.name} Pack* (RM${p.mo}/mo). Please proceed.`} utm="dms_finder" sm />
                     <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{ background:"none", border:`1px solid ${T.border}`, color:T.muted, padding:"8px 16px", borderRadius:8, fontSize:12, cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>Retake</button>
                   </div>
                 </div>;})()}
@@ -523,7 +523,7 @@ function Home() {
             </div>
             :<p style={{ color:T.muted, fontSize:15, marginBottom:20 }}>Same-day installation available in most areas across Malaysia.</p>
           }
-          <WaBtn text={userLoc?`Check Coverage in ${userLoc.city}`:"Check My Coverage"} msg={userLoc?`Hi, I'm in ${userLoc.city}, ${userLoc.region}. Can you check if Unifi is available at my address?`:"Hi, can you check if Unifi fibre is available at my address?"} utm="coverage" />
+          <WaBtn text={userLoc?`Check Coverage in ${userLoc.city}`:"Check My Coverage"} msg={userLoc?`I'm in ${userLoc.city}, ${userLoc.region}. Can you check if Unifi is available at my address?`:"I want to check if Unifi fibre is available at my address?"} utm="coverage" />
         </div>
       </section>
 
@@ -566,7 +566,7 @@ function Home() {
           <h2 style={{ fontSize:"clamp(26px,4vw,40px)", fontWeight:800, marginBottom:12, color:"white" }}>Ready to get started?</h2>
           <p style={{ color:"rgba(255,255,255,0.85)", fontSize:15, marginBottom:24, lineHeight:1.7 }}>Home fibre, business broadband, free 5G phones, AI chatbot, marketing — <strong style={{ color:"white" }}>one partner</strong>.</p>
           <div className="cta-flex" style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap", marginBottom:14 }}>
-            <WaBtn text="WhatsApp Apply Now" msg="Hi, I'd like to apply for a Unifi product. Can you help?" utm="final_cta" style={{ fontSize:15, padding:"14px 28px" }} />
+            <WaBtn text="WhatsApp Apply Now" msg="I want to apply for a Unifi product. Can you help?" utm="final_cta" style={{ fontSize:15, padding:"14px 28px" }} />
             <button onClick={()=>window.open("https://botku.ai","_blank")} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"14px 24px", borderRadius:10, border:"1px solid rgba(255,255,255,0.3)", background:"rgba(255,255,255,0.1)", color:"white", fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>{"🤖 AI Chatbot →"}</button>
           </div>
           <div style={{ fontSize:11, color:"rgba(255,255,255,0.55)" }}>Free consultation · Available 24/7 · SSM required only for business plans</div>

@@ -14,20 +14,20 @@ const UB = {
 /* ═══ SOCIAL PROOF TOAST DATA ═══ */
 const PROOF = [
   {name:"Ahmad R.",product:"Biz Broadband 300Mbps",loc:"Shah Alam",min:3},
-  {name:"Siti N.",product:"UNI5G Biz 59",loc:"Petaling Jaya",min:7},
-  {name:"Kumar S.",product:"DMS Premium Pack",loc:"Penang",min:12},
-  {name:"Mei Ling",product:"Air Biz 5G",loc:"Johor Bahru",min:18},
-  {name:"Faizal H.",product:"Biz Broadband 500Mbps",loc:"Kuching",min:22},
-  {name:"Nurul A.",product:"Cloud Storage Standard",loc:"Kota Kinabalu",min:28},
-  {name:"Jason T.",product:"DMS Prime Pack",loc:"Subang Jaya",min:35},
-  {name:"Amirah Z.",product:"UNI5G Biz 99",loc:"Cyberjaya",min:41},
+  {name:"Siti N.",product:"Home Fibre 500Mbps",loc:"Petaling Jaya",min:5},
+  {name:"Kumar S.",product:"UNI5G Biz 59",loc:"Penang",min:9},
+  {name:"Mei Ling",product:"Home Fibre 300Mbps",loc:"Puchong",min:14},
+  {name:"Faizal H.",product:"Air Biz 5G",loc:"Johor Bahru",min:18},
+  {name:"Nurul A.",product:"Unifi Mobile 49",loc:"Kota Kinabalu",min:23},
+  {name:"Jason T.",product:"DMS Prime Pack",loc:"Subang Jaya",min:29},
+  {name:"Amirah Z.",product:"Home Fibre 1Gbps",loc:"Cyberjaya",min:35},
 ];
 
 function SocialProofToast() {
   const [idx,setIdx] = useState(0);
   const [show,setShow] = useState(false);
   useEffect(()=>{
-    const cycle=()=>{setShow(true);setTimeout(()=>{setShow(false);setTimeout(()=>{setIdx(p=>(p+1)%PROOF.length);cycle();},2000);},4500);};
+    const cycle=()=>{setShow(true);setTimeout(()=>{setShow(false);setTimeout(()=>{setIdx(p=>(p+1)%PROOF.length);cycle();},25000);},5000);};
     const init=setTimeout(cycle,3000);
     return()=>clearTimeout(init);
   },[]);
@@ -73,30 +73,69 @@ const responsiveCSS = `
   .quick-nav{grid-template-columns:1fr!important;}
 }`;
 
-/* ═══ SOLUTIONS DATA (your deployed version) ═══ */
-const SOLUTIONS = [
-  { id:"internet", cat:"Internet", tagline:"Fibre & 5G wireless for your business.", icon:Icons.wifi, color:UB.blue, items:[
-    { n:"Business Broadband", p:"From RM129/mo", sub:"Up to 2Gbps fibre", d:"Malaysia's fastest business fibre. Stream, sell, operate without limits.", img:"https://images.unsplash.com/photo-1497215842964-222b430dc094?w=480&h=280&fit=crop", link:"/broadband", hook:"FREE WiFi 7 Router + iPad 11", hookColor:UB.green },
-    { n:"Unifi Air Biz 5G", p:"From RM99/mo", sub:"Wireless 5G — plug & play", d:"No wiring. No waiting. Plug in and go online in minutes.", img:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=480&h=280&fit=crop", link:"/air-biz", hook:"FREE 5G Router or MiFi", hookColor:UB.green },
-  ]},
-  { id:"mobile", cat:"Mobile", tagline:"Every line comes with a free 5G phone.", icon:Icons.phone, color:UB.sky, items:[
-    { n:"UNI5G Biz 59", p:"RM59/mo", sub:"Samsung Galaxy A16 5G included", d:"Free 5G phone + unlimited data + unlimited calls.", img:"https://images.unsplash.com/photo-1556745753-b2904692b3cd?w=480&h=280&fit=crop", link:"/mobile", hook:"FREE phone worth RM799", hookColor:UB.green },
-    { n:"UNI5G Biz 99", p:"RM99/mo", sub:"Choose your flagship 5G phone", d:"100GB 5G data, unlimited calls. Pick Samsung, Redmi, or vivo.", img:"https://images.unsplash.com/photo-1560264280-88b68371db39?w=480&h=280&fit=crop", link:"/mobile", hook:"FREE flagship phone worth RM999+", hookColor:UB.green },
-    { n:"UNI5G Biz 39", p:"RM39/mo", sub:"SIM only — bring your own phone", d:"30GB 5G data + unlimited calls. Cheapest 5G business line.", img:"https://images.unsplash.com/photo-1523966211575-eb4a01e7dd51?w=480&h=280&fit=crop", link:"/mobile", hook:"Only RM1.30/day", hookColor:UB.orange },
-    { n:"Go Bookit Bundle", p:"RM99/mo", sub:"Phone + appointment booking app", d:"UNI5G Biz 99 + free Samsung + Go Bookit system for service businesses.", img:"https://images.unsplash.com/photo-1553877522-43269d4ea984?w=480&h=280&fit=crop", link:"/mobile", hook:"RM3.30/day — phone + app + data", hookColor:UB.orange },
-  ]},
-  { id:"marketing", cat:"Digital Marketing", tagline:"Ads on Facebook, Google, TikTok & Instagram.", icon:Icons.trending, color:UB.orange, items:[
-    { n:"Standard Pack", p:"RM100/mo", sub:"Awareness · 1.5–2 months", d:"840 ad credits. 4 platforms. Dedicated 3-person team.", img:"https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=480&h=280&fit=crop", wa:true, pkg:"Standard", hook:"RM3.30/day — cheaper than nasi lemak", hookColor:UB.orange },
-    { n:"Premium Pack", p:"RM200/mo", sub:"Engagement · 3 months", d:"1,680 credits + video production included.", img:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=480&h=280&fit=crop", wa:true, pkg:"Premium", hook:"Video production included FREE", hookColor:UB.green },
-    { n:"Prime Pack", p:"RM450/mo", sub:"Sales Conversion · 5–6 months", d:"3,500 credits + video. Turn followers into paying customers.", img:"https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=480&h=280&fit=crop", wa:true, pkg:"Prime", hook:"4x more credits than Standard", hookColor:UB.blue },
-    { n:"Pro Pack", p:"RM900/mo", sub:"Dominate · 12 months", d:"7,000 credits + video. Full-year campaign with maximum reach.", img:"https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=480&h=280&fit=crop", wa:true, pkg:"Pro", pop:true, hook:"12 months of non-stop ads", hookColor:UB.red },
-  ]},
-  { id:"digital", cat:"Cloud & Security", tagline:"Protect your data. Sell online.", icon:Icons.cloud, color:UB.green, items:[
-    { n:"Cloud Storage", p:"From RM11/mo", sub:"500GB – 5TB", d:"Files hosted in Malaysia. Access anywhere. End-to-end encrypted.", img:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=480&h=280&fit=crop", link:"/cloud-storage", hook:"Local MY data residency", hookColor:UB.blue },
-    { n:"eCommerce Hub", p:"From RM49/mo", sub:"All-in-one online store", d:"Products, orders, payments, delivery — one platform.", img:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=480&h=280&fit=crop", wa:true, hook:"Launch your store in days", hookColor:UB.orange },
-    { n:"Kaspersky Security", p:"From RM30/mo", sub:"Business-grade protection", d:"Ransomware, phishing, data breach protection for every device.", img:"https://images.unsplash.com/photo-1563986768609-322da13575f2?w=480&h=280&fit=crop", wa:true, hook:"Protect all your devices", hookColor:UB.red },
-  ]},
-];
+/* ═══ PLAN DATA BY CATEGORY ═══ */
+const P = {
+  home_mobile: [
+    {name:"Uni5G 39",price:"39",tag:"30GB Data",feat:["30GB 5G/4G data","Add RM1 for 200GB extra","Unlimited calls","No contract"],color:UB.blue},
+    {name:"Uni5G 69",price:"69",tag:"Unlimited Data",feat:["Unlimited 5G/4G data","60GB hotspot","Unlimited calls","No contract"],color:UB.sky,pop:"Best Value"},
+    {name:"Unifi Air 99",price:"99",tag:"Wireless Broadband",feat:["Unlimited data","Free 5G router","Plug & play — no wiring","24-month contract"],color:UB.green},
+    {name:"Uni5G 99 + Free Phone",price:"69",tag:"RM30 Rebate",feat:["Unlimited 5G + 100GB hotspot","FREE 5G smartphone (choose 1)","For existing Unifi customers","24-month contract"],color:UB.orange,pop:"Free Phone"},
+  ],
+  home_new: {
+    "Just Internet": [
+      {name:"100Mbps Prime",price:"89",tag:"FREE 3 Months",feat:["Free WiFi 6 router","Basic browsing & WFH","27-month contract"],color:UB.blue},
+      {name:"300Mbps Prime",price:"129",tag:"FREE 3 Months",feat:["Free WiFi 6 router","HD streaming, 3-5 users","27-month contract"],color:UB.blue,pop:"Most Popular"},
+      {name:"500Mbps Prime",price:"149",tag:"FREE 3 Months",feat:["Free WiFi 6 router","4K streaming, smart home","27-month contract"],color:UB.sky},
+      {name:"1Gbps",price:"249",tag:"Smart Home Bundle",feat:["Free WiFi 7 router","AI camera + solar cam + smart hub","8+ users, gaming","24-month contract"],color:UB.orange},
+      {name:"2Gbps",price:"319",tag:"Premium Smart Home",feat:["Free WiFi 7 router","Full smart home security kit","Large household, creators","24-month contract"],color:UB.red},
+    ],
+    "With Entertainment": [
+      {name:"100Mbps + TV Pack",price:"119",tag:"Choose Your Pack",feat:["Choose: Wira/Ying Xiong/Veeran/Kids/Sports/Max","Optional device add-on from RM29/mo","24-month contract"],color:UB.purple},
+      {name:"300Mbps + TV Pack",price:"159",tag:"Choose Your Pack",feat:["Choose: Wira/Ying Xiong/Veeran/Kids/Sports/Max","Optional device add-on from RM29/mo","24-month contract"],color:UB.purple,pop:"Popular"},
+      {name:"500Mbps + TV Pack",price:"179",tag:"Choose Your Pack",feat:["Choose: Wira/Ying Xiong/Veeran/Kids/Sports/Max","Optional device add-on from RM29/mo","24-month contract"],color:UB.purple},
+      {name:"100Mbps + TV Premium",price:"149",tag:"HBO Max / Disney+",feat:["Max Plus Pack OR Disney+","Optional device add-on from RM26/mo","36-month contract"],color:UB.navy},
+      {name:"300Mbps + TV Premium",price:"189",tag:"HBO Max / Disney+",feat:["Max Plus Pack OR Disney+","Optional device add-on from RM26/mo","36-month contract"],color:UB.navy},
+      {name:"100Mbps + Max",price:"114",tag:"HBO & Cinemax",feat:["HBO, HBO Hits, HBO Family, Cinemax","Star Pack (36 channels)","HBO Max app","24-month contract"],color:UB.navy},
+    ],
+    "With Mobile Combo": [
+      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIM cards with 30GB each","Add RM1 for 200GB extra each","Device add-on from RM1/mo","36-month contract"],color:UB.sky},
+      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIM cards with 30GB each","Add RM1 for 200GB extra each","Device add-on from RM1/mo","36-month contract"],color:UB.sky,pop:"Family Deal"},
+      {name:"300Mbps + Unlimited 5G",price:"188",tag:"Postpaid 69",feat:["1 SIM unlimited 5G/4G","60GB hotspot","Device add-on from RM18/mo","36-month contract"],color:UB.green},
+      {name:"500Mbps + Unlimited 5G",price:"208",tag:"Postpaid 69",feat:["1 SIM unlimited 5G/4G","60GB hotspot","Device add-on from RM18/mo","36-month contract"],color:UB.green},
+    ],
+  },
+  home_switch: {
+    "Free Months": [
+      {name:"100Mbps",price:"89",tag:"FREE 6 Months",feat:["Save RM534 total","Competitor bill required","36-month contract"],color:UB.green},
+      {name:"300Mbps",price:"129",tag:"FREE 6 Months",feat:["Save RM774 total","Competitor bill required","30-month contract"],color:UB.green,pop:"Most Savings"},
+      {name:"500Mbps",price:"149",tag:"FREE 6 Months",feat:["Save RM894 total","Competitor bill required","30-month contract"],color:UB.green},
+      {name:"1Gbps",price:"249",tag:"FREE 6 Months",feat:["Save RM1,494 total","Competitor bill required","30-month contract"],color:UB.green},
+    ],
+    "Free Device": [
+      {name:"300Mbps + 43\" TV",price:"139",tag:"FREE TV",feat:["Free LG/Sharp/Samsung 43\" TV","Competitor bill required","36-month contract"],color:UB.orange},
+      {name:"500Mbps + iPad 128GB",price:"159",tag:"FREE iPad",feat:["Free iPad 11\" 128GB","Competitor bill required","36-month contract"],color:UB.orange,pop:"Best Pick"},
+      {name:"500Mbps + 55\" TV",price:"159",tag:"FREE TV",feat:["Free 55\" smart TV","Competitor bill required","36-month contract"],color:UB.orange},
+      {name:"500Mbps + 65\" TV",price:"169",tag:"FREE TV",feat:["Free 65\" smart TV","Competitor bill required","36-month contract"],color:UB.red},
+      {name:"1Gbps + 65\" TV",price:"259",tag:"FREE TV",feat:["Free 65\" smart TV","Competitor bill required","30-month contract"],color:UB.red},
+      {name:"1Gbps + 75\" TV",price:"269",tag:"FREE TV",feat:["Free 75\" smart TV","Competitor bill required","30-month contract"],color:UB.red},
+    ],
+  },
+  biz_internet: [
+    {name:"Biz 300Mbps",price:"139",tag:"No Frills",feat:["Static IP, SLA uptime","Priority support","24-month contract"],color:UB.blue},
+    {name:"Biz 300Mbps + 43\" TV",price:"199",tag:"FREE TV",feat:["Free LG/Sharp/Samsung 43\" TV","Static IP, priority support","36-month contract"],color:UB.blue},
+    {name:"Biz 500Mbps",price:"179",tag:"Mesh WiFi",feat:["Free mesh WiFi system","Static IP, SLA uptime","24-month contract"],color:UB.sky,pop:"Most Popular"},
+    {name:"Biz 500Mbps + 55\" TV",price:"239",tag:"FREE TV",feat:["Free 55\" smart TV","Static IP, priority support","36-month contract"],color:UB.sky},
+    {name:"Biz 800Mbps",price:"259",tag:"RM70 Credit",feat:["RM70 monthly voice credit","High-density WiFi","24-month contract"],color:UB.orange},
+    {name:"Biz 1Gbps",price:"319",tag:"RM70 Credit / iPad",feat:["Choose: RM70 credit, 65\" TV, or iPad","Enterprise performance","24 or 36-month contract"],color:UB.red},
+    {name:"Biz 2Gbps",price:"369",tag:"Ultimate",feat:["Choose: RM70 credit, 75\" TV, or iPad","Maximum bandwidth","24 or 36-month contract"],color:UB.red},
+  ],
+  biz_dms: [
+    {name:"Standard",price:"100",tag:"Awareness",feat:["840 ad credits","1.5–2 month campaign","Facebook, Google, IG, TikTok","Dedicated 3-person team"],color:UB.blue},
+    {name:"Premium",price:"200",tag:"Engagement",feat:["1,680 ad credits","Up to 3 months","Video production included","4 ad platforms + Rev Media"],color:UB.sky},
+    {name:"Prime",price:"450",tag:"Sales Conversion",feat:["3,500 ad credits","5–6 months campaign","Video production included","4x more credits than Standard"],color:UB.orange,pop:"Best Value"},
+    {name:"Pro",price:"900",tag:"Dominate",feat:["7,000 ad credits","Up to 12 months","Full video strategy","Maximum market reach"],color:UB.red},
+  ],
+};
 
 const STORIES = [
   { title:"Kelantan Food Business", bef:"Sold locally only.", aft:"Broadband + Facebook ads boosted orders by 49%.", tag:"Internet + Marketing", metric:"+49%", metricLabel:"Sales Growth", img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop" },
@@ -141,19 +180,21 @@ const FAQ = [
 function Home() {
   const T = useTheme();
   const navigate = useNavigate();
-  const [activeSol, setActiveSol] = useState("internet");
   const [heroIdx, setHeroIdx] = useState(0);
   const [qs,setQs]=useState(-1);const [sc,setSc]=useState([0,0,0,0]);const [qr,setQr]=useState(null);
   const [faq,setFaq]=useState(null);
+  const [wizPath,setWizPath]=useState([]);
+  const [wizTab,setWizTab]=useState(null);
+  const [userLoc,setUserLoc]=useState(null);
 
   useEffect(() => { const t=setInterval(()=>setHeroIdx(p=>(p+1)%HERO_IMAGES.length),4000); return()=>clearInterval(t); }, []);
+  useEffect(() => {
+    fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
+      if(d.city&&d.region) setUserLoc({city:d.city,region:d.region});
+    }).catch(()=>{});
+  }, []);
 
   const scr = (id) => document.getElementById(id)?.scrollIntoView({ behavior:"smooth" });
-  const act = (it) => {
-    if (it.link) navigate(it.link);
-    else if (it.wa||it.pkg) window.open(waL("Hi, I'm interested in *"+it.n+"* ("+it.p+"). Can you share more details?","solution_"+it.n.replace(/\s/g,"_")), "_blank");
-  };
-  const cat = SOLUTIONS.find(s => s.id === activeSol);
   const qa=s=>{const n=sc.map((v,i)=>v+s[i]);setSc(n);if(qs+1>=DMS_QZ.length)setQr(n.indexOf(Math.max(...n)));else setQs(qs+1);};
 
   return (
@@ -168,13 +209,13 @@ function Home() {
           <div className="hero-left fade-up" style={{ flex:"1 1 400px", maxWidth:540 }}>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"6px 14px", borderRadius:8, background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.15)", marginBottom:18 }}>
               <span style={{ width:7, height:7, borderRadius:"50%", background:UB.green }} />
-              <span style={{ fontSize:12, fontWeight:600, color:"white" }}>Official Unifi Business Partner</span>
+              <span style={{ fontSize:12, fontWeight:600, color:"white" }}>Official Unifi Partner — Home & Business</span>
             </div>
             <h1 style={{ fontSize:"clamp(30px,5vw,54px)", fontWeight:800, lineHeight:1.08, marginBottom:16, color:"white", letterSpacing:"-0.02em" }}>
-              Free phones.<br/>Free routers.<br/><span style={{ color:UB.sky }}>From RM39/mo.</span>
+              Get Your Unifi.<br/>Free devices included.<br/><span style={{ color:UB.sky }}>From RM39/mo.</span>
             </h1>
             <p style={{ fontSize:"clamp(15px,2vw,17px)", color:"rgba(255,255,255,0.8)", lineHeight:1.7, marginBottom:24, maxWidth:460 }}>
-              Every Unifi Business plan comes with <strong style={{ color:"white" }}>free devices</strong>. Add an AI chatbot that handles your customers 24/7. One partner, everything your business needs.
+              Home fibre, business broadband, 5G mobile, digital marketing — every plan includes <strong style={{ color:"white" }}>free devices</strong>. One partner for home and business.
             </p>
             <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:16 }}>
               {[["Free Router","#25D366"],["Free 5G Phone","#25D366"],["24hr Setup",UB.sky],["Up to 6mo FREE",UB.orange]].map(([t,c])=>
@@ -189,7 +230,7 @@ function Home() {
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 <div><div>Check Coverage & Apply Now</div><div style={{ fontSize:11, fontWeight:400, opacity:0.85 }}>We reply in 30 seconds · 24/7</div></div>
               </a>
-              <button onClick={()=>{setActiveSol("mobile");scr("solutions");}} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"13px 24px", borderRadius:10, border:"1px solid rgba(255,255,255,0.3)", background:"rgba(255,255,255,0.08)", color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.15)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}>
+              <button onClick={()=>{setWizPath(["home","mobile"]);scr("solutions");}} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"13px 24px", borderRadius:10, border:"1px solid rgba(255,255,255,0.3)", background:"rgba(255,255,255,0.08)", color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.15)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}>
                 {Icons.phone("white",16)} Free 5G Phones
               </button>
             </div>
@@ -258,90 +299,146 @@ function Home() {
       {/* Partner strip */}
       <div style={{ padding:"20px 20px 0" }}><div style={{ maxWidth:800, margin:"0 auto", textAlign:"center" }}><p style={{ fontSize:11, color:T.muted, marginBottom:12, fontWeight:500, letterSpacing:1, textTransform:"uppercase" }}>Your ads run on</p><PartnerLogos T={T} /></div></div>
 
-      {/* ═══ NEW: QUICK NAV ═══ */}
-      <section style={{ padding:"40px 20px 16px", maxWidth:1000, margin:"0 auto" }}>
-        <div className="quick-nav" style={{ display:"grid", gridTemplateColumns:"repeat(5,1fr)", gap:10 }}>
-          {[[Icons.building,"Business BB","From RM129","internet"],[Icons.phone,"5G Mobile","From RM39","mobile"],[Icons.trending,"DMS","From RM100","marketing"],[Icons.wifi,"Air 5G","From RM99","internet"],[Icons.cloud,"Cloud & Security","From RM11","digital"]].map(([ic,t,p,tab])=>
-            <button key={t} onClick={()=>{setActiveSol(tab);scr("solutions");}}
-              style={{ background:T.card, border:`1px solid ${T.border}`, borderRadius:10, padding:"14px 10px", textAlign:"center", cursor:"pointer", transition:"all 0.2s", fontFamily:"'DM Sans',sans-serif" }}
-              onMouseEnter={e=>{e.currentTarget.style.borderColor=UB.blue;e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=T.cardHover;}}
-              onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
-              <div style={{ width:36, height:36, borderRadius:10, background:UB.blue+"0A", display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:6 }}>{ic(UB.blue,18)}</div>
-              <div style={{ fontSize:12, fontWeight:700, color:T.text }}>{t}</div>
-              <div style={{ fontSize:11, fontWeight:700, color:T.accent }}>{p}</div>
-            </button>
-          )}
-        </div>
-      </section>
+      {/* ═══ GUIDED PRODUCT FINDER ═══ */}
+      <section id="solutions" style={{ padding:"56px 20px 72px", maxWidth:1000, margin:"0 auto" }}>
+        {(()=>{
+          const [path,setPath] = [wizPath,setWizPath];
+          const [subTab,setSubTab] = [wizTab,setWizTab];
+          const go = (step) => { setPath([...path,step]); setSubTab(null); };
+          const back = (idx) => { setPath(path.slice(0,idx)); setSubTab(null); };
+          const crumbs = [{label:"All Products",path:[]},...path.map((p,i)=>({label:p==="home"?"Home":p==="biz"?"Business":p==="mobile"?"Mobile & 5G":p==="fixed"?"Home Fibre":p==="new"?"New Application":p==="switch"?"Switching Deals":p==="internet"?"Business Internet":p==="dms"?"Digital Marketing":p,path:path.slice(0,i+1)}))];
+          const depth = path.join("_");
 
-      {/* ═══ SOLUTIONS (your deployed tab system) ═══ */}
-      <section id="solutions" style={{ padding:"36px 20px 72px", maxWidth:1100, margin:"0 auto" }}>
-        <div style={{ textAlign:"center", marginBottom:36 }}><SectionLabel text="Business Solutions" /><h2 style={{ fontSize:"clamp(24px,3.5vw,36px)", fontWeight:800, color:T.text }}>Everything under one roof</h2><p style={{ color:T.muted, fontSize:15, marginTop:8 }}>Internet, mobile, marketing, cloud — pick what you need.</p></div>
-        <div className="tabs-wrap" style={{ display:"flex", gap:8, flexWrap:"wrap", justifyContent:"center", marginBottom:28 }}>
-          {SOLUTIONS.map(s=><button key={s.id} onClick={()=>setActiveSol(s.id)} style={{ display:"flex", alignItems:"center", gap:6, padding:"10px 18px", borderRadius:10, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:600, transition:"all 0.2s", border:activeSol===s.id?"2px solid "+s.color:"1px solid "+T.border, background:activeSol===s.id?s.color:T.card, color:activeSol===s.id?"white":T.muted }}>
-            {s.icon(activeSol===s.id?"white":T.muted,16)} {s.cat}
-          </button>)}
-        </div>
-        {cat&&<div>
-          <div style={{ marginBottom:20, textAlign:"center" }}><span style={{ fontSize:14, color:cat.color, fontWeight:600 }}>{cat.tagline}</span></div>
-          <div className="sol-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:16 }}>
-            {cat.items.map(it=>(
-              <div key={it.n} style={{ background:T.card, borderRadius:14, overflow:"hidden", border:"1px solid "+T.border, transition:"all 0.25s", position:"relative" }}
-                onMouseEnter={e=>{e.currentTarget.style.borderColor=cat.color;e.currentTarget.style.boxShadow="0 8px 30px "+cat.color+"15";e.currentTarget.style.transform="translateY(-4px)";}}
-                onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="none";}}>
-                {it.pop&&<div style={{ background:UB.red, color:"white", textAlign:"center", fontSize:11, fontWeight:700, padding:"5px 0", letterSpacing:1 }}>MOST POPULAR</div>}
-                <div style={{ height:170, overflow:"hidden", position:"relative" }}>
-                  <img src={it.img} alt={it.n} style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e=>{e.target.parentElement.style.background=cat.color+"10";e.target.style.display="none";}} />
-                  {it.hook&&<div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"8px 12px", background:"linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2))" }}>
-                    <div style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 10px", borderRadius:6, background:it.hookColor, fontSize:11, fontWeight:700, color:"white" }}>{it.hookColor===UB.green?Icons.check("white",11):Icons.zap("white",11)} {it.hook}</div>
-                  </div>}
-                  <div style={{ position:"absolute", top:8, right:8, background:"white", borderRadius:6, padding:"4px 8px", boxShadow:"0 2px 8px rgba(0,0,0,0.12)" }}><div style={{ fontSize:14, fontWeight:800, color:cat.color }}>{it.p}</div></div>
-                </div>
-                <div style={{ padding:"14px 16px 18px" }}>
-                  {it.sub&&<div style={{ fontSize:11, fontWeight:600, color:cat.color, marginBottom:3 }}>{it.sub}</div>}
-                  <h3 style={{ fontSize:16, fontWeight:700, color:T.text, marginBottom:6 }}>{it.n}</h3>
-                  <p style={{ fontSize:13, color:T.muted, lineHeight:1.55, marginBottom:14 }}>{it.d}</p>
-                  <button onClick={()=>act(it)} style={{ width:"100%", padding:"10px 14px", borderRadius:10, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:600, transition:"all 0.2s", display:"flex", alignItems:"center", justifyContent:"center", gap:6, border:"none", background:cat.color, color:"white" }}
-                    onMouseEnter={e=>e.currentTarget.style.opacity="0.85"} onMouseLeave={e=>e.currentTarget.style.opacity="1"}>
-                    {it.link?"View Plans →":"Enquire Now →"}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>}
-      </section>
+          /* Choice card renderer */
+          const Choice = ({opts}) => (
+            <div style={{ display:"grid", gridTemplateColumns:`repeat(auto-fit,minmax(${opts.length<=2?"280px":"200px"},1fr))`, gap:14 }}>
+              {opts.map(o=>(
+                <button key={o.id} onClick={()=>go(o.id)}
+                  style={{ background:T.card, border:`2px solid ${T.border}`, borderRadius:14, padding:"28px 20px", textAlign:"center", cursor:"pointer", transition:"all 0.25s", fontFamily:"'DM Sans',sans-serif", display:"flex", flexDirection:"column", alignItems:"center", gap:8 }}
+                  onMouseEnter={e=>{e.currentTarget.style.borderColor=o.color||UB.blue;e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow=T.cardHover;}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
+                  <div style={{ width:52, height:52, borderRadius:14, background:(o.color||UB.blue)+"0D", display:"flex", alignItems:"center", justifyContent:"center" }}>{o.icon}</div>
+                  <div style={{ fontSize:18, fontWeight:700, color:T.text }}>{o.label}</div>
+                  <div style={{ fontSize:13, color:T.muted }}>{o.desc}</div>
+                  {o.hook&&<div style={{ fontSize:11, fontWeight:700, color:o.color||UB.orange, background:(o.color||UB.orange)+"0D", padding:"4px 12px", borderRadius:6, marginTop:4 }}>{o.hook}</div>}
+                </button>
+              ))}
+            </div>
+          );
 
-      {/* ═══ NEW: DMS PACKAGE FINDER ═══ */}
-      <section id="dms-finder" style={{ padding:"56px 20px", background:T.sub }}>
-        <div style={{ maxWidth:600, margin:"0 auto" }}>
-          <div style={{ textAlign:"center", marginBottom:20 }}><SectionLabel text="Digital Marketing Solution (DMS)" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800 }}>Not sure which DMS pack?</h2><p style={{ color:T.muted, fontSize:14, marginTop:6 }}>Agency: RM1,500–5,000/month upfront. <span style={{ color:T.accent, fontWeight:700 }}>DMS: from RM100/month.</span></p></div>
-          <Card hover={false} style={{ padding:28, border:`1px solid ${UB.orange}20` }}>
-            {qs===-1&&!qr&&<div style={{ textAlign:"center" }}>
-              <div style={{ width:52, height:52, borderRadius:14, background:UB.orange+"0D", display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:12 }}>{Icons.target(UB.orange,24)}</div>
-              <h3 style={{ fontSize:18, fontWeight:700, marginBottom:6 }}>Find your perfect DMS pack</h3>
-              <p style={{ fontSize:13, color:T.muted, marginBottom:16 }}>4 questions. 30 seconds. Dream big.</p>
-              <PrimaryBtn text="Find My Package" onClick={()=>setQs(0)} />
-            </div>}
-            {qs>=0&&!qr&&<div>
-              <div style={{ display:"flex", gap:4, marginBottom:20 }}>{DMS_QZ.map((_,i)=><div key={i} style={{ flex:1, height:3, borderRadius:2, background:i<=qs?UB.orange:T.border, transition:"background 0.3s" }} />)}</div>
-              <div style={{ fontSize:11, fontWeight:700, color:UB.orange, letterSpacing:1, marginBottom:6 }}>QUESTION {qs+1} OF {DMS_QZ.length}</div>
-              <h3 style={{ fontSize:17, fontWeight:700, marginBottom:14 }}>{DMS_QZ[qs].q}</h3>
-              <div style={{ display:"flex", flexDirection:"column", gap:8 }}>{DMS_QZ[qs].o.map((o,i)=><button key={i} onClick={()=>qa(o.s)} style={{ background:T.sub, border:`1px solid ${T.border}`, padding:"12px 16px", borderRadius:10, cursor:"pointer", transition:"all 0.2s", color:T.text, textAlign:"left", fontSize:13, fontFamily:"'DM Sans',sans-serif", display:"flex", alignItems:"center", gap:8 }} onMouseEnter={e=>{e.currentTarget.style.borderColor=UB.orange;e.currentTarget.style.background=UB.orange+"08";}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.background=T.sub;}}>
-                <span style={{ width:22, height:22, borderRadius:6, background:UB.orange+"0D", color:UB.orange, fontSize:10, fontWeight:700, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{String.fromCharCode(65+i)}</span>{o.l}
-              </button>)}</div>
-            </div>}
-            {qr!==null&&(()=>{const p=DMS_PKG[qr];return<div style={{ textAlign:"center" }}>
-              <div style={{ fontSize:12, fontWeight:700, color:UB.green, letterSpacing:1, marginBottom:6 }}>{Icons.check(UB.green,16)} PERFECT MATCH</div>
-              <h3 style={{ fontSize:22, fontWeight:800 }}>{p.name} Pack — <span style={{ color:p.color }}>RM{p.mo}/mo</span></h3>
-              <div style={{ fontSize:12, color:T.muted, margin:"6px 0 16px" }}>{p.cr.toLocaleString()} credits · {p.camp} campaign</div>
-              <div style={{ display:"flex", gap:10, justifyContent:"center", flexWrap:"wrap" }}>
-                <WaBtn text={`Get ${p.name} Pack`} msg={`Hi, the Smart Package Finder recommended *${p.name} Pack* (RM${p.mo}/mo, ${p.cr} credits). Please proceed.`} utm="dms_finder" />
-                <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{ background:"none", border:`1px solid ${T.border}`, color:T.muted, padding:"10px 18px", borderRadius:10, fontSize:13, cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>Retake</button>
+          /* Plan card renderer */
+          const Plans = ({plans}) => (
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))", gap:12 }}>
+              {plans.map(p=>(
+                <div key={p.name} style={{ background:T.card, border:p.pop?`2px solid ${p.color}`:`1px solid ${T.border}`, borderRadius:12, overflow:"hidden", transition:"all 0.2s" }}
+                  onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow=T.cardHover;}}
+                  onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
+                  {p.pop&&<div style={{ background:p.color, color:"white", textAlign:"center", fontSize:10, fontWeight:700, padding:"4px 0", letterSpacing:.5 }}>{p.pop}</div>}
+                  <div style={{ padding:"16px 14px" }}>
+                    <div style={{ display:"inline-block", padding:"3px 8px", borderRadius:5, background:p.color+"0D", color:p.color, fontSize:10, fontWeight:700, marginBottom:6 }}>{p.tag}</div>
+                    <h4 style={{ fontSize:14, fontWeight:700, marginBottom:4 }}>{p.name}</h4>
+                    <div style={{ fontSize:30, fontWeight:800, margin:"4px 0" }}><span style={{ fontSize:13, color:T.muted }}>RM</span>{p.price}</div>
+                    <div style={{ fontSize:11, color:T.muted, marginBottom:10 }}>/month</div>
+                    <div style={{ marginBottom:12 }}>
+                      {p.feat.map(f=><div key={f} style={{ fontSize:11, color:T.muted, padding:"2px 0", display:"flex", alignItems:"flex-start", gap:5 }}>{Icons.check(UB.green,11)}<span>{f}</span></div>)}
+                    </div>
+                    <WaBtn text="Apply Now" msg={`Hi, I'd like to apply for *${p.name}* (RM${p.price}/mo). ${p.tag}.`} utm={`plan_${p.name.replace(/\s/g,"_")}`} sm style={{ width:"100%", justifyContent:"center", fontSize:11, padding:"8px" }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+
+          /* Tabbed plans renderer */
+          const TabbedPlans = ({data}) => {
+            const tabs = Object.keys(data);
+            const active = subTab || tabs[0];
+            return (<div>
+              <div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:20 }}>
+                {tabs.map(t=><button key={t} onClick={()=>setSubTab(t)} style={{ padding:"8px 16px", borderRadius:8, border:`1px solid ${active===t?UB.blue:T.border}`, background:active===t?UB.blue:T.card, color:active===t?"white":T.muted, fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }}>{t}</button>)}
               </div>
-            </div>;})()}
-          </Card>
-        </div>
+              <Plans plans={data[active]} />
+            </div>);
+          };
+
+          return (<div>
+            {/* Breadcrumb */}
+            <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:24, flexWrap:"wrap" }}>
+              {crumbs.map((c,i)=>(
+                <span key={i} style={{ display:"flex", alignItems:"center", gap:6 }}>
+                  {i>0&&<span style={{ color:T.border, fontSize:12 }}>/</span>}
+                  <button onClick={()=>back(i)} style={{ background:"none", border:"none", color:i===crumbs.length-1?T.text:T.primary, fontSize:13, fontWeight:i===crumbs.length-1?700:500, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", padding:0 }}>{c.label}</button>
+                </span>
+              ))}
+            </div>
+
+            {/* Step content */}
+            {depth===""&&<><div style={{ textAlign:"center", marginBottom:32 }}><SectionLabel text="Find Your Plan" /><h2 style={{ fontSize:"clamp(24px,3.5vw,36px)", fontWeight:800 }}>What are you looking for?</h2></div>
+              <Choice opts={[
+                {id:"home",label:"Home",desc:"Personal & family internet, mobile, TV bundles",icon:Icons.home(UB.blue,26),color:UB.blue,hook:"Plans from RM39/mo"},
+                {id:"biz",label:"Business",desc:"Business broadband, marketing, cloud, AI chatbot",icon:Icons.building(UB.orange,26),color:UB.orange,hook:"Plans from RM100/mo"},
+              ]} /></>}
+
+            {depth==="home"&&<><div style={{ textAlign:"center", marginBottom:32 }}><SectionLabel text="Home" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800 }}>What do you need?</h2></div>
+              <Choice opts={[
+                {id:"mobile",label:"Mobile & 5G",desc:"SIM plans, wireless broadband, free smartphones",icon:Icons.phone(UB.sky,26),color:UB.sky,hook:"No wiring needed"},
+                {id:"fixed",label:"Home Fibre",desc:"Fixed broadband with WiFi router, TV & combo bundles",icon:Icons.wifi(UB.blue,26),color:UB.blue,hook:"Free 3-6 months"},
+              ]} /></>}
+
+            {depth==="home_mobile"&&<><div style={{ marginBottom:24 }}><SectionLabel text="Mobile & 5G" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:6 }}>Stay connected everywhere</h2><p style={{ color:T.muted, fontSize:14 }}>No fibre needed. All plans include unlimited calls.</p></div>
+              <Plans plans={P.home_mobile} /></>}
+
+            {depth==="home_fixed"&&<><div style={{ textAlign:"center", marginBottom:32 }}><SectionLabel text="Home Fibre" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800 }}>What's your situation?</h2></div>
+              <Choice opts={[
+                {id:"new",label:"New Application",desc:"First time Unifi or already a customer upgrading",icon:Icons.zap(UB.blue,26),color:UB.blue,hook:"FREE 3 months on selected plans"},
+                {id:"switch",label:"Switching from Other Telco",desc:"Currently on Maxis, Celcom, Time, etc.",icon:Icons.trending(UB.green,26),color:UB.green,hook:"FREE up to 6 months or FREE TV/iPad"},
+              ]} /></>}
+
+            {depth==="home_fixed_new"&&<><div style={{ marginBottom:20 }}><SectionLabel text="New Application" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:6 }}>Pick your perfect plan</h2></div>
+              <TabbedPlans data={P.home_new} /></>}
+
+            {depth==="home_fixed_switch"&&<><div style={{ marginBottom:20 }}><SectionLabel text="Switching Deals" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:6 }}>Exclusive offers for switchers</h2><p style={{ color:T.muted, fontSize:13, marginBottom:4 }}>Competitor fibre/wireless bill required as proof.</p></div>
+              <TabbedPlans data={P.home_switch} /></>}
+
+            {depth==="biz"&&<><div style={{ textAlign:"center", marginBottom:32 }}><SectionLabel text="Business" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800 }}>What does your business need?</h2></div>
+              <Choice opts={[
+                {id:"internet",label:"Business Internet",desc:"Fibre 300Mbps–2Gbps with static IP, SLA, free devices",icon:Icons.globe(UB.blue,26),color:UB.blue,hook:"From RM139/mo"},
+                {id:"dms",label:"Digital Marketing",desc:"Facebook, Google, TikTok ads — managed for you",icon:Icons.trending(UB.orange,26),color:UB.orange,hook:"From RM100/mo"},
+              ]} /></>}
+
+            {depth==="biz_internet"&&<><div style={{ marginBottom:24 }}><SectionLabel text="Business Internet" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:6 }}>Built for operations</h2><div style={{ display:"flex", gap:8, flexWrap:"wrap", marginBottom:8 }}>{["Symmetric speeds","Static IP","Priority support"].map(b=><span key={b} style={{ padding:"4px 10px", borderRadius:6, background:UB.blue+"0A", color:UB.blue, fontSize:11, fontWeight:600, display:"flex", alignItems:"center", gap:4 }}>{Icons.check(UB.blue,11)}{b}</span>)}</div></div>
+              <Plans plans={P.biz_internet} /></>}
+
+            {depth==="biz_dms"&&<><div style={{ marginBottom:20 }}><SectionLabel text="Digital Marketing Solution (DMS)" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:6 }}>Your marketing team, on instalments</h2><p style={{ color:T.muted, fontSize:13 }}>Agency: RM1,500–5,000/mo upfront. <span style={{ color:UB.orange, fontWeight:700 }}>DMS: from RM100/mo.</span></p></div>
+              {/* Package Finder */}
+              <Card hover={false} style={{ padding:24, border:`1px solid ${UB.orange}20`, marginBottom:20, maxWidth:560 }}>
+                {qs===-1&&!qr&&<div style={{ textAlign:"center" }}>
+                  <div style={{ width:48, height:48, borderRadius:12, background:UB.orange+"0D", display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:10 }}>{Icons.target(UB.orange,22)}</div>
+                  <h3 style={{ fontSize:16, fontWeight:700, marginBottom:4 }}>Not sure which pack?</h3>
+                  <p style={{ fontSize:13, color:T.muted, marginBottom:14 }}>4 questions. 30 seconds. Dream big.</p>
+                  <PrimaryBtn text="Find My Package" onClick={()=>setQs(0)} style={{ fontSize:14, padding:"10px 22px" }} />
+                </div>}
+                {qs>=0&&!qr&&<div>
+                  <div style={{ display:"flex", gap:4, marginBottom:16 }}>{DMS_QZ.map((_,i)=><div key={i} style={{ flex:1, height:3, borderRadius:2, background:i<=qs?UB.orange:T.border }} />)}</div>
+                  <div style={{ fontSize:11, fontWeight:700, color:UB.orange, letterSpacing:1, marginBottom:4 }}>Q{qs+1}/{DMS_QZ.length}</div>
+                  <h3 style={{ fontSize:16, fontWeight:700, marginBottom:12 }}>{DMS_QZ[qs].q}</h3>
+                  <div style={{ display:"flex", flexDirection:"column", gap:6 }}>{DMS_QZ[qs].o.map((o,i)=><button key={i} onClick={()=>qa(o.s)} style={{ background:T.sub, border:`1px solid ${T.border}`, padding:"10px 14px", borderRadius:8, cursor:"pointer", transition:"all 0.2s", color:T.text, textAlign:"left", fontSize:13, fontFamily:"'DM Sans',sans-serif", display:"flex", alignItems:"center", gap:8 }} onMouseEnter={e=>{e.currentTarget.style.borderColor=UB.orange;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;}}>
+                    <span style={{ width:20, height:20, borderRadius:5, background:UB.orange+"0D", color:UB.orange, fontSize:10, fontWeight:700, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{String.fromCharCode(65+i)}</span>{o.l}
+                  </button>)}</div>
+                </div>}
+                {qr!==null&&(()=>{const p=DMS_PKG[qr];return<div style={{ textAlign:"center" }}>
+                  <div style={{ fontSize:11, fontWeight:700, color:UB.green, letterSpacing:1, marginBottom:6 }}>{Icons.check(UB.green,14)} PERFECT MATCH</div>
+                  <h3 style={{ fontSize:20, fontWeight:800 }}>{p.name} Pack — <span style={{ color:p.color }}>RM{p.mo}/mo</span></h3>
+                  <div style={{ fontSize:12, color:T.muted, margin:"6px 0 14px" }}>{p.cr.toLocaleString()} credits · {p.camp}</div>
+                  <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap" }}>
+                    <WaBtn text={`Get ${p.name}`} msg={`Hi, the Package Finder recommended DMS *${p.name} Pack* (RM${p.mo}/mo). Please proceed.`} utm="dms_finder" sm />
+                    <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{ background:"none", border:`1px solid ${T.border}`, color:T.muted, padding:"8px 16px", borderRadius:8, fontSize:12, cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>Retake</button>
+                  </div>
+                </div>;})()}
+              </Card>
+              <Plans plans={P.biz_dms} /></>}
+          </div>);
+        })()}
       </section>
 
       {/* ═══ AI CHATBOT (your deployed version) ═══ */}
@@ -421,11 +518,17 @@ function Home() {
           <SectionLabel text="Coverage" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:16 }}>Available nationwide</h2>
           <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:8, marginBottom:24 }}>
             {["Johor","Kedah","Kelantan","Melaka","N. Sembilan","Pahang","Perak","Perlis","Penang","Sabah","Sarawak","Selangor","Terengganu","KL","Putrajaya","Labuan"].map(s=>
-              <span key={s} style={{ padding:"6px 12px", borderRadius:8, background:UB.blue+"08", color:UB.blue, fontSize:11, fontWeight:600, border:`1px solid ${UB.blue}15` }}>{s}</span>
+              <span key={s} style={{ padding:"6px 12px", borderRadius:8, background:userLoc&&(s===userLoc.region||userLoc.region.includes(s))?UB.green+"15":UB.blue+"08", color:userLoc&&(s===userLoc.region||userLoc.region.includes(s))?UB.green:UB.blue, fontSize:11, fontWeight:600, border:`1px solid ${userLoc&&(s===userLoc.region||userLoc.region.includes(s))?UB.green+"30":UB.blue+"15"}` }}>{s}{userLoc&&(s===userLoc.region||userLoc.region.includes(s))?" ← You're here":""}</span>
             )}
           </div>
-          <p style={{ color:T.muted, fontSize:14, marginBottom:16 }}>Not sure if your area has coverage?</p>
-          <WaBtn text="Check My Coverage" msg="Hi, can you check if Unifi fibre is available at my address?" utm="coverage" />
+          {userLoc?
+            <div style={{ background:UB.green+"08", border:`1px solid ${UB.green}20`, borderRadius:12, padding:"16px 20px", marginBottom:20 }}>
+              <div style={{ fontSize:15, fontWeight:700, color:UB.green, marginBottom:4 }}>We detected you're in {userLoc.city}, {userLoc.region}</div>
+              <div style={{ fontSize:13, color:T.muted }}>Check if Unifi fibre is available at your exact address:</div>
+            </div>
+            :<p style={{ color:T.muted, fontSize:14, marginBottom:16 }}>Not sure if your area has coverage?</p>
+          }
+          <WaBtn text={userLoc?`Check Coverage for ${userLoc.city}`:"Check My Coverage"} msg={userLoc?`Hi, I'm in ${userLoc.city}, ${userLoc.region}. Can you check if Unifi is available at my address?`:"Hi, can you check if Unifi fibre is available at my address?"} utm="coverage" />
         </div>
       </section>
 
@@ -465,8 +568,8 @@ function Home() {
       {/* ═══ FINAL CTA (your deployed version) ═══ */}
       <section style={{ padding:"72px 20px", background:"linear-gradient(160deg, "+UB.blue+", "+UB.sky+")", textAlign:"center" }}>
         <div style={{ maxWidth:520, margin:"0 auto" }}>
-          <h2 style={{ fontSize:"clamp(26px,4vw,40px)", fontWeight:800, marginBottom:12, color:"white" }}>Ready to equip your business?</h2>
-          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:15, marginBottom:24, lineHeight:1.7 }}>Internet, free 5G phones, AI chatbot, marketing — <strong style={{ color:"white" }}>one partner</strong>.</p>
+          <h2 style={{ fontSize:"clamp(26px,4vw,40px)", fontWeight:800, marginBottom:12, color:"white" }}>Ready to get started?</h2>
+          <p style={{ color:"rgba(255,255,255,0.85)", fontSize:15, marginBottom:24, lineHeight:1.7 }}>Home fibre, business broadband, free 5G phones, AI chatbot, marketing — <strong style={{ color:"white" }}>one partner</strong>.</p>
           <div className="cta-flex" style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap", marginBottom:14 }}>
             <WaBtn text="WhatsApp Apply Now" msg="Hi, I'd like to apply for a Unifi product. Can you help?" utm="final_cta" style={{ fontSize:15, padding:"14px 28px" }} />
             <button onClick={()=>window.open("https://botku.ai","_blank")} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"14px 24px", borderRadius:10, border:"1px solid rgba(255,255,255,0.3)", background:"rgba(255,255,255,0.1)", color:"white", fontSize:14, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif" }}>{"🤖 AI Chatbot →"}</button>

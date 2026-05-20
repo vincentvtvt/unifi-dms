@@ -30,7 +30,7 @@ export default function Mobile() {
               <div style={{display:"flex",flexWrap:"wrap",gap:6,marginBottom:16}}>
                 {PHONES.map(p=><span key={p} style={{padding:"5px 10px",borderRadius:6,background:T.sub,border:`1px solid ${T.border}`,fontSize:11,fontWeight:500}}>{p}</span>)}
               </div>
-              <WaBtn text="Claim Free Phone" msg="Hi, I'm an existing Unifi customer. I'd like to claim the free smartphone promo with Uni5G RM99 (RM69 with rebate)." utm="free_phone" />
+              <WaBtn text="Claim Free Phone" msg="I want to claim the free smartphone promo — Uni5G RM99 (RM69 with rebate). I'm an existing Unifi customer." utm="free_phone" />
             </div>
           </div>
         </Card>
@@ -50,7 +50,7 @@ export default function Mobile() {
         <p style={{textAlign:"center",fontSize:11,color:T.muted,marginTop:20}}>Advance payment required on same day. Prices exclude 6% SST.</p>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Check My Eligibility" msg="Hi, I'd like to check if I'm eligible for the Unifi free smartphone promo. Can you help?" utm="mobile_page" />
+        <WaBtn text="Check My Eligibility" msg="I want to check my eligibility for the free smartphone promo." utm="mobile_page" />
       </section>
     </>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTheme, Icons, Card, SectionLabel, WaBtn, PlanCard, SpecTable, PageHero } from "../theme";
+import { useTheme, Icons as I, Card, SectionLabel, WaBtn, PlanCard, SpecTable, PageHero } from "../theme";
 
 const TM=[
   {name:"Biz Fibre 100Mbps",speed:"100Mbps",price:"129",contract:"24 months",highlight:"Best Value"},
@@ -38,7 +38,7 @@ export default function Broadband() {
   const specs=tab==="tm"?TMS:NTMS;
   return (
     <>
-      <PageHero icon={Icons.globe(T.primary,28)} tag="Connectivity" title="Unifi Business Broadband" subtitle="Reliable fibre broadband with free router, DECT phone & business call plan. Up to 2Gbps with 24/7 support." />
+      <PageHero icon={I.globe(T.primary,28)} tag="Connectivity" title="Unifi Business Broadband" subtitle="Reliable fibre broadband with free router, DECT phone & business call plan. Up to 2Gbps with 24/7 support." />
       <section style={{padding:"0 24px 60px",maxWidth:1100,margin:"0 auto"}}>
         <div style={{display:"flex",justifyContent:"center",gap:8,marginBottom:32}}>
           {[["tm","TM Customers"],["nontm","Non-TM Customers"]].map(([k,l])=>(
@@ -52,7 +52,7 @@ export default function Broadband() {
         <p style={{textAlign:"center",fontSize:12,color:T.muted,marginTop:16}}>Prices exclude 6% SST · Free installation for selected areas · Subject to coverage</p>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get Recommendation" msg="Hi *UnifiBiz*, I'm interested in Unifi Business Broadband. Please help me choose the right plan." />
+        <WaBtn text="Get Recommendation" msg="Hi, I'm interested in Unifi Business Broadband. Please help me choose the right plan." />
       </section>
     </>
   );

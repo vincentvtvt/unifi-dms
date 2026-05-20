@@ -64,7 +64,7 @@ export default function Broadband() {
         <p style={{textAlign:"center",fontSize:11,color:T.muted,marginTop:20}}>Prices exclude 6% SST · Free installation for selected areas · Subject to coverage</p>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get Recommendation" msg="Hi, I'd like help choosing the right broadband plan for my needs." utm="broadband_page" />
+        <WaBtn text="Get Recommendation" msg="I want help choosing the right broadband plan." utm="broadband_page" />
       </section>
     </>
   );

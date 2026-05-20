@@ -228,7 +228,7 @@ function Home() {
                 onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 8px 30px rgba(37,211,102,0.45)";}}
                 onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="0 4px 20px rgba(37,211,102,0.35)";}}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                <div><div>Check Coverage & Apply Now</div><div style={{ fontSize:11, fontWeight:400, opacity:0.85 }}>We reply in 30 seconds · 24/7</div></div>
+                <div><div>Check Coverage & Apply Now</div><div style={{ fontSize:11, fontWeight:400, opacity:0.85 }}>We reply 24/7 within 30 seconds</div></div>
               </a>
               <button onClick={()=>{setWizPath(["home","mobile"]);scr("solutions");}} style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"13px 24px", borderRadius:10, border:"1px solid rgba(255,255,255,0.3)", background:"rgba(255,255,255,0.08)", color:"white", fontSize:15, fontWeight:600, cursor:"pointer", fontFamily:"'DM Sans',sans-serif", transition:"all 0.2s" }} onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.15)"} onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.08)"}>
                 {Icons.phone("white",16)} Free 5G Phones
@@ -514,21 +514,16 @@ function Home() {
 
       {/* ═══ NEW: COVERAGE ═══ */}
       <section id="coverage" style={{ padding:"56px 20px", textAlign:"center" }}>
-        <div style={{ maxWidth:600, margin:"0 auto" }}>
+        <div style={{ maxWidth:520, margin:"0 auto" }}>
           <SectionLabel text="Coverage" /><h2 style={{ fontSize:"clamp(22px,3vw,32px)", fontWeight:800, marginBottom:16 }}>Available nationwide</h2>
-          <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:8, marginBottom:24 }}>
-            {["Johor","Kedah","Kelantan","Melaka","N. Sembilan","Pahang","Perak","Perlis","Penang","Sabah","Sarawak","Selangor","Terengganu","KL","Putrajaya","Labuan"].map(s=>
-              <span key={s} style={{ padding:"6px 12px", borderRadius:8, background:userLoc&&(s===userLoc.region||userLoc.region.includes(s))?UB.green+"15":UB.blue+"08", color:userLoc&&(s===userLoc.region||userLoc.region.includes(s))?UB.green:UB.blue, fontSize:11, fontWeight:600, border:`1px solid ${userLoc&&(s===userLoc.region||userLoc.region.includes(s))?UB.green+"30":UB.blue+"15"}` }}>{s}{userLoc&&(s===userLoc.region||userLoc.region.includes(s))?" ← You're here":""}</span>
-            )}
-          </div>
           {userLoc?
-            <div style={{ background:UB.green+"08", border:`1px solid ${UB.green}20`, borderRadius:12, padding:"16px 20px", marginBottom:20 }}>
-              <div style={{ fontSize:15, fontWeight:700, color:UB.green, marginBottom:4 }}>We detected you're in {userLoc.city}, {userLoc.region}</div>
-              <div style={{ fontSize:13, color:T.muted }}>Check if Unifi fibre is available at your exact address:</div>
+            <div style={{ background:UB.green+"08", border:`1px solid ${UB.green}20`, borderRadius:12, padding:"20px 24px", marginBottom:20 }}>
+              <div style={{ fontSize:17, fontWeight:700, color:UB.green, marginBottom:4 }}>Get Unifi installed in {userLoc.city} within 24 hours</div>
+              <div style={{ fontSize:13, color:T.muted }}>Same-day installation available in most areas.</div>
             </div>
-            :<p style={{ color:T.muted, fontSize:14, marginBottom:16 }}>Not sure if your area has coverage?</p>
+            :<p style={{ color:T.muted, fontSize:15, marginBottom:20 }}>Same-day installation available in most areas across Malaysia.</p>
           }
-          <WaBtn text={userLoc?`Check Coverage for ${userLoc.city}`:"Check My Coverage"} msg={userLoc?`Hi, I'm in ${userLoc.city}, ${userLoc.region}. Can you check if Unifi is available at my address?`:"Hi, can you check if Unifi fibre is available at my address?"} utm="coverage" />
+          <WaBtn text={userLoc?`Check Coverage in ${userLoc.city}`:"Check My Coverage"} msg={userLoc?`Hi, I'm in ${userLoc.city}, ${userLoc.region}. Can you check if Unifi is available at my address?`:"Hi, can you check if Unifi fibre is available at my address?"} utm="coverage" />
         </div>
       </section>
 

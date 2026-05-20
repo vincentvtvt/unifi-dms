@@ -19,6 +19,7 @@ const responsiveCSS = `
   .chat-mockup{max-width:100%!important;}
   .stories-grid{grid-template-columns:1fr!important;}
   .finder-cards{grid-template-columns:1fr 1fr!important;}
+  .proof-toast{top:68px!important;bottom:auto!important;left:50%!important;transform:translateX(-50%)!important;max-width:85vw!important;padding:8px 12px!important;font-size:11px!important;border-radius:10px!important;}
 }
 @media(max-width:480px){
   .finder-cards{grid-template-columns:1fr!important;}
@@ -40,7 +41,7 @@ function SocialProofToast() {
   const [idx,setIdx]=useState(0);const [show,setShow]=useState(false);
   useEffect(()=>{const cycle=()=>{setShow(true);setTimeout(()=>{setShow(false);setTimeout(()=>{setIdx(p=>(p+1)%PROOF.length);cycle();},25000);},5000);};const init=setTimeout(cycle,3000);return()=>clearTimeout(init);},[]);
   const p=PROOF[idx];const colors=["#4A90D9","#E5002B","#00B67A","#FF6B00","#7B2FBE","#00A3E0","#0033A1","#059669"];
-  return <div style={{position:"fixed",bottom:90,left:16,zIndex:998,maxWidth:300,background:"white",borderRadius:12,padding:"10px 14px",boxShadow:"0 8px 30px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:10,transform:show?"translateX(0)":"translateX(-120%)",opacity:show?1:0,transition:"all 0.5s cubic-bezier(0.4,0,0.2,1)",border:"1px solid #e5e7eb"}}>
+  return <div className="proof-toast" style={{position:"fixed",bottom:90,left:16,zIndex:998,maxWidth:300,background:"white",borderRadius:12,padding:"10px 14px",boxShadow:"0 8px 30px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:10,opacity:show?1:0,pointerEvents:show?"auto":"none",transition:"all 0.5s ease",border:"1px solid #e5e7eb"}}>
     <div style={{width:32,height:32,borderRadius:"50%",background:colors[idx%colors.length],display:"flex",alignItems:"center",justifyContent:"center",color:"white",fontSize:13,fontWeight:700,flexShrink:0}}>{p.name.charAt(0)}</div>
     <div style={{flex:1,minWidth:0}}>
       <div style={{fontSize:12,fontWeight:600,color:"#1a1a2e"}}>{p.name} applied for {p.product}</div>

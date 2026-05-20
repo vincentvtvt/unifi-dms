@@ -9,10 +9,11 @@ export const LIGHT = {
 };
 /* ═══ WHATSAPP ROUND ROBIN ═══ */
 const WA_NUMBERS = [
-  "601113115950",  // Line 1 (main)
-  "601155501315",  // Line 2 — REPLACE with real numbers
+  "601113115950",
+  "601155501315",
 ];
-const getWA = () => WA_NUMBERS[Math.floor(Math.random() * WA_NUMBERS.length)];
+let _waIdx = 0;
+const getWA = () => { const n = WA_NUMBERS[_waIdx % WA_NUMBERS.length]; _waIdx++; return n; };
 export const WA = WA_NUMBERS[0];
 export const waL = (m,utm="") => `https://wa.me/${getWA()}?text=${encodeURIComponent("Hi *UnifiBiz* "+m)}${utm?`&utm_source=unifibiz&utm_medium=${utm}`:""}`;
 

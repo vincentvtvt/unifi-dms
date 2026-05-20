@@ -21,7 +21,7 @@ export default function AirBiz() {
                 <div style={{fontSize:34,fontWeight:800,margin:"8px 0"}}><span style={{fontSize:13,color:T.muted}}>RM</span>{p.price}</div>
                 <div style={{fontSize:11,color:T.muted,marginBottom:12}}>/month</div>
                 {p.feat.map(f=><div key={f} style={{fontSize:12,color:T.muted,padding:"2px 0",display:"flex",alignItems:"center",gap:5,justifyContent:"center"}}>{I.check(UB.green,12)}{f}</div>)}
-                <WaBtn text="Apply" msg={`Hi, I'd like to apply for *${p.name}* (RM${p.price}/mo).`} utm={`air_${p.price}`} sm style={{width:"100%",justifyContent:"center",marginTop:14,fontSize:12}} />
+                <WaBtn text="Apply" msg={`I want to apply for *${p.name}* (RM${p.price}/mo).`} utm={`air_${p.price}`} sm style={{width:"100%",justifyContent:"center",marginTop:14,fontSize:12}} />
               </div>
             </Card>
           ))}
@@ -40,7 +40,7 @@ export default function AirBiz() {
         </Card>
       </section>
       <section style={{padding:"40px 24px 80px",textAlign:"center"}}>
-        <WaBtn text="Get Wireless Broadband" msg="Hi, I'm interested in Unifi wireless broadband (Uni5G / Unifi Air). Can you help?" utm="air_page" />
+        <WaBtn text="Get Wireless Broadband" msg="I want to apply for Unifi wireless broadband (Uni5G / Unifi Air)." utm="air_page" />
       </section>
     </>
   );

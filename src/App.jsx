@@ -10,12 +10,11 @@ const UB = { blue:"#0033A1", sky:"#00A3E0", navy:"#001A5C", orange:"#FF6B00", gr
 
 const responsiveCSS = `
 @media(max-width:768px){
-  .hero-grid{grid-template-columns:1fr!important;}
-  .hero-left{text-align:center!important;}
-  .hero-btns{grid-template-columns:1fr!important;}
-  .hero-trust{justify-content:center!important;}
-  .steps-grid{grid-template-columns:1fr!important;gap:0!important;background:transparent!important;}
-  .steps-grid>div{border-radius:12px!important;margin-bottom:8px!important;}
+  .hero-flex{flex-direction:column!important;gap:24px!important;}
+  .hero-left{max-width:100%!important;text-align:center!important;}
+  .hero-btns{max-width:100%!important;}
+  .hero-right{width:100%!important;flex:1 1 100%!important;}
+  .hero-right .carousel-wrap{height:220px!important;}
   .chat-flex{flex-direction:column!important;}
   .chat-mockup{max-width:100%!important;}
   .stories-grid{grid-template-columns:1fr!important;}
@@ -23,6 +22,7 @@ const responsiveCSS = `
 }
 @media(max-width:480px){
   .finder-cards{grid-template-columns:1fr!important;}
+  .hero-right .carousel-wrap{height:180px!important;}
 }`;
 
 /* ═══ SOCIAL PROOF TOAST ═══ */
@@ -142,7 +142,15 @@ function Home() {
   const [qs,setQs]=useState(-1);const [sc,setSc]=useState([0,0,0,0]);const [qr,setQr]=useState(null);
   const [faq,setFaq]=useState(null);
   const [userLoc,setUserLoc]=useState(null);
+  const [heroIdx,setHeroIdx]=useState(0);
 
+  const HERO_IMG=[
+    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
+  ];
+
+  useEffect(()=>{const t=setInterval(()=>setHeroIdx(p=>(p+1)%3),4000);return()=>clearInterval(t);},[]);
   useEffect(()=>{fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{if(d.city&&d.region)setUserLoc({city:d.city,region:d.region});}).catch(()=>{});},[]);
   const scr=id=>document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
   const qa=s=>{const n=sc.map((v,i)=>v+s[i]);setSc(n);if(qs+1>=DMS_QZ.length)setQr(n.indexOf(Math.max(...n)));else setQs(qs+1);};
@@ -167,46 +175,61 @@ function Home() {
   return <>
     <style>{responsiveCSS}</style>
 
-    {/* ═══ HERO — clean, no carousel ═══ */}
-    <section style={{width:"100%",background:`linear-gradient(160deg,${UB.navy} 0%,${UB.blue} 60%,${UB.sky} 100%)`,padding:"80px 20px 48px"}}>
-      <div className="hero-left" style={{maxWidth:600,margin:"0 auto",textAlign:"center"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 14px",borderRadius:8,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",marginBottom:18}}>
-          <span style={{width:7,height:7,borderRadius:"50%",background:UB.green}}/>
-          <span style={{fontSize:12,fontWeight:600,color:"white"}}>Official Unifi Partner — Home & Business</span>
-        </div>
-        <h1 style={{fontSize:"clamp(28px,6vw,52px)",fontWeight:800,lineHeight:1.08,marginBottom:14,color:"white",letterSpacing:"-0.02em"}}>
-          Free TV. Free iPad.<br/>Free months. Free phone.<br/><span style={{color:UB.sky}}>From RM89/mo.</span>
-        </h1>
-        <p style={{fontSize:"clamp(14px,2vw,16px)",color:"rgba(255,255,255,0.8)",lineHeight:1.7,marginBottom:20,maxWidth:460,margin:"0 auto 20px"}}>
-          Every Unifi plan includes <strong style={{color:"white"}}>free devices or free months</strong>. One partner for home and business.
-        </p>
-
-        {/* 4 CATEGORY BUTTONS */}
-        <div className="hero-btns" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,maxWidth:440,margin:"0 auto 16px"}}>
-          {[
-            {id:"switch",label:"Switch & Save",sub:"FREE 6 months / FREE TV",color:UB.green,icon:Icons.trending},
-            {id:"new",label:"New to Unifi",sub:"FREE 3 months",color:"white",icon:Icons.zap},
-            {id:"phone",label:"Free 5G Phone",sub:"Samsung / OPPO / Redmi",color:UB.sky,icon:Icons.phone},
-            {id:"dms",label:"Digital Marketing",sub:"From RM100/mo",color:UB.orange,icon:Icons.trending},
-          ].map(o=><button key={o.id} onClick={()=>{sel(o.id);scr("solutions");}} style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8,padding:"10px 12px",borderRadius:10,border:"1px solid rgba(255,255,255,0.2)",background:"rgba(255,255,255,0.08)",color:"white",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s",textAlign:"center"}} onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.18)";}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.08)";}}>
-            <div style={{width:28,height:28,borderRadius:7,background:"rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{o.icon("white",14)}</div>
-            <div><div style={{fontSize:12,fontWeight:700}}>{o.label}</div><div style={{fontSize:9,opacity:0.7}}>{o.sub}</div></div>
-          </button>)}
-        </div>
-
-        {/* Trust line */}
-        <div className="hero-trust" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:12,flexWrap:"wrap",fontSize:11,color:"rgba(255,255,255,0.6)"}}>
-          <div style={{display:"flex",alignItems:"center",gap:4}}>
-            {[1,2,3,4,5].map(i=><svg key={i} width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
-            <span style={{color:"white",fontWeight:600,marginLeft:2}}>4.8/5</span>
+    {/* ═══ HERO ═══ */}
+    <section style={{width:"100%",background:`linear-gradient(160deg,${UB.navy} 0%,${UB.blue} 60%,${UB.sky} 100%)`,padding:"80px 20px 48px",overflow:"hidden"}}>
+      <div className="hero-flex" style={{maxWidth:1100,margin:"0 auto",display:"flex",flexWrap:"wrap",gap:40,alignItems:"center"}}>
+        {/* LEFT */}
+        <div className="hero-left" style={{flex:"1 1 400px",maxWidth:520}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 14px",borderRadius:8,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",marginBottom:18}}>
+            <span style={{width:7,height:7,borderRadius:"50%",background:UB.green}}/>
+            <span style={{fontSize:12,fontWeight:600,color:"white"}}>Official Unifi Partner — Home & Business</span>
           </div>
-          <span>140,000+ customers</span>
-          <span>·</span>
-          <span>15 years</span>
-          <span>·</span>
-          <span>SSM 1221398-T</span>
-          <span>·</span>
-          <span style={{color:UB.green}}>Reply in 30s 24/7</span>
+          <h1 style={{fontSize:"clamp(28px,5vw,50px)",fontWeight:800,lineHeight:1.08,marginBottom:14,color:"white",letterSpacing:"-0.02em"}}>
+            Get Your Unifi.<br/>Free devices included.<br/><span style={{color:UB.sky}}>From RM89/mo.</span>
+          </h1>
+          <p style={{fontSize:"clamp(14px,2vw,16px)",color:"rgba(255,255,255,0.8)",lineHeight:1.7,marginBottom:20,maxWidth:440}}>
+            Home fibre, business broadband, 5G mobile, digital marketing — every plan includes <strong style={{color:"white"}}>free router, free phone, or free months</strong>.
+          </p>
+
+          <div className="hero-btns" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16,maxWidth:420}}>
+            {[
+              {id:"switch",label:"Switch & Save",sub:"Exclusive switcher deals",color:UB.green,icon:Icons.trending},
+              {id:"new",label:"New to Unifi",sub:"FREE 3 months",color:"white",icon:Icons.zap},
+              {id:"phone",label:"Free 5G Phone",sub:"Samsung / OPPO / Redmi",color:UB.sky,icon:Icons.phone},
+              {id:"dms",label:"Digital Marketing",sub:"From RM100/mo",color:UB.orange,icon:Icons.trending},
+            ].map(o=><button key={o.id} onClick={()=>{sel(o.id);scr("solutions");}} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 12px",borderRadius:10,border:"1px solid rgba(255,255,255,0.2)",background:"rgba(255,255,255,0.08)",color:"white",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.18)";}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.08)";}}>
+              <div style={{width:28,height:28,borderRadius:7,background:"rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{o.icon("white",14)}</div>
+              <div style={{textAlign:"left"}}><div style={{fontSize:12,fontWeight:700}}>{o.label}</div><div style={{fontSize:9,opacity:0.7}}>{o.sub}</div></div>
+            </button>)}
+          </div>
+
+          <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",fontSize:11,color:"rgba(255,255,255,0.6)"}}>
+            {[1,2,3,4,5].map(i=><svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
+            <span style={{color:"white",fontWeight:600}}>4.8/5</span>
+            <span>140,000+ customers · 15 years · SSM 1221398-T</span>
+          </div>
+        </div>
+
+        {/* RIGHT — carousel */}
+        <div className="hero-right" style={{flex:"1 1 360px",position:"relative"}}>
+          <div style={{borderRadius:16,overflow:"hidden",position:"relative",border:"2px solid rgba(255,255,255,0.1)"}}>
+            <div className="carousel-wrap" style={{position:"relative",overflow:"hidden",height:300}}>
+              {HERO_IMG.map((src,i)=><img key={i} src={src} alt="" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",objectFit:"cover",opacity:heroIdx===i?1:0,transition:"opacity 0.8s ease"}} onError={e=>{e.target.style.opacity="0";}}/>)}
+              <div style={{position:"absolute",bottom:0,left:0,right:0,height:80,background:"linear-gradient(to top,rgba(0,26,92,0.6),transparent)",pointerEvents:"none"}}/>
+            </div>
+            <div style={{position:"absolute",top:12,right:12,background:"white",borderRadius:8,padding:"8px 12px",boxShadow:"0 4px 15px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:6,zIndex:2}}>
+              {Icons.trending(UB.green,16)}<div><div style={{fontSize:14,fontWeight:800,color:UB.green}}>140K+</div><div style={{fontSize:9,color:"#666"}}>Installations</div></div>
+            </div>
+            <div style={{position:"absolute",bottom:12,left:12,background:"white",borderRadius:8,padding:"8px 12px",boxShadow:"0 4px 15px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:6,zIndex:2}}>
+              {Icons.zap(UB.blue,16)}<div><div style={{fontSize:14,fontWeight:800,color:UB.navy}}>24/7</div><div style={{fontSize:9,color:"#666"}}>WhatsApp Support</div></div>
+            </div>
+            <div style={{position:"absolute",bottom:12,right:12,background:UB.green,borderRadius:8,padding:"8px 12px",boxShadow:"0 4px 15px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:6,zIndex:2}}>
+              {Icons.check("white",16)}<div><div style={{fontSize:13,fontWeight:800,color:"white"}}>&lt;30s</div><div style={{fontSize:9,color:"rgba(255,255,255,0.8)"}}>Reply Time</div></div>
+            </div>
+          </div>
+          <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:10}}>
+            {HERO_IMG.map((_,i)=><button key={i} onClick={()=>setHeroIdx(i)} style={{width:heroIdx===i?22:8,height:7,borderRadius:4,border:"none",cursor:"pointer",transition:"all 0.3s",background:heroIdx===i?"white":"rgba(255,255,255,0.3)"}}/>)}
+          </div>
         </div>
       </div>
     </section>

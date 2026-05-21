@@ -19,7 +19,11 @@ const responsiveCSS = `
   .chat-mockup{max-width:100%!important;}
   .stories-grid{grid-template-columns:1fr!important;}
   .finder-cards{grid-template-columns:1fr 1fr!important;}
-  .proof-toast{top:68px!important;bottom:auto!important;left:50%!important;transform:translateX(-50%)!important;max-width:85vw!important;padding:8px 12px!important;font-size:11px!important;border-radius:10px!important;}
+  .proof-toast{top:68px!important;bottom:auto!important;left:50%!important;transform:translateX(-50%)!important;max-width:90vw!important;background:rgba(0,0,0,0.6)!important;backdrop-filter:blur(12px)!important;border:1px solid rgba(255,255,255,0.1)!important;box-shadow:0 4px 20px rgba(0,0,0,0.2)!important;padding:8px 16px!important;border-radius:20px!important;}
+  .proof-toast .proof-avatar{display:none!important;}
+  .proof-toast .proof-check{display:none!important;}
+  .proof-toast .proof-text{color:rgba(255,255,255,0.9)!important;font-size:11px!important;}
+  .proof-toast .proof-sub{color:rgba(255,255,255,0.5)!important;font-size:9px!important;}
 }
 @media(max-width:480px){
   .finder-cards{grid-template-columns:1fr!important;}
@@ -42,12 +46,12 @@ function SocialProofToast() {
   useEffect(()=>{const cycle=()=>{setShow(true);setTimeout(()=>{setShow(false);setTimeout(()=>{setIdx(p=>(p+1)%PROOF.length);cycle();},25000);},5000);};const init=setTimeout(cycle,3000);return()=>clearTimeout(init);},[]);
   const p=PROOF[idx];const colors=["#4A90D9","#E5002B","#00B67A","#FF6B00","#7B2FBE","#00A3E0","#0033A1","#059669"];
   return <div className="proof-toast" style={{position:"fixed",bottom:90,left:16,zIndex:998,maxWidth:300,background:"white",borderRadius:12,padding:"10px 14px",boxShadow:"0 8px 30px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:10,opacity:show?1:0,pointerEvents:show?"auto":"none",transition:"all 0.5s ease",border:"1px solid #e5e7eb"}}>
-    <div style={{width:32,height:32,borderRadius:"50%",background:colors[idx%colors.length],display:"flex",alignItems:"center",justifyContent:"center",color:"white",fontSize:13,fontWeight:700,flexShrink:0}}>{p.name.charAt(0)}</div>
+    <div className="proof-avatar" style={{width:32,height:32,borderRadius:"50%",background:colors[idx%colors.length],display:"flex",alignItems:"center",justifyContent:"center",color:"white",fontSize:13,fontWeight:700,flexShrink:0}}>{p.name.charAt(0)}</div>
     <div style={{flex:1,minWidth:0}}>
-      <div style={{fontSize:12,fontWeight:600,color:"#1a1a2e"}}>{p.name} applied for {p.product}</div>
-      <div style={{fontSize:10,color:"#6b7280",marginTop:1}}>{p.loc} · {p.min} min ago</div>
+      <div className="proof-text" style={{fontSize:12,fontWeight:600,color:"#1a1a2e"}}>{p.name} applied for {p.product}</div>
+      <div className="proof-sub" style={{fontSize:10,color:"#6b7280",marginTop:1}}>{p.loc} · {p.min} min ago</div>
     </div>
-    {Icons.check("#00B67A",14)}
+    <span className="proof-check">{Icons.check("#00B67A",14)}</span>
   </div>;
 }
 

@@ -121,18 +121,24 @@ const DMS_PKG = [
 ];
 
 const STORIES = [
-  {title:"Kelantan Food Business",bef:"Sold locally only.",aft:"Facebook ads boosted orders by 49%.",metric:"+49%",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop"},
-  {title:"Property Agent Team",bef:"Walk-ins only.",aft:"5G mobile + AI chatbot drove 3x more leads.",metric:"3x",img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop"},
-  {title:"Boutique Café",bef:"Single outlet.",aft:"Full digital setup — opened 2nd branch in 6 months.",metric:"2x",img:"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=260&fit=crop"},
+  {title:"Kelantan Food Business",bef:"Sold locally at pasar only.",aft:"Applied DMS Standard Pack — Facebook ads boosted orders by 49% in 2 months.",metric:"+49%",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop"},
+  {title:"Property Agent Team",bef:"Walk-ins only. No online leads.",aft:"Got Biz 500Mbps + Uni5G for team. AI chatbot qualified 3x more leads.",metric:"3x",img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop"},
+  {title:"Boutique Café in PJ",bef:"Single outlet. No delivery orders.",aft:"Switched to Unifi 300Mbps (6 months free) + DMS Premium. Opened 2nd branch in 6 months.",metric:"2x",img:"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=260&fit=crop"},
 ];
 
 const FAQ = [
-  ["What is UnifiBiz.digital?","We are Synergy Spark Sdn Bhd (SSM 1221398-T), an authorized reseller for all Unifi products — Home, Business, Mobile, 5G, DMS, and Cloud Storage."],
-  ["How do I apply?","WhatsApp us at +60 11-1311 5950. We'll process your application within 24 hours."],
-  ["Do I need to visit a TM store?","No. Everything is handled via WhatsApp."],
-  ["What areas do you cover?","All 13 states and 3 Federal Territories."],
-  ["What is Unifi DMS?","Malaysia's first instalment-based digital marketing. From RM100/month with a dedicated 3-person team."],
-  ["Is there a contract?","Broadband: 24 months. Mobile SIM-only: no contract. DMS: 12-month instalment."],
+  ["What is UnifiBiz.digital?","We are Synergy Spark Sdn Bhd (SSM 1221398-T), an authorized reseller for all Unifi products — Home, Business, Mobile, 5G, DMS, and Cloud Storage. 140,000+ installations over 15 years."],
+  ["How do I apply?","Just tap any WhatsApp button on this page. Tell us what you need, and we'll process within 24 hours. Available 24/7."],
+  ["Do I need to visit a TM store?","No. Everything is handled via WhatsApp — application, activation, after-sales support."],
+  ["What broadband speeds are available?","Home fibre: 100Mbps (RM89), 300Mbps (RM129), 500Mbps (RM149), 1Gbps (RM249), 2Gbps (RM319). Business: 300Mbps to 2Gbps with static IP and SLA."],
+  ["What's included free with broadband?","All plans include a free WiFi 6 or WiFi 7 router. Prime Promo plans get 3 months free. 1Gbps and 2Gbps include smart home security kits."],
+  ["Can I get free months if I switch from another provider?","Yes — bring your competitor bill and get up to 6 months free on selected plans. Free TV or iPad options also available for switchers."],
+  ["What mobile plans do you offer?","Uni5G RM39 (30GB, no contract), Uni5G RM69 (unlimited, no contract), Unifi Air RM99 (unlimited + free router, 24 months). Existing Unifi customers can get a free 5G smartphone."],
+  ["What is Unifi DMS?","Digital Marketing Solution — Malaysia's first instalment-based marketing. A dedicated team runs Facebook, Google, TikTok & Instagram ads for you. From RM100/month over 12 months."],
+  ["How is DMS different from hiring an agency?","Agencies charge RM1,500–5,000/month upfront. DMS starts at RM100/month on instalments with no upfront cost. Includes campaign manager, designer, and copywriter."],
+  ["Is there a contract?","Broadband: 24–36 months depending on plan. Mobile SIM-only: no contract. DMS: 12-month instalment period."],
+  ["Can I bundle broadband with mobile?","Yes — combo plans start from RM128 (100Mbps + 1 SIM). Family plans with 2 SIMs from RM167. Includes device add-on options."],
+  ["What areas do you cover?","All 13 states and 3 Federal Territories in Malaysia. Tap the WhatsApp button and we'll check coverage at your exact address instantly."],
 ];
 
 

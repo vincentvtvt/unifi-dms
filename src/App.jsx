@@ -343,6 +343,21 @@ function Home() {
       </div>
     </section>
 
+    {/* ═══ TRACK RECORD ═══ */}
+    <section style={{padding:"40px 20px",background:T.sub,borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`}}>
+      <div style={{maxWidth:800,margin:"0 auto",textAlign:"center"}}>
+        <h3 style={{fontSize:"clamp(18px,3vw,24px)",fontWeight:800,marginBottom:16}}>Trusted since 2010. Still going strong.</h3>
+        <div style={{display:"flex",justifyContent:"center",gap:24,flexWrap:"wrap"}}>
+          {[["140,000+","Homes & businesses connected",UB.blue],["15","Years as authorized Unifi partner",UB.navy],["13+3","States & Federal Territories",UB.sky],["<30s","Average WhatsApp reply time",UB.green]].map(([v,l,c])=>
+            <div key={l} style={{minWidth:140}}>
+              <div style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800,color:c}}>{v}</div>
+              <div style={{fontSize:11,color:T.muted,marginTop:2,lineHeight:1.4}}>{l}</div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
     {/* ═══ STORIES ═══ */}
     <section style={{padding:"56px 20px"}}>
       <div style={{maxWidth:900,margin:"0 auto"}}>
@@ -395,7 +410,7 @@ function Home() {
     <section style={{padding:"56px 20px",background:`linear-gradient(160deg,${UB.blue},${UB.sky})`,textAlign:"center"}}>
       <div style={{maxWidth:460,margin:"0 auto"}}>
         <h2 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800,color:"white",marginBottom:10}}>Ready to get started?</h2>
-        <p style={{color:"rgba(255,255,255,0.85)",fontSize:14,marginBottom:20}}>140,000+ customers. 15 years. One WhatsApp away.</p>
+        <p style={{color:"rgba(255,255,255,0.85)",fontSize:14,marginBottom:20}}>Join 140,000+ homes & businesses. One WhatsApp away.</p>
         <WaBtn text="WhatsApp Apply Now" msg="I want to apply for a Unifi product." utm="final_cta" style={{fontSize:15,padding:"14px 28px"}}/>
         <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:10}}>Available 24/7 · SSM 1221398-T</div>
       </div>

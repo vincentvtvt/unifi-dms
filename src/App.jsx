@@ -12,25 +12,95 @@ const responsiveCSS = `
 @media(max-width:768px){
   .hero-flex{flex-direction:column!important;gap:24px!important;}
   .hero-left{max-width:100%!important;text-align:center!important;}
-  .hero-ctas{justify-content:center!important;}
+  .hero-btns{max-width:100%!important;}
   .hero-right{width:100%!important;flex:1 1 100%!important;}
-  .split-grid{grid-template-columns:1fr!important;}
-  .two-col{grid-template-columns:1fr!important;}
-  .usecase-grid{grid-template-columns:1fr!important;}
-  .verify-grid{grid-template-columns:1fr 1fr!important;}
+  .hero-right .carousel-wrap{height:220px!important;}
+  .chat-flex{flex-direction:column!important;}
+  .chat-mockup{max-width:100%!important;}
+  .stories-grid{grid-template-columns:1fr!important;}
+  .finder-cards{grid-template-columns:1fr 1fr!important;}
+  .proof-toast{top:68px!important;bottom:auto!important;left:50%!important;transform:translateX(-50%)!important;max-width:90vw!important;background:rgba(0,0,0,0.6)!important;backdrop-filter:blur(12px)!important;border:1px solid rgba(255,255,255,0.1)!important;box-shadow:0 4px 20px rgba(0,0,0,0.2)!important;padding:8px 16px!important;border-radius:20px!important;}
+  .proof-toast .proof-avatar{display:none!important;}
+  .proof-toast .proof-check{display:none!important;}
+  .proof-toast .proof-text{color:rgba(255,255,255,0.9)!important;font-size:11px!important;}
+  .proof-toast .proof-sub{color:rgba(255,255,255,0.5)!important;font-size:9px!important;}
 }
 @media(max-width:480px){
-  .verify-grid{grid-template-columns:1fr!important;}
+  .finder-cards{grid-template-columns:1fr!important;}
+  .hero-right .carousel-wrap{height:180px!important;}
 }`;
+
+/* ═══ SOCIAL PROOF TOAST ═══ */
+const PROOF = [
+  {name:"Ahmad R.",product:"300Mbps Prime (RM129)",loc:"Shah Alam",min:3},
+  {name:"Siti N.",product:"500Mbps + FREE iPad",loc:"Petaling Jaya",min:8},
+  {name:"Kumar S.",product:"Uni5G 69 Unlimited",loc:"Penang",min:14},
+  {name:"Mei Ling",product:"100Mbps Prime (RM89)",loc:"Puchong",min:19},
+  {name:"Faizal H.",product:"Biz 500Mbps + Mesh",loc:"Johor Bahru",min:25},
+  {name:"Nurul A.",product:"300Mbps + FREE 6 Months",loc:"Kota Kinabalu",min:31},
+  {name:"Jason T.",product:"DMS Prime Pack (RM450)",loc:"Subang Jaya",min:37},
+  {name:"Amirah Z.",product:"1Gbps + Smart Home",loc:"Cyberjaya",min:42},
+];
+function SocialProofToast() {
+  const [idx,setIdx]=useState(0);const [show,setShow]=useState(false);
+  useEffect(()=>{const cycle=()=>{setShow(true);setTimeout(()=>{setShow(false);setTimeout(()=>{setIdx(p=>(p+1)%PROOF.length);cycle();},25000);},5000);};const init=setTimeout(cycle,3000);return()=>clearTimeout(init);},[]);
+  const p=PROOF[idx];const colors=["#4A90D9","#E5002B","#00B67A","#FF6B00","#7B2FBE","#00A3E0","#0033A1","#059669"];
+  return <div className="proof-toast" style={{position:"fixed",bottom:90,left:16,zIndex:998,maxWidth:300,background:"white",borderRadius:12,padding:"10px 14px",boxShadow:"0 8px 30px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:10,opacity:show?1:0,pointerEvents:show?"auto":"none",transition:"all 0.5s ease",border:"1px solid #e5e7eb"}}>
+    <div className="proof-avatar" style={{width:32,height:32,borderRadius:"50%",background:colors[idx%colors.length],display:"flex",alignItems:"center",justifyContent:"center",color:"white",fontSize:13,fontWeight:700,flexShrink:0}}>{p.name.charAt(0)}</div>
+    <div style={{flex:1,minWidth:0}}>
+      <div className="proof-text" style={{fontSize:12,fontWeight:600,color:"#1a1a2e"}}>{p.name} applied for {p.product}</div>
+      <div className="proof-sub" style={{fontSize:10,color:"#6b7280",marginTop:1}}>{p.loc} · {p.min} min ago</div>
+    </div>
+    <span className="proof-check">{Icons.check("#00B67A",14)}</span>
+  </div>;
+}
 
 /* ═══ PLAN DATA ═══ */
 const P = {
+  home_mobile: [
+    {name:"Uni5G 39",price:"39",tag:"30GB Data",feat:["30GB 5G/4G data","Add RM1 for 200GB extra","Unlimited calls","No contract"],color:UB.blue},
+    {name:"Uni5G 69",price:"69",tag:"Unlimited Data",feat:["Unlimited 5G/4G data","60GB hotspot","Unlimited calls","No contract"],color:UB.sky,pop:"Best Value"},
+    {name:"Unifi Air 99",price:"99",tag:"Wireless Broadband",feat:["Unlimited data","Free 5G router","Plug & play","24-month contract"],color:UB.green},
+    {name:"Uni5G 99 + Free Phone",price:"69",tag:"RM30 Rebate",feat:["Unlimited 5G + 100GB hotspot","FREE 5G smartphone (choose 1)","For existing Unifi customers","24-month contract"],color:UB.orange,pop:"Free Phone"},
+  ],
   home_new: {
+    "Just Internet": [
+      {name:"100Mbps Prime",price:"89",tag:"FREE 3 Months",feat:["Free WiFi 6 router","27-month contract"],color:UB.blue},
+      {name:"300Mbps Prime",price:"129",tag:"FREE 3 Months",feat:["Free WiFi 6 router","HD streaming, 3-5 users"],color:UB.blue,pop:"Most Popular"},
+      {name:"500Mbps Prime",price:"149",tag:"FREE 3 Months",feat:["Free WiFi 6 router","4K, smart home"],color:UB.sky},
+      {name:"1Gbps",price:"249",tag:"Smart Home Bundle",feat:["Free WiFi 7","AI camera + smart hub"],color:UB.orange},
+      {name:"2Gbps",price:"319",tag:"Premium Smart Home",feat:["Free WiFi 7","Full security kit"],color:UB.red},
+    ],
+    "With Entertainment": [
+      {name:"100Mbps + TV Pack",price:"119",tag:"6 Pack Choices",feat:["Wira/Ying Xiong/Veeran/Kids/Sports/Max","Device add-on from RM29/mo"],color:UB.purple},
+      {name:"300Mbps + TV Pack",price:"159",tag:"6 Pack Choices",feat:["Choose your pack","Device add-on from RM29/mo"],color:UB.purple,pop:"Popular"},
+      {name:"500Mbps + TV Pack",price:"179",tag:"6 Pack Choices",feat:["Choose your pack","Device add-on from RM29/mo"],color:UB.purple},
+      {name:"100Mbps + Max",price:"114",tag:"HBO & Cinemax",feat:["HBO, HBO Hits, Family, Cinemax","Star Pack (36 channels)"],color:UB.navy},
+    ],
+    "With Mobile Combo": [
+      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo"],color:UB.sky},
+      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo"],color:UB.sky,pop:"Family Deal"},
+      {name:"300Mbps + Unlimited",price:"188",tag:"Postpaid 69",feat:["1 SIM unlimited 5G","Device add-on from RM18/mo"],color:UB.green},
+    ],
     "Business": [
       {name:"Biz 300Mbps",price:"139",tag:"No Frills",feat:["Static IP, SLA","24-month contract"],color:UB.blue},
       {name:"Biz 500Mbps",price:"179",tag:"Mesh WiFi",feat:["Free mesh WiFi","Static IP, priority"],color:UB.sky,pop:"Most Popular"},
       {name:"Biz 1Gbps",price:"319",tag:"TV / iPad / Credit",feat:["Choose your free device","Enterprise performance"],color:UB.red},
       {name:"Biz 2Gbps",price:"369",tag:"Ultimate",feat:["Choose your free device","Maximum bandwidth"],color:UB.red},
+    ],
+  },
+  home_switch: {
+    "Free Months": [
+      {name:"100Mbps",price:"89",tag:"FREE 6 Months",feat:["Save RM534","Competitor bill required"],color:UB.green},
+      {name:"300Mbps",price:"129",tag:"FREE 6 Months",feat:["Save RM774","Competitor bill required"],color:UB.green,pop:"Most Savings"},
+      {name:"500Mbps",price:"149",tag:"FREE 6 Months",feat:["Save RM894","Competitor bill required"],color:UB.green},
+      {name:"1Gbps",price:"249",tag:"FREE 6 Months",feat:["Save RM1,494","Competitor bill required"],color:UB.green},
+    ],
+    "Free Device": [
+      {name:"300Mbps + 43\" TV",price:"139",tag:"FREE TV",feat:["Free 43\" smart TV","36-month contract"],color:UB.orange},
+      {name:"500Mbps + iPad",price:"159",tag:"FREE iPad",feat:["Free iPad 11\" 128GB","36-month contract"],color:UB.orange,pop:"Best Pick"},
+      {name:"500Mbps + 65\" TV",price:"169",tag:"FREE 65\" TV",feat:["Free 65\" smart TV","36-month contract"],color:UB.red},
+      {name:"1Gbps + 75\" TV",price:"269",tag:"FREE 75\" TV",feat:["Free 75\" smart TV","30-month contract"],color:UB.red},
     ],
   },
   biz_dms: [
@@ -54,26 +124,48 @@ const DMS_PKG = [
   {name:"Pro",mo:900,cr:7000,camp:"Up to 12 months",color:UB.red},
 ];
 
-const FAQ = [
-  ["Is this page mainly for the World Cup Pass?","No. The main service is business internet and digital marketing. The World Cup Business Pass is a support offer for businesses preparing for FIFA World Cup 2026."],
-  ["Can you help with normal Unifi Business internet?","Yes. We can help check coverage and guide the application process for your premise."],
-  ["Can you help with digital marketing?","Yes. We can help with landing pages, ads (Google / Facebook / TikTok), SEO, WhatsApp lead flow and campaign setup."],
-  ["What is the RM400 World Cup Pass?","It refers to the Unifi FIFA World Cup 2026 Business Season Pass, subject to Unifi's official terms and eligibility."],
-  ["Can I use the World Cup Pass to advertise my café event?","Be careful. Business viewing rights are limited. Commercial, promotional and advertising use may not be included unless officially allowed under the terms."],
-  ["Can home users ask about the World Cup Pass too?","Yes, but this page prioritises business customers. Home users can still ask about personal pass eligibility (pricing starts from RM50 / RM60, depending on eligibility)."],
-  ["Should I upgrade internet before the World Cup?","If your business internet is already unstable, check early. World Cup season can increase streaming and customer WiFi demand."],
-  ["Who are you?","We are an authorized Unifi reseller (SSM 1221398-T). We help business owners with internet coverage, plan selection, digital marketing and campaign setup through one guided WhatsApp route."],
+const STORIES = [
+  {title:"Kelantan Food Business",bef:"Sold locally at pasar only.",aft:"Applied DMS Standard Pack — Facebook ads boosted orders by 49% in 2 months.",metric:"+49%",img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=260&fit=crop"},
+  {title:"Property Agent Team",bef:"Walk-ins only. No online leads.",aft:"Got Biz 500Mbps + Uni5G for team. AI chatbot qualified 3x more leads.",metric:"3x",img:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=260&fit=crop"},
+  {title:"Boutique Café in PJ",bef:"Single outlet. No delivery orders.",aft:"Switched to Unifi 300Mbps (6 months free) + DMS Premium. Opened 2nd branch in 6 months.",metric:"2x",img:"https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=260&fit=crop"},
 ];
+
+const FAQ = [
+  ["What is UnifiBiz.digital?","We are Synergy Spark Sdn Bhd (SSM 1221398-T), an authorized reseller for all Unifi products — Home, Business, Mobile, 5G, DMS, and Cloud Storage. 140,000+ installations over 15 years."],
+  ["How do I apply?","Just tap any WhatsApp button on this page. Tell us what you need, and we'll process within 24 hours. Available 24/7."],
+  ["Do I need to visit a TM store?","No. Everything is handled via WhatsApp — application, activation, after-sales support."],
+  ["What broadband speeds are available?","Home fibre: 100Mbps (RM89), 300Mbps (RM129), 500Mbps (RM149), 1Gbps (RM249), 2Gbps (RM319). Business: 300Mbps to 2Gbps with static IP and SLA."],
+  ["What's included free with broadband?","All plans include a free WiFi 6 or WiFi 7 router. Prime Promo plans get 3 months free. 1Gbps and 2Gbps include smart home security kits."],
+  ["Can I get free months if I switch from another provider?","Yes — bring your competitor bill and get up to 6 months free on selected plans. Free TV or iPad options also available for switchers."],
+  ["What mobile plans do you offer?","Uni5G RM39 (30GB, no contract), Uni5G RM69 (unlimited, no contract), Unifi Air RM99 (unlimited + free router, 24 months). Existing Unifi customers can get a free 5G smartphone."],
+  ["What is Unifi DMS?","Digital Marketing Solution — Malaysia's first instalment-based marketing. A dedicated team runs Facebook, Google, TikTok & Instagram ads for you. From RM100/month over 12 months."],
+  ["How is DMS different from hiring an agency?","Agencies charge RM1,500–5,000/month upfront. DMS starts at RM100/month on instalments with no upfront cost. Includes campaign manager, designer, and copywriter."],
+  ["Is there a contract?","Broadband: 24–36 months depending on plan. Mobile SIM-only: no contract. DMS: 12-month instalment period."],
+  ["Can I bundle broadband with mobile?","Yes — combo plans start from RM128 (100Mbps + 1 SIM). Family plans with 2 SIMs from RM167. Includes device add-on options."],
+  ["What areas do you cover?","All 13 states and 3 Federal Territories in Malaysia. Tap the WhatsApp button and we'll check coverage at your exact address instantly."],
+];
+
 
 function Home() {
   const T = useTheme();
+  const [pick,setPick]=useState(null);
+  const [sub,setSub]=useState(null);
+  const [qs,setQs]=useState(-1);const [sc,setSc]=useState([0,0,0,0]);const [qr,setQr]=useState(null);
   const [faq,setFaq]=useState(null);
   const [userLoc,setUserLoc]=useState(null);
-  const [qs,setQs]=useState(-1);const [sc,setSc]=useState([0,0,0,0]);const [qr,setQr]=useState(null);
+  const [heroIdx,setHeroIdx]=useState(0);
 
+  const HERO_IMG=[
+    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
+  ];
+
+  useEffect(()=>{const t=setInterval(()=>setHeroIdx(p=>(p+1)%3),4000);return()=>clearInterval(t);},[]);
   useEffect(()=>{fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{if(d.city&&d.region)setUserLoc({city:d.city,region:d.region});}).catch(()=>{});},[]);
   const scr=id=>document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
   const qa=s=>{const n=sc.map((v,i)=>v+s[i]);setSc(n);if(qs+1>=DMS_QZ.length)setQr(n.indexOf(Math.max(...n)));else setQs(qs+1);};
+  const sel=(id)=>{setPick(pick===id?null:id);setSub(null);if(pick!==id)setTimeout(()=>document.getElementById("plans")?.scrollIntoView({behavior:"smooth",block:"nearest"}),100);};
 
   const PlanGrid=({plans})=><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(185px,1fr))",gap:10}}>
     {plans.map(p=><div key={p.name} style={{background:T.card,border:p.pop?`2px solid ${p.color}`:`1px solid ${T.border}`,borderRadius:12,overflow:"hidden",transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=T.cardHover;}} onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow="none";}}>
@@ -89,298 +181,222 @@ function Home() {
     </div>)}
   </div>;
 
-  const Bullets=({items,color=UB.green,cols=1})=><div style={{display:"grid",gridTemplateColumns:cols===2?"1fr 1fr":"1fr",gap:"6px 16px"}}>
-    {items.map(t=><div key={t} style={{fontSize:13,color:T.muted,display:"flex",alignItems:"flex-start",gap:7}}>{Icons.check(color,13)}<span>{t}</span></div>)}
-  </div>;
-
-  const heading={fontSize:"clamp(20px,3vw,30px)",fontWeight:800,marginBottom:8};
-  const lead={color:T.muted,fontSize:14,lineHeight:1.7,marginBottom:18,maxWidth:620};
+  const Tabs=({data,def})=>{const tabs=Object.keys(data);const cur=sub||def||tabs[0];return<div><div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:14}}>{tabs.map(t=><button key={t} onClick={()=>setSub(t)} style={{padding:"6px 14px",borderRadius:8,border:`1px solid ${cur===t?UB.blue:T.border}`,background:cur===t?UB.blue:T.card,color:cur===t?"white":T.muted,fontSize:12,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{t}</button>)}</div><PlanGrid plans={data[cur]}/></div>;};
 
   return <>
     <style>{responsiveCSS}</style>
 
-    {/* ═══ 1. PROMO STRIP ═══ */}
-    <div style={{background:`linear-gradient(90deg,${UB.navy},${UB.blue})`,color:"white",padding:"9px 16px",textAlign:"center",fontSize:12.5,display:"flex",justifyContent:"center",alignItems:"center",gap:14,flexWrap:"wrap"}}>
-      <span style={{fontWeight:600}}>⚽ Prepare your business for World Cup season — Business Internet · Digital Marketing · Unifi FIFA World Cup 2026 Business Pass RM400</span>
-      <button onClick={()=>scr("worldcup")} style={{background:"rgba(255,255,255,0.16)",border:"1px solid rgba(255,255,255,0.25)",color:"white",fontSize:11.5,fontWeight:700,padding:"5px 12px",borderRadius:20,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap"}}>Check Business Setup →</button>
-    </div>
-
-    {/* ═══ 2. HERO ═══ */}
-    <section style={{width:"100%",background:`linear-gradient(160deg,${UB.navy} 0%,${UB.blue} 60%,${UB.sky} 100%)`,padding:"64px 20px 52px",overflow:"hidden"}}>
+    {/* ═══ HERO ═══ */}
+    <section style={{width:"100%",background:`linear-gradient(160deg,${UB.navy} 0%,${UB.blue} 60%,${UB.sky} 100%)`,padding:"80px 20px 48px",overflow:"hidden"}}>
       <div className="hero-flex" style={{maxWidth:1100,margin:"0 auto",display:"flex",flexWrap:"wrap",gap:40,alignItems:"center"}}>
-        <div className="hero-left" style={{flex:"1 1 460px",maxWidth:600}}>
+        {/* LEFT */}
+        <div className="hero-left" style={{flex:"1 1 400px",maxWidth:520}}>
           <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"6px 14px",borderRadius:8,background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.15)",marginBottom:18}}>
             <span style={{width:7,height:7,borderRadius:"50%",background:UB.green}}/>
-            <span style={{fontSize:12,fontWeight:600,color:"white"}}>Authorized Unifi Partner — Home & Business</span>
+            <span style={{fontSize:12,fontWeight:600,color:"white"}}>Official Unifi Partner — Home & Business</span>
           </div>
-          <h1 style={{fontSize:"clamp(26px,4.6vw,46px)",fontWeight:800,lineHeight:1.12,marginBottom:16,color:"white",letterSpacing:"-0.02em"}}>
-            Internet, Marketing & World Cup-Ready Setup for Malaysian Businesses
+          <h1 style={{fontSize:"clamp(28px,5vw,50px)",fontWeight:800,lineHeight:1.08,marginBottom:14,color:"white",letterSpacing:"-0.02em"}}>
+            Get Your Unifi.<br/>Free devices included.<br/><span style={{color:UB.sky}}>From RM89/mo.</span>
           </h1>
-          <p style={{fontSize:"clamp(14px,2vw,16px)",color:"rgba(255,255,255,0.82)",lineHeight:1.7,marginBottom:14,maxWidth:520}}>
-            We help business owners set up reliable internet, improve online visibility, and prepare their premise for high-traffic seasons like FIFA World Cup 2026.
-          </p>
-          <p style={{fontSize:13.5,color:"rgba(255,255,255,0.65)",lineHeight:1.7,marginBottom:24,maxWidth:520}}>
-            Café, restaurant, retail shop, office, clinic, salon, showroom or service business — we help you choose the right Unifi business solution and digital marketing support.
+          <p style={{fontSize:"clamp(14px,2vw,16px)",color:"rgba(255,255,255,0.8)",lineHeight:1.7,marginBottom:20,maxWidth:440}}>
+            Home fibre, business broadband, 5G mobile, digital marketing — every plan includes <strong style={{color:"white"}}>free router, free phone, or free months</strong>.
           </p>
 
-          <div className="hero-ctas" style={{display:"flex",flexWrap:"wrap",gap:10,marginBottom:18}}>
-            <WaBtn text="Check Business Internet Coverage" msg="I want to check Unifi Business internet coverage for my premise." utm="hero_internet" style={{fontSize:14,padding:"13px 22px"}}/>
-            <button onClick={()=>scr("marketing")} style={{padding:"13px 22px",borderRadius:10,border:"1.5px solid rgba(255,255,255,0.5)",background:"transparent",color:"white",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Ask About Digital Marketing</button>
-          </div>
-          <button onClick={()=>scr("worldcup")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.75)",fontSize:12.5,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textDecoration:"underline",textUnderlineOffset:3}}>Ask About World Cup Business Pass →</button>
-
-          <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",fontSize:11,color:"rgba(255,255,255,0.6)",marginTop:22}}>
-            <span>Authorized Unifi reseller · SSM 1221398-T · Guided via WhatsApp</span>
-          </div>
-        </div>
-
-        <div className="hero-right" style={{flex:"1 1 320px",position:"relative"}}>
-          <div style={{background:"rgba(255,255,255,0.07)",border:"1px solid rgba(255,255,255,0.14)",borderRadius:16,padding:"22px 20px",backdropFilter:"blur(4px)"}}>
-            <div style={{fontSize:11,letterSpacing:1.5,textTransform:"uppercase",color:"rgba(255,255,255,0.55)",fontWeight:700,marginBottom:14}}>One contact, three needs</div>
+          <div className="hero-btns" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16,maxWidth:420}}>
             {[
-              {i:Icons.zap,t:"Business Internet",d:"POS, payment, CCTV, customer WiFi & cloud"},
-              {i:Icons.trending,t:"Digital Marketing",d:"Ads, landing pages, SEO & WhatsApp leads"},
-              {i:Icons.check,t:"World Cup Setup",d:"FIFA 2026 Business Pass + stable streaming"},
-            ].map(x=><div key={x.t} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"11px 0",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-              <div style={{width:34,height:34,borderRadius:9,background:"rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{x.i("white",17)}</div>
-              <div><div style={{fontSize:14,fontWeight:700,color:"white"}}>{x.t}</div><div style={{fontSize:11.5,color:"rgba(255,255,255,0.6)",marginTop:1,lineHeight:1.4}}>{x.d}</div></div>
-            </div>)}
+              {id:"switch",label:"Switch & Save",sub:"Exclusive switcher deals",color:UB.green,icon:Icons.trending},
+              {id:"new",label:"New to Unifi",sub:"FREE 3 months",color:"white",icon:Icons.zap},
+              {id:"phone",label:"Free 5G Phone",sub:"Samsung / OPPO / Redmi",color:UB.sky,icon:Icons.phone},
+              {id:"dms",label:"Digital Marketing",sub:"From RM100/mo",color:UB.orange,icon:Icons.trending},
+            ].map(o=><button key={o.id} onClick={()=>{sel(o.id);scr("solutions");}} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 12px",borderRadius:10,border:"1px solid rgba(255,255,255,0.2)",background:"rgba(255,255,255,0.08)",color:"white",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.18)";}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.08)";}}>
+              <div style={{width:28,height:28,borderRadius:7,background:"rgba(255,255,255,0.12)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>{o.icon("white",14)}</div>
+              <div style={{textAlign:"left"}}><div style={{fontSize:12,fontWeight:700}}>{o.label}</div><div style={{fontSize:9,opacity:0.7}}>{o.sub}</div></div>
+            </button>)}
+          </div>
+
+          <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap",fontSize:11,color:"rgba(255,255,255,0.6)"}}>
+            {[1,2,3,4,5].map(i=><svg key={i} width="11" height="11" viewBox="0 0 24 24" fill="#F59E0B"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
+            <span style={{color:"white",fontWeight:600}}>4.8/5</span>
+            <span>140,000+ customers · 15 years · SSM 1221398-T</span>
+          </div>
+        </div>
+
+        {/* RIGHT — carousel */}
+        <div className="hero-right" style={{flex:"1 1 360px",position:"relative"}}>
+          <div style={{borderRadius:16,overflow:"hidden",position:"relative",border:"2px solid rgba(255,255,255,0.1)"}}>
+            <div className="carousel-wrap" style={{position:"relative",overflow:"hidden",height:300}}>
+              {HERO_IMG.map((src,i)=><img key={i} src={src} alt="" style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",objectFit:"cover",opacity:heroIdx===i?1:0,transition:"opacity 0.8s ease"}} onError={e=>{e.target.style.opacity="0";}}/>)}
+              <div style={{position:"absolute",bottom:0,left:0,right:0,height:80,background:"linear-gradient(to top,rgba(0,26,92,0.6),transparent)",pointerEvents:"none"}}/>
+            </div>
+            <div style={{position:"absolute",top:12,right:12,background:"white",borderRadius:8,padding:"8px 12px",boxShadow:"0 4px 15px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:6,zIndex:2}}>
+              {Icons.trending(UB.green,16)}<div><div style={{fontSize:14,fontWeight:800,color:UB.green}}>140K+</div><div style={{fontSize:9,color:"#666"}}>Installations</div></div>
+            </div>
+            <div style={{position:"absolute",bottom:12,left:12,background:"white",borderRadius:8,padding:"8px 12px",boxShadow:"0 4px 15px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:6,zIndex:2}}>
+              {Icons.zap(UB.blue,16)}<div><div style={{fontSize:14,fontWeight:800,color:UB.navy}}>24/7</div><div style={{fontSize:9,color:"#666"}}>WhatsApp Support</div></div>
+            </div>
+            <div style={{position:"absolute",bottom:12,right:12,background:UB.green,borderRadius:8,padding:"8px 12px",boxShadow:"0 4px 15px rgba(0,0,0,0.15)",display:"flex",alignItems:"center",gap:6,zIndex:2}}>
+              {Icons.check("white",16)}<div><div style={{fontSize:13,fontWeight:800,color:"white"}}>&lt;30s</div><div style={{fontSize:9,color:"rgba(255,255,255,0.8)"}}>Reply Time</div></div>
+            </div>
+          </div>
+          <div style={{display:"flex",justifyContent:"center",gap:6,marginTop:10}}>
+            {HERO_IMG.map((_,i)=><button key={i} onClick={()=>setHeroIdx(i)} style={{width:heroIdx===i?22:8,height:7,borderRadius:4,border:"none",cursor:"pointer",transition:"all 0.3s",background:heroIdx===i?"white":"rgba(255,255,255,0.3)"}}/>)}
           </div>
         </div>
       </div>
     </section>
 
-    {/* ═══ 3. MAIN BUYER SPLIT ═══ */}
-    <section id="solutions" style={{padding:"48px 20px",maxWidth:1000,margin:"0 auto"}}>
-      <div style={{textAlign:"center",marginBottom:24}}>
-        <SectionLabel text="Get Started" />
-        <h2 style={heading}>What do you need help with?</h2>
+    {/* ═══ PRODUCT FINDER ═══ */}
+    <section id="solutions" style={{padding:"40px 20px 56px",maxWidth:1000,margin:"0 auto"}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <SectionLabel text="Find Your Plan" />
+        <h2 style={{fontSize:"clamp(22px,3.5vw,34px)",fontWeight:800}}>What are you looking for?</h2>
       </div>
-      <div className="split-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>
+
+      <div className="finder-cards" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:pick?24:0}}>
         {[
-          {id:"internet",icon:Icons.zap,color:UB.blue,t:"Business Internet",d:"Stable internet for POS, payment, CCTV, staff, customer WiFi, streaming, cloud and daily operation.",cta:"Check Business Internet"},
-          {id:"marketing",icon:Icons.trending,color:UB.orange,t:"Digital Marketing Service",d:"More leads from Google, Facebook, TikTok, landing pages, SEO, WhatsApp automation and campaigns.",cta:"Improve My Online Leads"},
-          {id:"worldcup",icon:Icons.check,color:UB.green,t:"World Cup Business Setup",d:"Prepare your premise for FIFA World Cup 2026 viewing with the correct business pass and internet setup.",cta:"Ask About World Cup Setup"},
-        ].map(c=><div key={c.id} style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:14,padding:"22px 20px",display:"flex",flexDirection:"column"}}>
-          <div style={{width:44,height:44,borderRadius:11,background:c.color+"12",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14}}>{c.icon(c.color,22)}</div>
-          <h3 style={{fontSize:17,fontWeight:800,marginBottom:8}}>{c.t}</h3>
-          <p style={{fontSize:13,color:T.muted,lineHeight:1.6,marginBottom:16,flex:1}}>{c.d}</p>
-          <button onClick={()=>scr(c.id)} style={{padding:"10px 16px",borderRadius:9,border:"none",background:c.color,color:"white",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{c.cta} →</button>
-        </div>)}
+          {id:"switch",label:"Switch & Save",desc:"FREE 6 months or FREE TV/iPad",icon:Icons.trending,color:UB.green},
+          {id:"new",label:"New to Unifi",desc:"Home, business, bundles",icon:Icons.zap,color:UB.blue},
+          {id:"phone",label:"Free Phone",desc:"5G plans + free smartphone",icon:Icons.phone,color:UB.sky},
+          {id:"dms",label:"Digital Marketing",desc:"Ads managed for you",icon:Icons.trending,color:UB.orange},
+        ].map(o=><button key={o.id} onClick={()=>sel(o.id)}
+          style={{background:pick===o.id?o.color:T.card,border:`2px solid ${pick===o.id?o.color:T.border}`,borderRadius:12,padding:"16px 12px",textAlign:"center",cursor:"pointer",transition:"all 0.2s",fontFamily:"'DM Sans',sans-serif"}}
+          onMouseEnter={e=>{if(pick!==o.id){e.currentTarget.style.borderColor=o.color;e.currentTarget.style.transform="translateY(-2px)";}}}
+          onMouseLeave={e=>{if(pick!==o.id){e.currentTarget.style.borderColor=T.border;e.currentTarget.style.transform="none";}}}>
+          <div style={{width:40,height:40,borderRadius:10,background:pick===o.id?"rgba(255,255,255,0.2)":o.color+"0D",display:"inline-flex",alignItems:"center",justifyContent:"center",marginBottom:6}}>{o.icon(pick===o.id?"white":o.color,20)}</div>
+          <div style={{fontSize:14,fontWeight:700,color:pick===o.id?"white":T.text}}>{o.label}</div>
+          <div style={{fontSize:11,color:pick===o.id?"rgba(255,255,255,0.8)":T.muted,marginTop:2}}>{o.desc}</div>
+        </button>)}
       </div>
-    </section>
 
-    {/* ═══ 4. PROBLEM ═══ */}
-    <section style={{padding:"48px 20px",background:T.sub,borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`}}>
-      <div style={{maxWidth:760,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:22}}>
-          <SectionLabel text="The Gap" />
-          <h2 style={heading}>Weak internet and marketing quietly cost you customers</h2>
-        </div>
-        <Bullets cols={2} color={UB.red} items={[
-          "Internet is unstable during busy hours",
-          "POS or payment system slows down",
-          "CCTV keeps disconnecting",
-          "Customer WiFi is poor",
-          "Staff cannot work smoothly online",
-          "Ads run but the landing page does not convert",
-          "WhatsApp inquiries are not handled properly",
-          "Business is hard to find online",
-          "Campaigns are done last minute",
-          "World Cup season arrives, premise is not ready",
-        ]}/>
-        <div style={{marginTop:20,padding:"16px 18px",background:T.card,border:`1px solid ${T.border}`,borderRadius:12,fontSize:13.5,lineHeight:1.8,color:T.text}}>
-          Your internet brings the business online. Your marketing brings customers in. Your World Cup setup gives customers a reason to stay longer.
-        </div>
-      </div>
-    </section>
-
-    {/* ═══ 5. BUSINESS INTERNET ═══ */}
-    <section id="internet" style={{padding:"56px 20px"}}>
-      <div style={{maxWidth:900,margin:"0 auto"}}>
-        <SectionLabel text="Business Internet" />
-        <h2 style={heading}>Business internet that supports daily operations</h2>
-        <p style={lead}>We help you check and apply for suitable Unifi Business internet based on your premise and usage.</p>
-        <div className="two-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:24,marginBottom:24}}>
-          <div>
-            <div style={{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:T.muted,marginBottom:10}}>Suitable for</div>
-            <Bullets cols={2} items={["Restaurants","Cafés","Retail shops","Clinics","Salons","Offices","Showrooms","Tuition centres","Service businesses","SMEs"]}/>
-          </div>
-          <div>
-            <div style={{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:T.muted,marginBottom:10}}>Common usage</div>
-            <Bullets cols={2} items={["POS system","QR payment","CCTV","Staff devices","Customer WiFi","Cloud system","Video calls","Smart TV display","Online orders","Delivery platforms"]}/>
-          </div>
-        </div>
-        <div style={{marginBottom:18}}><PlanGrid plans={P.home_new.Business}/></div>
-        {userLoc&&<div style={{background:UB.green+"08",border:`1px solid ${UB.green}20`,borderRadius:10,padding:"12px 16px",marginBottom:16,fontSize:13,color:T.text}}>
-          We can check business fibre availability in <strong>{userLoc.city}</strong> for you.
+      {/* PLANS */}
+      <div id="plans">
+        {pick==="switch"&&<div style={{animation:"fadeUp 0.3s ease"}}>
+          <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Switching Deals</h3>
+          <p style={{color:T.muted,fontSize:12,marginBottom:14}}>Competitor bill required (same address & name).</p>
+          <Tabs data={P.home_switch}/>
         </div>}
-        <WaBtn text={userLoc?`Check My Coverage in ${userLoc.city}`:"Check My Business Coverage"} msg={userLoc?`I'm in ${userLoc.city}, ${userLoc.region}. I want to check Unifi Business internet coverage for my premise.`:"I want to check Unifi Business internet coverage for my premise."} utm="internet_coverage"/>
+        {pick==="new"&&<div style={{animation:"fadeUp 0.3s ease"}}>
+          <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Plans & Bundles</h3>
+          <p style={{color:T.muted,fontSize:12,marginBottom:14}}>All plans include free WiFi 6/7 router.</p>
+          <Tabs data={P.home_new} def="Just Internet"/>
+        </div>}
+        {pick==="phone"&&<div style={{animation:"fadeUp 0.3s ease"}}>
+          <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Mobile & Free Phone</h3>
+          <p style={{color:T.muted,fontSize:12,marginBottom:14}}>Free smartphone for existing Unifi customers.</p>
+          <PlanGrid plans={P.home_mobile}/>
+        </div>}
+        {pick==="dms"&&<div style={{animation:"fadeUp 0.3s ease"}}>
+          <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Digital Marketing Solution (DMS)</h3>
+          <p style={{color:T.muted,fontSize:12,marginBottom:4}}>Agency: RM1,500-5,000/mo. <span style={{color:UB.orange,fontWeight:700}}>DMS: from RM100/mo.</span></p>
+          <div style={{marginBottom:12,opacity:0.5}}><p style={{fontSize:9,letterSpacing:1,textTransform:"uppercase",color:T.muted,marginBottom:4}}>Your ads run on</p><PartnerLogos T={T}/></div>
+          <Card hover={false} style={{padding:20,border:`1px solid ${UB.orange}20`,marginBottom:16,maxWidth:500}}>
+            {qs===-1&&!qr&&<div style={{textAlign:"center"}}>
+              <h3 style={{fontSize:15,fontWeight:700,marginBottom:4}}>Not sure which pack?</h3>
+              <p style={{fontSize:12,color:T.muted,marginBottom:12}}>4 questions. 30 seconds.</p>
+              <PrimaryBtn text="Find My Package" onClick={()=>setQs(0)} style={{fontSize:13,padding:"8px 20px"}}/>
+            </div>}
+            {qs>=0&&!qr&&<div>
+              <div style={{display:"flex",gap:3,marginBottom:14}}>{DMS_QZ.map((_,i)=><div key={i} style={{flex:1,height:3,borderRadius:2,background:i<=qs?UB.orange:T.border}}/>)}</div>
+              <div style={{fontSize:10,fontWeight:700,color:UB.orange,marginBottom:4}}>Q{qs+1}/{DMS_QZ.length}</div>
+              <h3 style={{fontSize:15,fontWeight:700,marginBottom:10}}>{DMS_QZ[qs].q}</h3>
+              {DMS_QZ[qs].o.map((o,i)=><button key={i} onClick={()=>qa(o.s)} style={{display:"block",width:"100%",background:T.sub,border:`1px solid ${T.border}`,padding:"9px 12px",borderRadius:8,cursor:"pointer",color:T.text,textAlign:"left",fontSize:12,fontFamily:"'DM Sans',sans-serif",marginBottom:6,transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=UB.orange;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;}}>{String.fromCharCode(65+i)}. {o.l}</button>)}
+            </div>}
+            {qr!==null&&(()=>{const p=DMS_PKG[qr];return<div style={{textAlign:"center"}}>
+              <div style={{fontSize:11,fontWeight:700,color:UB.green,marginBottom:4}}>{Icons.check(UB.green,14)} PERFECT MATCH</div>
+              <h3 style={{fontSize:18,fontWeight:800}}>{p.name} — <span style={{color:p.color}}>RM{p.mo}/mo</span></h3>
+              <div style={{fontSize:11,color:T.muted,margin:"4px 0 12px"}}>{p.cr.toLocaleString()} credits · {p.camp}</div>
+              <WaBtn text={`Get ${p.name}`} msg={`Package Finder recommended DMS *${p.name} Pack* (RM${p.mo}/mo). I want to proceed.`} utm="dms_finder" sm/>
+              <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{background:"none",border:"none",color:T.muted,fontSize:11,cursor:"pointer",marginTop:8,fontFamily:"'DM Sans',sans-serif"}}>Retake →</button>
+            </div>;})()}
+          </Card>
+          <PlanGrid plans={P.biz_dms}/>
+        </div>}
       </div>
     </section>
 
-    {/* ═══ 6. DIGITAL MARKETING ═══ */}
-    <section id="marketing" style={{padding:"56px 20px",background:T.sub,borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`}}>
-      <div style={{maxWidth:900,margin:"0 auto"}}>
-        <SectionLabel text="Digital Marketing" />
-        <h2 style={heading}>Get more customers, not just more clicks</h2>
-        <p style={lead}>Internet alone is not enough. If your business is online but customers cannot find you, your setup is incomplete. We help improve your digital presence through:</p>
-        <div style={{marginBottom:20}}><Bullets cols={2} color={UB.orange} items={["Landing page setup","Google Ads","Facebook Ads","TikTok Ads","SEO content","WhatsApp lead flow","Campaign copywriting","Lead generation funnel","Tracking setup","Offer positioning","Local business visibility","WhatsApp automation (BotKu AI)"]}/></div>
-        <p style={{fontSize:13.5,color:T.text,marginBottom:20,fontWeight:600}}>The goal is simple: bring more qualified inquiries, not random traffic.</p>
-
-        <div style={{marginBottom:8,opacity:0.6}}><p style={{fontSize:9,letterSpacing:1,textTransform:"uppercase",color:T.muted,marginBottom:6}}>Your ads run on</p><PartnerLogos T={T}/></div>
-
-        <Card hover={false} style={{padding:20,border:`1px solid ${UB.orange}20`,margin:"16px 0",maxWidth:520}}>
-          {qs===-1&&qr===null&&<div style={{textAlign:"center"}}>
-            <h3 style={{fontSize:15,fontWeight:700,marginBottom:4}}>Not sure which marketing pack?</h3>
-            <p style={{fontSize:12,color:T.muted,marginBottom:12}}>4 questions. 30 seconds.</p>
-            <PrimaryBtn text="Find My Package" onClick={()=>setQs(0)} style={{fontSize:13,padding:"8px 20px"}}/>
-          </div>}
-          {qs>=0&&qr===null&&<div>
-            <div style={{display:"flex",gap:3,marginBottom:14}}>{DMS_QZ.map((_,i)=><div key={i} style={{flex:1,height:3,borderRadius:2,background:i<=qs?UB.orange:T.border}}/>)}</div>
-            <div style={{fontSize:10,fontWeight:700,color:UB.orange,marginBottom:4}}>Q{qs+1}/{DMS_QZ.length}</div>
-            <h3 style={{fontSize:15,fontWeight:700,marginBottom:10}}>{DMS_QZ[qs].q}</h3>
-            {DMS_QZ[qs].o.map((o,i)=><button key={i} onClick={()=>qa(o.s)} style={{display:"block",width:"100%",background:T.sub,border:`1px solid ${T.border}`,padding:"9px 12px",borderRadius:8,cursor:"pointer",color:T.text,textAlign:"left",fontSize:12,fontFamily:"'DM Sans',sans-serif",marginBottom:6,transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.borderColor=UB.orange;}} onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;}}>{String.fromCharCode(65+i)}. {o.l}</button>)}
-          </div>}
-          {qr!==null&&(()=>{const p=DMS_PKG[qr];return<div style={{textAlign:"center"}}>
-            <div style={{fontSize:11,fontWeight:700,color:UB.green,marginBottom:4}}>{Icons.check(UB.green,14)} SUGGESTED PACK</div>
-            <h3 style={{fontSize:18,fontWeight:800}}>{p.name} — <span style={{color:p.color}}>RM{p.mo}/mo</span></h3>
-            <div style={{fontSize:11,color:T.muted,margin:"4px 0 12px"}}>{p.cr.toLocaleString()} credits · {p.camp}</div>
-            <WaBtn text={`Ask About ${p.name}`} msg={`The package finder suggested the *${p.name} Pack* (RM${p.mo}/mo). I'd like to know more.`} utm="dms_finder" sm/>
-            <button onClick={()=>{setQs(-1);setSc([0,0,0,0]);setQr(null);}} style={{background:"none",border:"none",color:T.muted,fontSize:11,cursor:"pointer",marginTop:8,fontFamily:"'DM Sans',sans-serif"}}>Retake →</button>
-          </div>;})()}
-        </Card>
-
-        <div style={{marginBottom:18}}><PlanGrid plans={P.biz_dms}/></div>
-        <WaBtn text="Audit My Digital Marketing" msg="I'd like an audit of my business digital marketing." utm="marketing_audit"/>
-      </div>
-    </section>
-
-    {/* ═══ 7. COMBINED SOLUTION ═══ */}
-    <section style={{padding:"56px 20px"}}>
-      <div style={{maxWidth:820,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:24}}>
-          <SectionLabel text="Infrastructure" />
-          <h2 style={heading}>Internet + marketing = better business infrastructure</h2>
-          <p style={{...lead,marginInline:"auto"}}>A lot of businesses separate internet and marketing. That is the mistake. We connect both sides so your business is not just online — it's ready to receive customers.</p>
-        </div>
-        <div className="two-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-          <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:12,padding:"20px"}}>
-            <div style={{fontSize:14,fontWeight:800,color:UB.blue,marginBottom:12}}>Your internet affects</div>
-            <Bullets items={["Staff productivity","Customer experience","Payment reliability","CCTV stability","Online order handling","Streaming & TV display","Daily business operation"]}/>
-          </div>
-          <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:12,padding:"20px"}}>
-            <div style={{fontSize:14,fontWeight:800,color:UB.orange,marginBottom:12}}>Your marketing affects</div>
-            <Bullets color={UB.orange} items={["Lead volume","Customer trust","Search visibility","WhatsApp inquiries","Sales conversion","Campaign performance"]}/>
+    {/* ═══ AI CHATBOT ═══ */}
+    <section style={{padding:"56px 20px",background:`linear-gradient(160deg,${UB.navy} 0%,${UB.purple} 100%)`,color:"white"}}>
+      <div className="chat-flex" style={{maxWidth:850,margin:"0 auto",display:"flex",flexWrap:"wrap",gap:32,alignItems:"center"}}>
+        <div style={{flex:"1 1 300px"}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 12px",borderRadius:8,background:"rgba(255,255,255,0.1)",marginBottom:12,fontSize:11,fontWeight:700}}>{"🤖"} AI WHATSAPP CHATBOT</div>
+          <h2 style={{fontSize:"clamp(22px,3.5vw,34px)",fontWeight:800,marginBottom:10}}>Hire an AI that<br/><span style={{color:UB.sky}}>never sleeps</span></h2>
+          <p style={{fontSize:14,color:"rgba(255,255,255,0.8)",lineHeight:1.7,marginBottom:16}}>Replies in seconds. BM & English. Qualifies leads, takes orders, books appointments.</p>
+          {["Replies instantly","BM & English","Takes orders & books","Learns YOUR business"].map(f=><div key={f} style={{display:"flex",alignItems:"center",gap:6,fontSize:12,marginBottom:4}}>{Icons.check(UB.green,13)} {f}</div>)}
+          <div style={{marginTop:16,display:"flex",alignItems:"center",gap:12}}>
+            <button onClick={()=>window.open("https://botku.ai","_blank")} style={{padding:"10px 20px",borderRadius:10,background:"white",color:UB.purple,fontSize:14,fontWeight:700,cursor:"pointer",border:"none",fontFamily:"'DM Sans',sans-serif"}}>Explore BotKu.ai →</button>
+            <span style={{fontSize:14,fontWeight:700,color:UB.sky}}>From RM200/mo</span>
           </div>
         </div>
-        <div style={{textAlign:"center",marginTop:24}}><WaBtn text="Build My Business Setup" msg="I want help connecting business internet and digital marketing for my business." utm="combined_setup"/></div>
-      </div>
-    </section>
-
-    {/* ═══ 8. WORLD CUP BUSINESS PASS ═══ */}
-    <section id="worldcup" style={{padding:"56px 20px",background:`linear-gradient(160deg,${UB.navy},#0d1330)`,color:"white"}}>
-      <div style={{maxWidth:820,margin:"0 auto"}}>
-        <div style={{display:"inline-flex",alignItems:"center",gap:8,padding:"5px 12px",borderRadius:8,background:"rgba(255,255,255,0.1)",marginBottom:14,fontSize:11,fontWeight:700,letterSpacing:1}}>⚽ ADD-ON · FIFA WORLD CUP 2026</div>
-        <h2 style={{fontSize:"clamp(20px,3vw,30px)",fontWeight:800,marginBottom:10}}>FIFA World Cup 2026 Business Pass support</h2>
-        <p style={{fontSize:14,color:"rgba(255,255,255,0.78)",lineHeight:1.7,marginBottom:14,maxWidth:640}}>
-          World Cup is not the main product — it's a campaign opportunity for businesses that already need proper internet and customer-facing screen setup.
-        </p>
-        <div style={{display:"inline-flex",alignItems:"baseline",gap:8,background:"rgba(255,255,255,0.08)",border:"1px solid rgba(255,255,255,0.15)",borderRadius:12,padding:"14px 20px",marginBottom:20}}>
-          <span style={{fontSize:13,color:"rgba(255,255,255,0.7)"}}>Unifi Business Season Pass</span>
-          <span style={{fontSize:30,fontWeight:800,color:UB.sky}}>RM400</span>
-          <span style={{fontSize:11,color:"rgba(255,255,255,0.5)"}}>subject to official terms</span>
-        </div>
-        <div style={{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:"rgba(255,255,255,0.55)",marginBottom:10}}>Suitable for premises showing matches</div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"6px 16px",marginBottom:20}}>
-          {["Restaurants","Cafés","Mamak shops","Bistros","Hotels","Lounges","Clubs","Waiting areas","Customer seating areas"].map(t=>
-            <div key={t} style={{fontSize:13,color:"rgba(255,255,255,0.8)",display:"flex",gap:7}}>{Icons.check(UB.sky,13)}<span>{t}</span></div>)}
-        </div>
-        <div style={{background:"rgba(229,0,43,0.12)",border:"1px solid rgba(229,0,43,0.35)",borderRadius:10,padding:"14px 16px",fontSize:12.5,lineHeight:1.7,color:"rgba(255,255,255,0.85)",marginBottom:20}}>
-          <strong>Important:</strong> The Business Pass includes limited public viewing rights within the registered business premise. It does not include commercial, promotional or advertising rights unless separately allowed under official terms.
-        </div>
-        <WaBtn text="Ask About Business World Cup Pass" msg="I want to ask about the Unifi FIFA World Cup 2026 Business Season Pass (RM400) for my premise." utm="worldcup_pass"/>
-      </div>
-    </section>
-
-    {/* ═══ 9. WORLD CUP INTERNET READINESS ═══ */}
-    <section style={{padding:"56px 20px"}}>
-      <div style={{maxWidth:760,margin:"0 auto"}}>
-        <SectionLabel text="Readiness Check" />
-        <h2 style={heading}>Don't let buffering ruin match night</h2>
-        <p style={lead}>If your business plans to show matches, your internet must be ready before peak traffic. We can help check:</p>
-        <Bullets cols={2} items={["Business fibre availability","Suitable speed for your premise","Customer WiFi requirement","Smart TV / screen setup needs","Streaming stability","POS & QR payment reliability","CCTV & staff usage"]}/>
-        <p style={{fontSize:13.5,color:T.text,fontWeight:600,margin:"18px 0"}}>The pass gives you viewing access. The internet makes the experience stable.</p>
-        <WaBtn text="Check My World Cup Internet Readiness" msg="I want to check if my business internet is ready for World Cup match streaming." utm="worldcup_readiness"/>
-      </div>
-    </section>
-
-    {/* ═══ 10. CONSUMER PASS MINI ═══ */}
-    <section style={{padding:"0 20px 48px"}}>
-      <div style={{maxWidth:760,margin:"0 auto"}}>
-        <div style={{background:T.sub,border:`1px solid ${T.border}`,borderRadius:12,padding:"18px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",gap:16,flexWrap:"wrap"}}>
-          <div>
-            <div style={{fontSize:14,fontWeight:700,marginBottom:3}}>Watching at home?</div>
-            <div style={{fontSize:12.5,color:T.muted,lineHeight:1.6}}>Personal Unifi FIFA World Cup 2026 Season Pass starts from RM50 / RM60, depending on eligibility.</div>
+        <div className="chat-mockup" style={{flex:"1 1 240px",maxWidth:320}}>
+          <div style={{background:"white",borderRadius:12,padding:14,boxShadow:"0 12px 40px rgba(0,0,0,0.3)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:10,paddingBottom:8,borderBottom:"1px solid #eee"}}>
+              <div style={{width:28,height:28,borderRadius:"50%",background:UB.purple+"15",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>{"🤖"}</div>
+              <div><div style={{fontSize:12,fontWeight:700,color:"#1a1a1a"}}>BotKu AI</div><div style={{fontSize:9,color:UB.green}}>● Online 24/7</div></div>
+            </div>
+            {[{f:"user",t:"Berapa harga servis aircond?"},{f:"bot",t:"RM80 untuk 1 unit. Nak book slot? 😊"},{f:"user",t:"Ok book esok pagi"},{f:"bot",t:"10am ada. Nama dan alamat? 👍"}].map((m,i)=>
+              <div key={i} style={{display:"flex",justifyContent:m.f==="user"?"flex-end":"flex-start",marginBottom:5}}>
+                <div style={{maxWidth:"78%",padding:"6px 10px",borderRadius:8,fontSize:11,lineHeight:1.4,color:"#1a1a1a",background:m.f==="user"?"#DCF8C6":"#f0f0f0"}}>{m.t}</div>
+              </div>
+            )}
           </div>
-          <WaBtn text="Check Personal Pass" msg="I want to check personal Unifi FIFA World Cup 2026 Season Pass eligibility." utm="consumer_pass" sm/>
         </div>
       </div>
     </section>
 
-    {/* ═══ 11. WHY CHOOSE ═══ */}
-    <section style={{padding:"56px 20px",background:T.sub,borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`}}>
-      <div style={{maxWidth:760,margin:"0 auto",textAlign:"center"}}>
-        <SectionLabel text="Why UnifiBiz" />
-        <h2 style={heading}>One contact for internet, marketing and campaign setup</h2>
-        <p style={{...lead,marginInline:"auto",marginBottom:22}}>Instead of talking to different parties, you get one guided route. You can ask us about:</p>
-        <div style={{textAlign:"left",maxWidth:560,margin:"0 auto 22px"}}>
-          <Bullets cols={2} items={["Business internet coverage","Home internet coverage","Unifi plan recommendation","World Cup Business Pass","Digital marketing campaign","Landing page setup","WhatsApp lead flow","Local business visibility","Campaign preparation"]}/>
+    {/* ═══ TRACK RECORD ═══ */}
+    <section style={{padding:"40px 20px",background:T.sub,borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`}}>
+      <div style={{maxWidth:800,margin:"0 auto",textAlign:"center"}}>
+        <h3 style={{fontSize:"clamp(18px,3vw,24px)",fontWeight:800,marginBottom:16}}>Trusted since 2010. Still going strong.</h3>
+        <div style={{display:"flex",justifyContent:"center",gap:24,flexWrap:"wrap"}}>
+          {[["140,000+","Homes & businesses connected",UB.blue],["15","Years as authorized Unifi partner",UB.navy],["13+3","States & Federal Territories",UB.sky],["<30s","Average WhatsApp reply time",UB.green]].map(([v,l,c])=>
+            <div key={l} style={{minWidth:140}}>
+              <div style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800,color:c}}>{v}</div>
+              <div style={{fontSize:11,color:T.muted,marginTop:2,lineHeight:1.4}}>{l}</div>
+            </div>
+          )}
         </div>
-        <WaBtn text="WhatsApp Us for Guidance" msg="I'd like guidance on internet, marketing or World Cup setup for my business." utm="why_guidance"/>
       </div>
     </section>
 
-    {/* ═══ 12. USE CASES ═══ */}
+    {/* ═══ STORIES ═══ */}
     <section style={{padding:"56px 20px"}}>
       <div style={{maxWidth:900,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:24}}><SectionLabel text="Examples"/><h2 style={heading}>Example business use cases</h2></div>
-        <div className="usecase-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-          {[
-            {t:"Café / Restaurant",need:"Stable WiFi, POS, QR payment, customer seating, smart TV and possible World Cup viewing setup.",route:"Business Internet + World Cup Pass Support + Local Marketing Campaign",color:UB.orange},
-            {t:"Retail Shop",need:"Stable internet, CCTV, online order handling, Google visibility and WhatsApp inquiry flow.",route:"Business Internet + Google Business Visibility + WhatsApp Lead Flow",color:UB.blue},
-            {t:"Clinic / Salon",need:"Appointment inquiries, customer follow-up, payment system, staff WiFi and online presence.",route:"Business Internet + Landing Page + Ads + WhatsApp Booking Flow",color:UB.green},
-            {t:"Office / Agency",need:"Reliable internet, cloud tools, video calls, staff productivity and lead generation.",route:"Business Internet + Digital Marketing + Lead Funnel",color:UB.purple},
-          ].map(u=><div key={u.t} style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:12,padding:"20px"}}>
-            <h3 style={{fontSize:15,fontWeight:800,marginBottom:8,color:u.color}}>{u.t}</h3>
-            <p style={{fontSize:12.5,color:T.muted,lineHeight:1.6,marginBottom:12}}>{u.need}</p>
-            <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:0.5,color:T.muted,marginBottom:4}}>Recommended route</div>
-            <div style={{fontSize:12.5,color:T.text,fontWeight:600,lineHeight:1.5}}>{u.route}</div>
+        <div style={{textAlign:"center",marginBottom:28}}><SectionLabel text="Results"/><h2 style={{fontSize:"clamp(22px,3vw,32px)",fontWeight:800}}>Real results from Malaysian SMEs</h2></div>
+        <div className="stories-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>
+          {STORIES.map(s=><div key={s.title} style={{background:T.card,borderRadius:12,overflow:"hidden",border:`1px solid ${T.border}`,transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.transform="none";}}>
+            <div style={{height:130,position:"relative",overflow:"hidden",background:`linear-gradient(135deg,${UB.blue}20,${UB.sky}10)`}}>
+              <img src={s.img} alt={s.title} style={{width:"100%",height:"100%",objectFit:"cover"}} onError={e=>{e.target.style.opacity="0";}}/>
+              <div style={{position:"absolute",bottom:8,right:8,background:"white",borderRadius:8,padding:"4px 10px",boxShadow:"0 2px 8px rgba(0,0,0,0.12)"}}><div style={{fontSize:18,fontWeight:800,color:UB.green}}>{s.metric}</div></div>
+            </div>
+            <div style={{padding:14}}>
+              <h3 style={{fontSize:14,fontWeight:700,marginBottom:6}}>{s.title}</h3>
+              <div style={{fontSize:11,marginBottom:3,display:"flex",alignItems:"flex-start",gap:4}}>{Icons.x(UB.red,11)}<span style={{color:T.muted}}>{s.bef}</span></div>
+              <div style={{fontSize:11,display:"flex",alignItems:"flex-start",gap:4}}>{Icons.check(UB.green,11)}<span>{s.aft}</span></div>
+            </div>
           </div>)}
         </div>
       </div>
     </section>
 
-    {/* ═══ 13. TRUST & COMPLIANCE ═══ */}
-    <section style={{padding:"56px 20px",background:T.sub,borderTop:`1px solid ${T.border}`,borderBottom:`1px solid ${T.border}`}}>
-      <div style={{maxWidth:760,margin:"0 auto"}}>
-        <SectionLabel text="Trust & Compliance" />
-        <h2 style={heading}>Apply safely. Market properly. Avoid risky claims.</h2>
-        <p style={lead}>Before applying or paying for any service, always verify:</p>
-        <div className="verify-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:"8px 14px",marginBottom:18}}>
-          {["Company name","SSM number","Invoice issuer","Payment recipient","Service terms","Installation terms","World Cup Pass eligibility","Viewing rights","Marketing claims","Cancellation policy","Support channel"].map(t=>
-            <div key={t} style={{fontSize:12.5,color:T.muted,display:"flex",gap:7,alignItems:"flex-start"}}>{Icons.check(UB.blue,13)}<span>{t}</span></div>)}
-        </div>
-        <div style={{background:T.card,border:`1px solid ${T.border}`,borderRadius:10,padding:"14px 16px",fontSize:13,lineHeight:1.7,color:T.text}}>
-          For World Cup-related business use, always follow official viewing rights and avoid making promotional claims that are not allowed.
-        </div>
+    {/* ═══ COVERAGE ═══ */}
+    <section id="coverage" style={{padding:"40px 20px",background:T.sub,textAlign:"center"}}>
+      <div style={{maxWidth:480,margin:"0 auto"}}>
+        <h2 style={{fontSize:"clamp(20px,3vw,28px)",fontWeight:800,marginBottom:12}}>Available nationwide</h2>
+        {userLoc?
+          <div style={{background:UB.green+"08",border:`1px solid ${UB.green}20`,borderRadius:10,padding:"14px 18px",marginBottom:16}}>
+            <div style={{fontSize:15,fontWeight:700,color:UB.green}}>Get Unifi installed in {userLoc.city} within 24 hours</div>
+            <div style={{fontSize:12,color:T.muted,marginTop:2}}>Same-day installation available in most areas.</div>
+          </div>
+          :<p style={{color:T.muted,fontSize:14,marginBottom:16}}>Same-day installation in most areas across Malaysia.</p>
+        }
+        <WaBtn text={userLoc?`Check Coverage in ${userLoc.city}`:"Check My Coverage"} msg={userLoc?`I'm in ${userLoc.city}, ${userLoc.region}. I want to check Unifi coverage at my address.`:"I want to check Unifi coverage at my address."} utm="coverage"/>
       </div>
     </section>
 
-    {/* ═══ 14. FAQ ═══ */}
-    <section style={{padding:"56px 20px"}}>
-      <div style={{maxWidth:680,margin:"0 auto"}}>
-        <div style={{textAlign:"center",marginBottom:24}}><SectionLabel text="FAQ"/><h2 style={heading}>Common questions</h2></div>
+    {/* ═══ FAQ ═══ */}
+    <section style={{padding:"48px 20px"}}>
+      <div style={{maxWidth:650,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:24}}><SectionLabel text="FAQ"/><h2 style={{fontSize:"clamp(20px,3vw,28px)",fontWeight:800}}>Common questions</h2></div>
         {FAQ.map(([q,a],i)=><div key={i} style={{border:`1px solid ${T.border}`,borderRadius:10,marginBottom:8,background:T.card}}>
           <button onClick={()=>setFaq(faq===i?null:i)} style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 16px",background:"none",border:"none",color:T.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textAlign:"left"}}>
             {q}<span style={{transition:"transform 0.3s",transform:faq===i?"rotate(180deg)":"rotate(0)",flexShrink:0,marginLeft:10}}>{Icons.chevDown(T.muted,14)}</span>
@@ -390,23 +406,19 @@ function Home() {
       </div>
     </section>
 
-    {/* ═══ 15. FINAL CTA ═══ */}
+    {/* ═══ CTA ═══ */}
     <section style={{padding:"56px 20px",background:`linear-gradient(160deg,${UB.blue},${UB.sky})`,textAlign:"center"}}>
-      <div style={{maxWidth:560,margin:"0 auto"}}>
-        <h2 style={{fontSize:"clamp(22px,4vw,32px)",fontWeight:800,color:"white",marginBottom:12,lineHeight:1.25}}>Prepare your business properly — internet first, marketing next, World Cup ready</h2>
-        <p style={{color:"rgba(255,255,255,0.85)",fontSize:14,marginBottom:22}}>Whether you need stable business internet, better digital marketing, or World Cup Pass guidance, we'll help you choose the correct route.</p>
-        <div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"center"}}>
-          <WaBtn text="Check Business Internet Coverage" msg="I want to check Unifi Business internet coverage for my premise." utm="final_internet" style={{fontSize:14,padding:"13px 22px"}}/>
-          <WaBtn text="Ask About Digital Marketing" msg="I want to ask about digital marketing for my business." utm="final_marketing" style={{fontSize:14,padding:"13px 22px",background:"rgba(255,255,255,0.15)",border:"1.5px solid rgba(255,255,255,0.5)"}}/>
-        </div>
-        <button onClick={()=>scr("worldcup")} style={{background:"none",border:"none",color:"rgba(255,255,255,0.85)",fontSize:12.5,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textDecoration:"underline",textUnderlineOffset:3,marginTop:14}}>Ask About World Cup Pass →</button>
-        <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:14}}>Available 24/7 · Authorized Unifi reseller · SSM 1221398-T</div>
+      <div style={{maxWidth:460,margin:"0 auto"}}>
+        <h2 style={{fontSize:"clamp(24px,4vw,36px)",fontWeight:800,color:"white",marginBottom:10}}>Ready to get started?</h2>
+        <p style={{color:"rgba(255,255,255,0.85)",fontSize:14,marginBottom:20}}>Join 140,000+ homes & businesses. One WhatsApp away.</p>
+        <WaBtn text="WhatsApp Apply Now" msg="I want to apply for a Unifi product." utm="final_cta" style={{fontSize:15,padding:"14px 28px"}}/>
+        <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:10}}>Available 24/7 · SSM 1221398-T</div>
       </div>
     </section>
   </>;
 }
 
-function Layout({children}){const T=useTheme();return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/></div>;}
+function Layout({children}){const T=useTheme();return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><SocialProofToast/></div>;}
 
 export default function App(){return<ThemeProvider><Routes>
   <Route path="/" element={<Layout><Home/></Layout>}/>

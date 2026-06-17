@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useTheme, ThemeProvider, Icons, PartnerLogos, Card, SectionLabel, WaBtn, PrimaryBtn, FloatingWA, Nav, Footer, waL, globalStyles } from "./theme";
 import Broadband from "./pages/Broadband";
@@ -52,6 +52,72 @@ function SocialProofToast() {
       <div className="proof-sub" style={{fontSize:10,color:"#6b7280",marginTop:1}}>{p.loc} · {p.min} min ago</div>
     </div>
     <span className="proof-check">{Icons.check("#00B67A",14)}</span>
+  </div>;
+}
+
+/* ═══ EVENT TRACKING → cyberwolves.my/api/track ═══ */
+function trackEvent(event){
+  try{
+    // use existing global tracker if tracker.js exposes one
+    if(typeof window!=="undefined" && typeof window.track==="function"){ window.track(event); return; }
+    const url="https://cyberwolves.my/api/track";
+    const payload=JSON.stringify({event,site:"unifibiz.digital",path:(typeof location!=="undefined"?location.pathname:"/"),ts:Date.now()});
+    if(typeof navigator!=="undefined" && navigator.sendBeacon){
+      navigator.sendBeacon(url,new Blob([payload],{type:"application/json"}));
+    }else{
+      fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:payload,keepalive:true}).catch(()=>{});
+    }
+  }catch(e){}
+}
+
+/* ═══ TIMED WHATSAPP POPUP (fires after 10s, once per session) ═══ */
+const popupCSS = `
+@keyframes ubPopIn{from{opacity:0;transform:translateY(24px) scale(0.96);}to{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes ubFadeIn{from{opacity:0;}to{opacity:1;}}
+.ub-popup-card{animation:ubPopIn 0.35s cubic-bezier(0.16,1,0.3,1);}
+@media(max-width:480px){.ub-popup-card{max-width:92vw!important;}}`;
+function PopupCTA() {
+  const T = useTheme();
+  const [open,setOpen]=useState(false);
+  const clicked=useRef(false);
+  useEffect(()=>{
+    try{ if(sessionStorage.getItem("ub_popup_seen"))return; }catch(e){}
+    const t=setTimeout(()=>{
+      setOpen(true);
+      trackEvent("popup_shown");
+      try{ sessionStorage.setItem("ub_popup_seen","1"); }catch(e){}
+    },10000);
+    return()=>clearTimeout(t);
+  },[]);
+  if(!open)return null;
+  const close=()=>{ if(!clicked.current)trackEvent("popup_dismiss"); setOpen(false); };
+  return <div onClick={close} style={{position:"fixed",inset:0,zIndex:1000,background:"rgba(0,12,40,0.55)",backdropFilter:"blur(3px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20,animation:"ubFadeIn 0.25s ease"}}>
+    <style>{popupCSS}</style>
+    <div className="ub-popup-card" onClick={e=>e.stopPropagation()} style={{position:"relative",width:"100%",maxWidth:380,background:T.card,borderRadius:18,overflow:"hidden",boxShadow:"0 24px 70px rgba(0,0,0,0.35)",border:`1px solid ${T.border}`}}>
+      {/* header band — uses existing theme gradient */}
+      <div style={{background:`linear-gradient(135deg,${UB.blue},${UB.sky})`,padding:"22px 22px 18px",position:"relative"}}>
+        <button onClick={close} aria-label="Close" style={{position:"absolute",top:12,right:12,width:28,height:28,borderRadius:"50%",border:"none",background:"rgba(255,255,255,0.2)",color:"white",fontSize:16,lineHeight:1,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'DM Sans',sans-serif"}}>×</button>
+        <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"4px 10px",borderRadius:6,background:"rgba(255,255,255,0.18)",marginBottom:10,fontSize:11,fontWeight:700,color:"white"}}>
+          <span style={{width:6,height:6,borderRadius:"50%",background:UB.green}}/> FREE CONSULTATION
+        </div>
+        <h3 style={{fontSize:21,fontWeight:800,color:"white",lineHeight:1.2,margin:0}}>Still deciding? Let us help.</h3>
+      </div>
+      {/* body */}
+      <div style={{padding:"18px 22px 22px"}}>
+        <p style={{fontSize:13,color:T.muted,lineHeight:1.6,marginBottom:14}}>
+          Tell us your business type and we'll compare the best Unifi options <strong style={{color:T.text}}>side by side — free</strong>. Reply within <strong style={{color:T.text}}>5 minutes</strong> during working hours.
+        </p>
+        <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:16}}>
+          {["Free router, phone, or months included","Side-by-side plan advice","No store visit — all via WhatsApp"].map(f=>
+            <div key={f} style={{display:"flex",alignItems:"center",gap:7,fontSize:12,color:T.text}}>{Icons.check(UB.green,13)}{f}</div>
+          )}
+        </div>
+        <div onClick={()=>{clicked.current=true;trackEvent("popup_whatsapp_click");}}>
+          <WaBtn text="Get Free Advice on WhatsApp" msg="Hi! I saw your site and I'd like free side-by-side advice on the best Unifi plan for my business." utm="popup_10s" style={{width:"100%",justifyContent:"center",fontSize:14,padding:"13px"}}/>
+        </div>
+        <button onClick={close} style={{display:"block",width:"100%",marginTop:10,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Maybe later</button>
+      </div>
+    </div>
   </div>;
 }
 
@@ -418,7 +484,7 @@ function Home() {
   </>;
 }
 
-function Layout({children}){const T=useTheme();return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><SocialProofToast/></div>;}
+function Layout({children}){const T=useTheme();return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><SocialProofToast/><PopupCTA/></div>;}
 
 export default function App(){return<ThemeProvider><Routes>
   <Route path="/" element={<Layout><Home/></Layout>}/>

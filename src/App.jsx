@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useTheme, ThemeProvider, Icons, PartnerLogos, Card, SectionLabel, WaBtn, PrimaryBtn, FloatingWA, Nav, Footer, waL, globalStyles } from "./theme";
+import { useTheme, ThemeProvider, Icons, PartnerLogos, Card, SectionLabel, WaBtn, PrimaryBtn, FloatingWA, Nav, Footer, waL, globalStyles, track } from "./theme";
 import Broadband from "./pages/Broadband";
 import AirBiz from "./pages/AirBiz";
 import Mobile from "./pages/Mobile";
@@ -55,8 +55,13 @@ function SocialProofToast() {
   </div>;
 }
 
-/* ═══ EVENT TRACKING → cyberwolves.my/api/track ═══ */
+/* ═══ EVENT TRACKING ═══
+   Delegates to theme's track() so buttons and page events share one path. */
 function trackEvent(event){
+  if(typeof track==="function"){ track(event); return; }
+  return legacyTrack(event);
+}
+function legacyTrack(event){
   try{
     // use existing global tracker if tracker.js exposes one
     if(typeof window!=="undefined" && typeof window.track==="function"){ window.track(event); return; }
@@ -68,6 +73,116 @@ function trackEvent(event){
       fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:payload,keepalive:true}).catch(()=>{});
     }
   }catch(e){}
+}
+
+/* ═══ SCROLL DEPTH + DWELL + SILENT EXIT ═══
+   Answers "where do the non-clickers stop?" — the 9 of 17 who never clicked. */
+function EngagementTracker(){
+  useEffect(()=>{
+    let maxPct = 0, fired = {}, interacted = false, start = Date.now();
+    const markInteract = () => { interacted = true; };
+    const onScroll = () => {
+      const h = document.documentElement;
+      const pct = Math.min(100, Math.round(((h.scrollTop + window.innerHeight) / h.scrollHeight) * 100));
+      if (pct > maxPct) maxPct = pct;
+      for (const m of [25, 50, 75, 100]) {
+        if (pct >= m && !fired[m]) { fired[m] = true; trackEvent("scroll_" + m); }
+      }
+    };
+    const onExit = () => {
+      const secs = Math.round((Date.now() - start) / 1000);
+      const bucket = secs < 10 ? "0_10s" : secs < 30 ? "10_30s" : secs < 60 ? "30_60s" : secs < 180 ? "1_3min" : "over_3min";
+      trackEvent("dwell_" + bucket);
+      trackEvent("exit_at_" + (maxPct >= 90 ? "bottom" : maxPct >= 50 ? "middle" : "top"));
+      if (!interacted) trackEvent("exit_no_interaction");   // the silent bounce
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("click", markInteract, { passive: true });
+    window.addEventListener("pagehide", onExit);
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("click", markInteract);
+      window.removeEventListener("pagehide", onExit);
+    };
+  }, []);
+  return null;
+}
+
+/* ═══ INTENT ROUTER POPUP ═══
+   Technical-support enquiries were landing in the sales WhatsApp — they can't be
+   solved there (we're an authorised reseller, not TM support), they cost reply
+   time, and they inflate click numbers with zero sales value. This routes each
+   intent to the right place and tracks the split, so you finally know how much
+   of your ad traffic is support vs sales. */
+const INTENTS = [
+  { id:"new_install", icon:"🆕", title:"New Unifi installation or upgrade",
+    desc:"Get plan advice and apply", kind:"wa",
+    msg:"Hi! I'd like to apply for a new Unifi plan / upgrade my current one." },
+  { id:"business", icon:"💼", title:"Business enquiry or quotation",
+    desc:"Business broadband, multi-site, quotes", kind:"wa",
+    msg:"Hi! I'd like a quotation for Unifi Business broadband." },
+  { id:"coverage", icon:"📍", title:"Check coverage at my address",
+    desc:"We'll check instantly", kind:"wa",
+    msg:"Hi! Can you check Unifi coverage at my address?" },
+  { id:"technical", icon:"📶", title:"Existing line — technical problem",
+    desc:"No internet, slow speed, faulty router", kind:"support" },
+];
+
+function IntentRouter({ open, onClose }){
+  const T = useTheme();
+  const [view,setView]=useState("menu");
+  if(!open) return null;
+  const pick=(it)=>{
+    trackEvent("intent_"+it.id);
+    if(it.kind==="wa"){
+      trackEvent("wa_click_intent_"+it.id);
+      window.open(waL(it.msg,"intent_"+it.id),"_blank");
+      onClose();
+    } else {
+      setView("support");
+    }
+  };
+  return <div onClick={onClose} style={{position:"fixed",inset:0,zIndex:1100,background:"rgba(0,12,40,0.6)",backdropFilter:"blur(3px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+    <div className="ub-popup-card" onClick={e=>e.stopPropagation()} style={{width:"100%",maxWidth:420,background:T.card,borderRadius:18,padding:22,border:`1px solid ${T.border}`,boxShadow:"0 24px 70px rgba(0,0,0,0.35)"}}>
+      {view==="menu" ? <>
+        <div style={{fontSize:17,fontWeight:800,color:T.text,marginBottom:4}}>What can we help you with?</div>
+        <div style={{fontSize:12,color:T.muted,marginBottom:16}}>Pick one so we send you to the right place.</div>
+        {INTENTS.map(it=>
+          <button key={it.id} onClick={()=>pick(it)} style={{display:"flex",gap:12,alignItems:"flex-start",width:"100%",textAlign:"left",padding:"12px 14px",marginBottom:8,borderRadius:12,border:`1px solid ${T.border}`,background:T.sub,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>
+            <span style={{fontSize:20,lineHeight:1}}>{it.icon}</span>
+            <span>
+              <span style={{display:"block",fontSize:13.5,fontWeight:700,color:T.text}}>{it.title}</span>
+              <span style={{display:"block",fontSize:11.5,color:T.muted,marginTop:2}}>{it.desc}</span>
+            </span>
+          </button>
+        )}
+        <button onClick={onClose} style={{display:"block",width:"100%",marginTop:6,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Close</button>
+      </> : <>
+        <div style={{fontSize:17,fontWeight:800,color:T.text,marginBottom:8}}>📶 Technical support for an existing line</div>
+        <div style={{fontSize:13,color:T.muted,lineHeight:1.7,marginBottom:14}}>
+          We're an <b style={{color:T.text}}>authorised Unifi reseller</b> — we handle new applications, upgrades and business plans.
+          Faults on a line that's already active are handled by TM directly, and going to them is much faster than going through us.
+        </div>
+        <div style={{background:T.sub,border:`1px solid ${T.border}`,borderRadius:12,padding:14,marginBottom:12}}>
+          <div style={{fontSize:12.5,color:T.text,fontWeight:700,marginBottom:6}}>Fastest ways to get it fixed</div>
+          <div style={{fontSize:12.5,color:T.muted,lineHeight:1.8}}>
+            1. <b style={{color:T.text}}>myunifi app</b> — run a self-diagnostic and report the fault<br/>
+            2. <b style={{color:T.text}}>Call TM at 100</b> — 24 hours<br/>
+            3. <b style={{color:T.text}}>unifi.com.my/support</b> — live chat
+          </div>
+        </div>
+        <button onClick={()=>{trackEvent("support_open_myunifi");window.open("https://unifi.com.my/support","_blank");}} style={{width:"100%",padding:"12px",borderRadius:10,border:"none",background:UB.blue,color:"white",fontSize:13.5,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",marginBottom:8}}>Open Unifi Support →</button>
+        <div style={{fontSize:11.5,color:T.muted,lineHeight:1.6,marginBottom:10}}>
+          Thinking of switching or upgrading instead? We can help with that.
+        </div>
+        <div>
+          <WaBtn text="Talk to us about upgrading" msg="Hi! I have an existing Unifi line and I'm thinking of upgrading or switching plan." utm="support_to_sales" style={{width:"100%",justifyContent:"center",fontSize:13,padding:"12px"}}/>
+        </div>
+        <button onClick={onClose} style={{display:"block",width:"100%",marginTop:8,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Close</button>
+      </>}
+    </div>
+  </div>;
 }
 
 /* ═══ TIMED WHATSAPP POPUP (fires after 10s, once per session) ═══ */
@@ -115,7 +230,7 @@ function PopupCTA() {
         <div onClick={()=>{clicked.current=true;trackEvent("popup_whatsapp_click");}}>
           <WaBtn text="Get Free Advice on WhatsApp" msg="Hi! I saw your site and I'd like free side-by-side advice on the best Unifi plan for my business." utm="popup_10s" style={{width:"100%",justifyContent:"center",fontSize:14,padding:"13px"}}/>
         </div>
-        <button onClick={close} style={{display:"block",width:"100%",marginTop:10,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Maybe later</button>
+        <button onClick={()=>{trackEvent("popup_other_help");close();try{window.dispatchEvent(new CustomEvent("ub_open_router"));}catch(e){}}} style={{display:"block",width:"100%",marginTop:10,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textDecoration:"underline"}}>I need something else →</button>
       </div>
     </div>
   </div>;
@@ -484,7 +599,9 @@ function Home() {
   </>;
 }
 
-function Layout({children}){const T=useTheme();return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><SocialProofToast/><PopupCTA/></div>;}
+function Layout({children}){const T=useTheme();return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><button onClick={()=>{trackEvent("intent_router_open");setRouterOpen(true);}} aria-label="Need help?" style={{position:"fixed",left:16,bottom:"max(16px, env(safe-area-inset-bottom))",zIndex:900,padding:"11px 16px",borderRadius:999,border:"none",background:"#0B2447",color:"white",fontSize:13,fontWeight:700,cursor:"pointer",boxShadow:"0 8px 24px rgba(0,0,0,0.3)",fontFamily:"'DM Sans',sans-serif"}}>❓ Need help?</button><SocialProofToast/><PopupCTA /><EngagementTracker /><IntentRouter open={routerOpen} onClose={()=>setRouterOpen(false)} /></div>;}
+  const [routerOpen,setRouterOpen]=useState(false);
+  useEffect(()=>{const h=()=>setRouterOpen(true);window.addEventListener('ub_open_router',h);return()=>window.removeEventListener('ub_open_router',h);},[]);
 
 export default function App(){return<ThemeProvider><Routes>
   <Route path="/" element={<Layout><Home/></Layout>}/>

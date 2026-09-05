@@ -636,7 +636,7 @@ function Layout({children}){
     window.addEventListener('ub_open_router',h);
     return()=>window.removeEventListener('ub_open_router',h);
   },[]);
-  return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><SocialProofToast/><PopupCTA /><EngagementTracker /><IntentRouter open={routerOpen} onClose={()=>setRouterOpen(false)} /></div>;}
+  return<div style={{fontFamily:"'DM Sans',sans-serif",background:T.bg,color:T.text,minHeight:"100vh"}}><style>{globalStyles(T)}</style><Nav/>{children}<Footer/><FloatingWA/><button onClick={()=>{trackEvent("intent_router_open");setRouterOpen(true);}} aria-label="Need help?" style={{position:"fixed",left:16,bottom:"max(16px, env(safe-area-inset-bottom))",zIndex:900,padding:"11px 16px",borderRadius:999,border:"none",background:"#0B2447",color:"white",fontSize:13,fontWeight:700,cursor:"pointer",boxShadow:"0 8px 24px rgba(0,0,0,0.3)",fontFamily:"'DM Sans',sans-serif"}}>❓ Need help?</button><SocialProofToast/><PopupCTA /><EngagementTracker /><IntentRouter open={routerOpen} onClose={()=>setRouterOpen(false)} /></div>;}
 
 export default function App(){return<ThemeProvider><Routes>
   <Route path="/" element={<Layout><Home/></Layout>}/>

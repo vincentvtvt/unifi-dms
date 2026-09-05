@@ -12,13 +12,13 @@ const responsiveCSS = `
 @media(max-width:768px){
   .hero-flex{flex-direction:column!important;gap:24px!important;}
   .hero-left{max-width:100%!important;text-align:center!important;}
-  .hero-btns{max-width:100%!important;}
+  .hero-btns{grid-template-columns:1fr 1fr!important;max-width:100%!important;}
   .hero-right{width:100%!important;flex:1 1 100%!important;}
   .hero-right .carousel-wrap{height:220px!important;}
   .chat-flex{flex-direction:column!important;}
   .chat-mockup{max-width:100%!important;}
   .stories-grid{grid-template-columns:1fr!important;}
-  .finder-cards{grid-template-columns:1fr 1fr!important;}
+  .finder-cards{grid-template-columns:1fr 1fr 1fr!important;}
   .proof-toast{top:68px!important;bottom:auto!important;left:50%!important;transform:translateX(-50%)!important;max-width:90vw!important;background:rgba(0,0,0,0.6)!important;backdrop-filter:blur(12px)!important;border:1px solid rgba(255,255,255,0.1)!important;box-shadow:0 4px 20px rgba(0,0,0,0.2)!important;padding:8px 16px!important;border-radius:20px!important;}
   .proof-toast .proof-avatar{display:none!important;}
   .proof-toast .proof-check{display:none!important;}
@@ -26,7 +26,7 @@ const responsiveCSS = `
   .proof-toast .proof-sub{color:rgba(255,255,255,0.5)!important;font-size:9px!important;}
 }
 @media(max-width:480px){
-  .finder-cards{grid-template-columns:1fr!important;}
+  .finder-cards{grid-template-columns:1fr 1fr!important;}
   .hero-right .carousel-wrap{height:180px!important;}
 }`;
 
@@ -290,6 +290,28 @@ const P = {
     {name:"Prime",price:"450",tag:"Sales Conversion",feat:["3,500 credits","5-6 months campaign"],color:UB.orange,pop:"Best Value"},
     {name:"Pro",price:"900",tag:"Dominate",feat:["7,000 credits","Up to 12 months"],color:UB.red},
   ],
+  existing: {
+    "Upgrade Speed": [
+      {name:"300Mbps Prime",price:"129",tag:"FREE 3 Months",feat:["Upgrade from 100Mbps","Free WiFi 6 router","27-month contract"],color:UB.blue,pop:"Most Popular"},
+      {name:"500Mbps Prime",price:"149",tag:"FREE 3 Months",feat:["Upgrade from 100/300Mbps","Free WiFi 6 router","27-month contract"],color:UB.sky},
+      {name:"1Gbps + Smart Home",price:"249",tag:"AI Camera + Smart Hub",feat:["Free WiFi 7 router","Full smart home security kit","24-month contract"],color:UB.orange},
+      {name:"2Gbps + Smart Home",price:"319",tag:"Premium Security Kit",feat:["Free WiFi 7 router","2 solar cameras + sensors","24-month contract"],color:UB.red},
+    ],
+    "Add Entertainment": [
+      {name:"100Mbps + TV Pack",price:"119",tag:"6 Pack Choices",feat:["Wira/Ying Xiong/Veeran/Kids/Sports/Max","Device add-on from RM29/mo"],color:UB.purple},
+      {name:"300Mbps + TV Pack",price:"159",tag:"6 Pack Choices",feat:["Choose your TV pack","Device add-on from RM29/mo"],color:UB.purple,pop:"Popular"},
+      {name:"100Mbps + Max",price:"114",tag:"HBO & Cinemax",feat:["HBO, HBO Hits, Family, Cinemax","Star Pack (36 channels)","HBO Max app"],color:UB.navy},
+      {name:"FSU 300Mbps + Max + Shield",price:"144",tag:"FREE Speed Upgrade",feat:["100Mbps → 300Mbps FREE upgrade","HBO Max + Shield Advance","AI camera + solar cam included"],color:UB.green,pop:"Best Upgrade"},
+    ],
+    "Add Mobile Combo": [
+      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo","36-month contract"],color:UB.sky},
+      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo"],color:UB.sky,pop:"Family Deal"},
+      {name:"300Mbps + Unlimited 5G",price:"188",tag:"Postpaid 69",feat:["1 SIM unlimited 5G/4G","60GB hotspot","Device add-on from RM18/mo"],color:UB.green},
+    ],
+    "Free Smartphone": [
+      {name:"Uni5G 99 → RM69",price:"69",tag:"RM30 Rebate",feat:["Unlimited 5G + 100GB hotspot","FREE phone: Samsung/OPPO/Redmi/HONOR","Must be existing Unifi customer","24-month contract"],color:UB.orange,pop:"Free Phone"},
+    ],
+  },
 };
 
 const DMS_QZ = [
@@ -383,10 +405,11 @@ function Home() {
             Home fibre, business broadband, 5G mobile, digital marketing — every plan includes <strong style={{color:"white"}}>free router, free phone, or free months</strong>.
           </p>
 
-          <div className="hero-btns" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16,maxWidth:420}}>
+          <div className="hero-btns" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:16,maxWidth:480}}>
             {[
               {id:"switch",label:"Switch & Save",sub:"Exclusive switcher deals",color:UB.green,icon:Icons.trending},
               {id:"new",label:"New to Unifi",sub:"FREE 3 months",color:"white",icon:Icons.zap},
+              {id:"existing",label:"I'm on Unifi",sub:"Upgrade my plan",color:UB.sky,icon:Icons.check},
               {id:"phone",label:"Free 5G Phone",sub:"Samsung / OPPO / Redmi",color:UB.sky,icon:Icons.phone},
               {id:"dms",label:"Digital Marketing",sub:"From RM100/mo",color:UB.orange,icon:Icons.trending},
             ].map(o=><button key={o.id} onClick={()=>{sel(o.id);scr("solutions");}} style={{display:"flex",alignItems:"center",gap:8,padding:"10px 12px",borderRadius:10,border:"1px solid rgba(255,255,255,0.2)",background:"rgba(255,255,255,0.08)",color:"white",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"}} onMouseEnter={e=>{e.currentTarget.style.background="rgba(255,255,255,0.18)";}} onMouseLeave={e=>{e.currentTarget.style.background="rgba(255,255,255,0.08)";}}>
@@ -433,10 +456,11 @@ function Home() {
         <h2 style={{fontSize:"clamp(22px,3.5vw,34px)",fontWeight:800}}>What are you looking for?</h2>
       </div>
 
-      <div className="finder-cards" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10,marginBottom:pick?24:0}}>
+      <div className="finder-cards" style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:10,marginBottom:pick?24:0}}>
         {[
-          {id:"switch",label:"Switch & Save",desc:"FREE 6 months or FREE TV/iPad",icon:Icons.trending,color:UB.green},
+          {id:"switch",label:"Switch & Save",desc:"Exclusive deals for switchers",icon:Icons.trending,color:UB.green},
           {id:"new",label:"New to Unifi",desc:"Home, business, bundles",icon:Icons.zap,color:UB.blue},
+          {id:"existing",label:"I'm on Unifi",desc:"Upgrade, add TV, add mobile",icon:Icons.check,color:UB.purple},
           {id:"phone",label:"Free Phone",desc:"5G plans + free smartphone",icon:Icons.phone,color:UB.sky},
           {id:"dms",label:"Digital Marketing",desc:"Ads managed for you",icon:Icons.trending,color:UB.orange},
         ].map(o=><button key={o.id} onClick={()=>sel(o.id)}
@@ -465,6 +489,11 @@ function Home() {
           <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Mobile & Free Phone</h3>
           <p style={{color:T.muted,fontSize:12,marginBottom:14}}>Free smartphone for existing Unifi customers.</p>
           <PlanGrid plans={P.home_mobile}/>
+        </div>}
+        {pick==="existing"&&<div style={{animation:"fadeUp 0.3s ease"}}>
+          <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Upgrade Your Unifi Plan</h3>
+          <p style={{color:T.muted,fontSize:12,marginBottom:14}}>Out of contract? Here are the best deals to re-contract or upgrade. Keep your current line — just a better plan.</p>
+          <Tabs data={P.existing} def="Upgrade Speed"/>
         </div>}
         {pick==="dms"&&<div style={{animation:"fadeUp 0.3s ease"}}>
           <h3 style={{fontSize:18,fontWeight:800,marginBottom:4}}>Digital Marketing Solution (DMS)</h3>

@@ -80,7 +80,7 @@ export const FloatingWA = () => {
   // Auto-popup after 5 seconds, once per session
   useEffect(()=>{
     if(sessionStorage.getItem("wa_shown")) return;
-    const t = setTimeout(()=>{setOpen(true);sessionStorage.setItem("wa_shown","1");},5000);
+    const t = setTimeout(()=>{setOpen(true);sessionStorage.setItem("wa_shown","1");},15000);
     return()=>clearTimeout(t);
   },[]);
 
@@ -89,8 +89,14 @@ export const FloatingWA = () => {
     {icon:"🔄",label:"I'm on Unifi — want a better deal",sub:"Out of contract, looking to upgrade",msg:"I'm an existing Unifi customer. My contract ended and I want to check what better deals are available.",utm:"wa_existing"},
     {icon:"🏢",label:"Business enquiry",sub:"Business broadband, DMS, quotation",msg:"I have a business enquiry. Can you help with a quotation?",utm:"wa_biz"},
     {icon:"📍",label:"Check coverage at my address",sub:"We'll check instantly",msg:"I want to check Unifi coverage at my address.",utm:"wa_coverage"},
-    {icon:"🔧",label:"Existing line — need help",sub:"Slow speed, no internet, faulty router",msg:"I'm an existing Unifi customer and I need help with my line.",utm:"wa_support"},
   ];
+  const tmSupport = () => {
+    setOpen(false);
+    const el = document.createElement("div");
+    el.id="tm-support-modal";
+    el.innerHTML=`<div style="position:fixed;inset:0;z-index:1002;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px" onclick="this.remove()"><div style="background:white;border-radius:16px;padding:24px 20px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.2)" onclick="event.stopPropagation()"><div style="font-size:28px;margin-bottom:8px;text-align:center">🔧</div><h3 style="font-size:18px;font-weight:800;color:#1a1a2e;margin-bottom:12px;text-align:center">Contact TM Support</h3><div style="display:flex;gap:10px;margin-bottom:14px"><div style="flex:1;background:#f8f9fc;border:1px solid #e5e7eb;border-radius:10px;padding:14px"><div style="font-size:14px;font-weight:700;color:#1a1a2e">Dial 100</div><div style="font-size:11px;color:#6b7280;margin-top:2px">From local fixed lines & mobile</div><div style="font-size:12px;font-weight:600;color:#0033A1;margin-top:8px">+603-21063001</div><div style="font-size:10px;color:#6b7280">From international lines</div></div><div style="flex:1;background:#f8f9fc;border:1px solid #e5e7eb;border-radius:10px;padding:14px"><div style="font-size:13px;font-weight:700;color:#1a1a2e">Operating Hours</div><div style="font-size:10px;color:#6b7280;margin-top:4px;line-height:1.6">Technical: 8AM–10PM (Daily)<br>Billing: 8AM–5:30PM (Daily)<br>Directory 103: 8AM–5:30PM (Mon–Fri)</div></div></div><a href="https://maya.unifi.com.my/chat" target="_blank" style="display:block;padding:13px;border-radius:10px;background:#0033A1;color:white;font-size:15px;font-weight:700;text-decoration:none;text-align:center;margin-bottom:8px">💬 Chat with Maya (TM AI Assistant)</a><a href="tel:100" style="display:block;padding:12px;border-radius:10px;background:#f0f2ff;color:#0033A1;font-size:14px;font-weight:600;text-decoration:none;text-align:center;margin-bottom:10px">📞 Call 100</a><p style="font-size:10px;color:#6b7280;text-align:center">Call charges from mobile subject to your provider's T&C.</p><button onclick="this.closest('#tm-support-modal').remove()" style="display:block;margin:10px auto 0;background:none;border:none;color:#6b7280;font-size:13px;cursor:pointer">Close</button></div></div>`;
+    document.body.appendChild(el);
+  };
   return <>
     {open&&<div style={{position:"fixed",inset:0,zIndex:1001,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={()=>setOpen(false)}>
       <div style={{background:"white",borderRadius:16,padding:"24px 20px",maxWidth:420,width:"100%",boxShadow:"0 20px 60px rgba(0,0,0,0.2)"}} onClick={e=>e.stopPropagation()}>
@@ -101,6 +107,10 @@ export const FloatingWA = () => {
             <span style={{fontSize:24,flexShrink:0}}>{o.icon}</span>
             <div><div style={{fontSize:14,fontWeight:600,color:"#1a1a2e"}}>{o.label}</div><div style={{fontSize:11,color:"#6b7280",marginTop:1}}>{o.sub}</div></div>
           </button>)}
+          <button onClick={tmSupport} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:10,border:"1px solid #e5e7eb",background:"white",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s",textAlign:"left"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="#DC2626";e.currentTarget.style.background="#fef2f2";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.background="white";}}>
+            <span style={{fontSize:24,flexShrink:0}}>🔧</span>
+            <div><div style={{fontSize:14,fontWeight:600,color:"#1a1a2e"}}>Existing line — technical problem</div><div style={{fontSize:11,color:"#6b7280",marginTop:1}}>Redirects to TM Support (Call 100)</div></div>
+          </button>
         </div>
         <button onClick={()=>setOpen(false)} style={{display:"block",margin:"14px auto 0",background:"none",border:"none",color:"#6b7280",fontSize:13,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Close</button>
       </div>

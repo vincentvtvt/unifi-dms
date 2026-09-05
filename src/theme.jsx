@@ -77,13 +77,6 @@ export const FloatingWA = () => {
   const [open,setOpen] = useState(false);
   const T = useTheme();
 
-  // Auto-popup after 5 seconds, once per session
-  useEffect(()=>{
-    if(sessionStorage.getItem("wa_shown")) return;
-    const t = setTimeout(()=>{setOpen(true);sessionStorage.setItem("wa_shown","1");},15000);
-    return()=>clearTimeout(t);
-  },[]);
-
   const opts = [
     {icon:"🆕",label:"New Unifi application",sub:"Get plan advice and apply",msg:"I want to apply for a new Unifi plan.",utm:"wa_new"},
     {icon:"🔄",label:"I'm on Unifi — want a better deal",sub:"Out of contract, looking to upgrade",msg:"I'm an existing Unifi customer. My contract ended and I want to check what better deals are available.",utm:"wa_existing"},

@@ -118,13 +118,16 @@ function EngagementTracker(){
 const INTENTS = [
   { id:"new_install", icon:"🆕", title:"New Unifi installation or upgrade",
     desc:"Get plan advice and apply", kind:"wa",
-    msg:"Hi! I'd like to apply for a new Unifi plan / upgrade my current one." },
+    msg:"I want to apply for a new Unifi plan / upgrade my current one." },
+  { id:"existing_deal", icon:"🔄", title:"I'm on Unifi — want a better deal",
+    desc:"Out of contract, looking for better promo", kind:"wa",
+    msg:"I'm an existing Unifi customer. My contract ended and I want to check what better deals are available." },
   { id:"business", icon:"💼", title:"Business enquiry or quotation",
     desc:"Business broadband, multi-site, quotes", kind:"wa",
-    msg:"Hi! I'd like a quotation for Unifi Business broadband." },
+    msg:"I have a business enquiry. Can you help with a quotation?" },
   { id:"coverage", icon:"📍", title:"Check coverage at my address",
     desc:"We'll check instantly", kind:"wa",
-    msg:"Hi! Can you check Unifi coverage at my address?" },
+    msg:"I want to check Unifi coverage at my address." },
   { id:"technical", icon:"📶", title:"Existing line — technical problem",
     desc:"No internet, slow speed, faulty router", kind:"support" },
 ];
@@ -177,7 +180,7 @@ function IntentRouter({ open, onClose }){
           Thinking of switching or upgrading instead? We can help with that.
         </div>
         <div>
-          <WaBtn text="Talk to us about upgrading" msg="Hi! I have an existing Unifi line and I'm thinking of upgrading or switching plan." utm="support_to_sales" style={{width:"100%",justifyContent:"center",fontSize:13,padding:"12px"}}/>
+          <WaBtn text="Talk to us about upgrading" msg="I have an existing Unifi line and I'm thinking of upgrading or switching plan." utm="support_to_sales" style={{width:"100%",justifyContent:"center",fontSize:13,padding:"12px"}}/>
         </div>
         <button onClick={onClose} style={{display:"block",width:"100%",marginTop:8,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Close</button>
       </>}
@@ -201,7 +204,7 @@ function PopupCTA() {
       setOpen(true);
       trackEvent("popup_shown");
       try{ sessionStorage.setItem("ub_popup_seen","1"); }catch(e){}
-    },10000);
+    },8000);
     return()=>clearTimeout(t);
   },[]);
   if(!open)return null;
@@ -228,7 +231,7 @@ function PopupCTA() {
           )}
         </div>
         <div onClick={()=>{clicked.current=true;trackEvent("popup_whatsapp_click");}}>
-          <WaBtn text="Get Free Advice on WhatsApp" msg="Hi! I saw your site and I'd like free side-by-side advice on the best Unifi plan for my business." utm="popup_10s" style={{width:"100%",justifyContent:"center",fontSize:14,padding:"13px"}}/>
+          <WaBtn text="Get Free Advice on WhatsApp" msg="I saw your site and I'd like free side-by-side advice on the best Unifi plan for my business." utm="popup_10s" style={{width:"100%",justifyContent:"center",fontSize:14,padding:"13px"}}/>
         </div>
         <button onClick={()=>{trackEvent("popup_other_help");close();try{window.dispatchEvent(new CustomEvent("ub_open_router"));}catch(e){}}} style={{display:"block",width:"100%",marginTop:10,background:"none",border:"none",color:T.muted,fontSize:12,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",textDecoration:"underline"}}>I need something else →</button>
       </div>

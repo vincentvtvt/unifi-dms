@@ -76,6 +76,14 @@ export const PrimaryBtn = ({text,onClick,style={}}) => {const T=useTheme();retur
 export const FloatingWA = () => {
   const [open,setOpen] = useState(false);
   const T = useTheme();
+
+  // Auto-popup after 5 seconds, once per session
+  useEffect(()=>{
+    if(sessionStorage.getItem("wa_shown")) return;
+    const t = setTimeout(()=>{setOpen(true);sessionStorage.setItem("wa_shown","1");},5000);
+    return()=>clearTimeout(t);
+  },[]);
+
   const opts = [
     {icon:"🆕",label:"New Unifi application",sub:"Get plan advice and apply",msg:"I want to apply for a new Unifi plan.",utm:"wa_new"},
     {icon:"🔄",label:"I'm on Unifi — want a better deal",sub:"Out of contract, looking to upgrade",msg:"I'm an existing Unifi customer. My contract ended and I want to check what better deals are available.",utm:"wa_existing"},
@@ -159,6 +167,11 @@ export const SpecTable = ({specs,plans}) => {
     <tbody>{specs.map((s,i)=><tr key={s.label} style={{borderBottom:`1px solid ${T.border}40`,background:i%2===0?T.sub:"transparent"}}><td style={{padding:"8px 12px",color:T.muted,fontWeight:500}}>{s.label}</td>{s.values.map((v,j)=><td key={j} style={{padding:"8px 6px",textAlign:"center",color:v==="✓"?"#059669":v==="-"?T.muted:T.text,fontWeight:v==="✓"||v==="FREE"?700:400}}>{v}</td>)}</tr>)}</tbody>
   </table></div>;
 };
+/* ─── TRACKING ─── */
+export const track = (event) => {
+  if(typeof window!=="undefined" && typeof window.gtag==="function") window.gtag("event",event);
+};
+
 export const globalStyles = (T) => `
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
   *{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',sans-serif}

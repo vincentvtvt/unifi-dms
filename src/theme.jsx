@@ -15,23 +15,6 @@ const WA_NUMBERS = [
 let _waIdx = 0;
 const getWA = () => { const n = WA_NUMBERS[_waIdx % WA_NUMBERS.length]; _waIdx++; return n; };
 export const WA = WA_NUMBERS[0];
-/* ═══ EVENT TRACKING ═══
-   Every WhatsApp exit is tracked here, at the component level, so no button can
-   be added later and silently go unmeasured. Uses the site tracker when present,
-   otherwise beacons cyberwolves.my directly. */
-export function track(event, extra){
-  try{
-    if(typeof window!=="undefined" && typeof window.track==="function" && track.__external!==false){ window.track(event, extra); return; }
-    const url="https://cyberwolves.my/api/track";
-    const payload=JSON.stringify({event,site:"unifibiz.digital",path:(typeof location!=="undefined"?location.pathname:"/"),ts:Date.now(),...(extra||{})});
-    if(typeof navigator!=="undefined" && navigator.sendBeacon){
-      navigator.sendBeacon(url,new Blob([payload],{type:"application/json"}));
-    }else{
-      fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:payload,keepalive:true}).catch(()=>{});
-    }
-  }catch(e){}
-}
-
 export const waL = (m,utm="") => `https://wa.me/${getWA()}?text=${encodeURIComponent("Hi *UnifiBiz* "+m)}${utm?`&utm_source=unifibiz&utm_medium=${utm}`:""}`;
 
 const ThemeCtx = createContext();
@@ -87,10 +70,36 @@ export const Card = ({children,color,style={},hover=true}) => {
   >{children}</div>;
 };
 export const SectionLabel = ({text}) => {const T=useTheme();return<div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"6px 14px",borderRadius:8,background:T.primary+"0A",color:T.primary,fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",marginBottom:12}}><span style={{width:6,height:6,borderRadius:"50%",background:T.primary}}/>{text}</div>;};
-export const WaBtn = ({text,msg,utm="",style={},sm=false}) => <button onClick={()=>{track("wa_click_"+(utm||"unlabelled"));track("wa_click");window.open(waL(msg,utm),"_blank");}} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,background:"#25D366",color:"white",border:"none",padding:sm?"10px 18px":"14px 28px",borderRadius:10,fontSize:sm?13:15,fontWeight:600,cursor:"pointer",transition:"all 0.25s ease",boxShadow:"0 2px 8px rgba(37,211,102,0.25)",fontFamily:"'DM Sans',sans-serif",...style}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";}}><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>{text}</button>;
+export const WaBtn = ({text,msg,utm="",style={},sm=false}) => <button onClick={()=>window.open(waL(msg,utm),"_blank")} style={{display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,background:"#25D366",color:"white",border:"none",padding:sm?"10px 18px":"14px 28px",borderRadius:10,fontSize:sm?13:15,fontWeight:600,cursor:"pointer",transition:"all 0.25s ease",boxShadow:"0 2px 8px rgba(37,211,102,0.25)",fontFamily:"'DM Sans',sans-serif",...style}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";}}><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>{text}</button>;
 export const PrimaryBtn = ({text,onClick,style={}}) => {const T=useTheme();return<button onClick={onClick} style={{background:T.accent,color:"white",border:"none",padding:"14px 28px",borderRadius:10,fontSize:15,fontWeight:600,cursor:"pointer",transition:"all 0.25s ease",fontFamily:"'DM Sans',sans-serif",boxShadow:`0 2px 8px ${T.accent}30`,...style}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";}} onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";}}>{text}</button>;};
 
-export const FloatingWA = () => <button onClick={()=>{track("wa_click_sticky");track("wa_click");window.open(waL("I want to know more about Unifi products.","sticky"),"_blank");}} title="Chat with us" style={{position:"fixed",bottom:24,right:24,zIndex:999,width:56,height:56,borderRadius:28,background:"#25D366",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 20px rgba(37,211,102,0.4)",cursor:"pointer",animation:"waPulse 3s infinite",border:"none"}}><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button>;
+export const FloatingWA = () => {
+  const [open,setOpen] = useState(false);
+  const T = useTheme();
+  const opts = [
+    {icon:"🆕",label:"New Unifi application",sub:"Get plan advice and apply",msg:"I want to apply for a new Unifi plan.",utm:"wa_new"},
+    {icon:"🔄",label:"I'm on Unifi — want a better deal",sub:"Out of contract, looking to upgrade",msg:"I'm an existing Unifi customer. My contract ended and I want to check what better deals are available.",utm:"wa_existing"},
+    {icon:"🏢",label:"Business enquiry",sub:"Business broadband, DMS, quotation",msg:"I have a business enquiry. Can you help with a quotation?",utm:"wa_biz"},
+    {icon:"📍",label:"Check coverage at my address",sub:"We'll check instantly",msg:"I want to check Unifi coverage at my address.",utm:"wa_coverage"},
+    {icon:"🔧",label:"Existing line — need help",sub:"Slow speed, no internet, faulty router",msg:"I'm an existing Unifi customer and I need help with my line.",utm:"wa_support"},
+  ];
+  return <>
+    {open&&<div style={{position:"fixed",inset:0,zIndex:1001,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(4px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}} onClick={()=>setOpen(false)}>
+      <div style={{background:"white",borderRadius:16,padding:"24px 20px",maxWidth:420,width:"100%",boxShadow:"0 20px 60px rgba(0,0,0,0.2)"}} onClick={e=>e.stopPropagation()}>
+        <h3 style={{fontSize:18,fontWeight:800,color:"#1a1a2e",marginBottom:4}}>What can we help you with?</h3>
+        <p style={{fontSize:13,color:"#6b7280",marginBottom:16}}>Pick one so we send you to the right place.</p>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {opts.map(o=><button key={o.utm} onClick={()=>{setOpen(false);window.open(waL(o.msg,o.utm),"_blank");}} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:10,border:"1px solid #e5e7eb",background:"white",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s",textAlign:"left"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="#0033A1";e.currentTarget.style.background="#f8f9fc";}} onMouseLeave={e=>{e.currentTarget.style.borderColor="#e5e7eb";e.currentTarget.style.background="white";}}>
+            <span style={{fontSize:24,flexShrink:0}}>{o.icon}</span>
+            <div><div style={{fontSize:14,fontWeight:600,color:"#1a1a2e"}}>{o.label}</div><div style={{fontSize:11,color:"#6b7280",marginTop:1}}>{o.sub}</div></div>
+          </button>)}
+        </div>
+        <button onClick={()=>setOpen(false)} style={{display:"block",margin:"14px auto 0",background:"none",border:"none",color:"#6b7280",fontSize:13,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>Close</button>
+      </div>
+    </div>}
+    <button onClick={()=>setOpen(true)} title="Chat with us" style={{position:"fixed",bottom:24,right:24,zIndex:999,width:56,height:56,borderRadius:28,background:"#25D366",display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"0 4px 20px rgba(37,211,102,0.4)",cursor:"pointer",animation:"waPulse 3s infinite",border:"none"}}><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></button>
+  </>;
+};
 
 const NAV_LINKS=[{l:"Home Fibre",h:"#solutions"},{l:"Business",h:"#solutions"},{l:"Mobile",h:"#solutions"},{l:"Marketing",h:"#dms-finder"},{l:"Coverage",h:"#coverage"}];
 export const Nav = () => {

@@ -10,9 +10,9 @@ export default function AirBiz() {
       <section style={{padding:"0 24px 40px",maxWidth:700,margin:"0 auto"}}>
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:14,marginBottom:32}}>
           {[
-            {name:"Uni5G 39",price:"39",feat:["30GB 5G/4G data","Add RM1 for 200GB extra","No contract"]},
-            {name:"Uni5G 69",price:"69",feat:["Unlimited 5G/4G","60GB hotspot","No contract"],pop:"Best Value"},
-            {name:"Unifi Air 99",price:"99",feat:["Unlimited data","Free 5G router","24-month contract"],pop:"With Router"},
+            {name:"Unifi Air 120GB",price:"69",feat:["120GB 5G data","Free router or Mi-Fi","24-month contract"]},
+            {name:"Unifi Air 99",price:"99",feat:["Unlimited 5G (FUP)","Free router or Mi-Fi","24-month contract"],pop:"Best Value"},
+            {name:"Unifi Air 149",price:"149",feat:["Unlimited 5G","Free WiFi 6 5G router","For families & home offices"],pop:"Most Devices"},
           ].map(p=>(
             <Card key={p.name} color={p.pop?UB.blue:undefined} style={{textAlign:"center",border:p.pop?`2px solid ${UB.blue}`:undefined}}>
               {p.pop&&<div style={{position:"absolute",top:0,left:0,right:0,background:UB.blue,color:"white",fontSize:10,fontWeight:700,padding:"4px 0"}}>{p.pop}</div>}

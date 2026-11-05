@@ -34,7 +34,7 @@ const responsiveCSS = `
 const PROOF = [
   {name:"Ahmad R.",product:"300Mbps Prime (RM129)",loc:"Shah Alam",min:3},
   {name:"Siti N.",product:"500Mbps + FREE iPad",loc:"Petaling Jaya",min:8},
-  {name:"Kumar S.",product:"Uni5G 69 Unlimited",loc:"Penang",min:14},
+  {name:"Kumar S.",product:"Uni5G 69 (500GB)",loc:"Penang",min:14},
   {name:"Mei Ling",product:"100Mbps Prime (RM89)",loc:"Puchong",min:19},
   {name:"Faizal H.",product:"Biz 500Mbps + Mesh",loc:"Johor Bahru",min:25},
   {name:"Nurul A.",product:"300Mbps + FREE 6 Months",loc:"Kota Kinabalu",min:31},
@@ -242,10 +242,10 @@ function PopupCTA() {
 /* ═══ PLAN DATA ═══ */
 const P = {
   home_mobile: [
-    {name:"Uni5G 39",price:"39",tag:"30GB Data",feat:["30GB 5G/4G data","Add RM1 for 200GB extra","Unlimited calls","No contract"],color:UB.blue},
-    {name:"Uni5G 69",price:"69",tag:"Unlimited Data",feat:["Unlimited 5G/4G data","60GB hotspot","Unlimited calls","No contract"],color:UB.sky,pop:"Best Value"},
-    {name:"Unifi Air 99",price:"99",tag:"Wireless Broadband",feat:["Unlimited data","Free 5G router","Plug & play","24-month contract"],color:UB.green},
-    {name:"Uni5G 99 + Free Phone",price:"69",tag:"RM30 Rebate",feat:["Unlimited 5G + 100GB hotspot","FREE 5G smartphone (choose 1)","For existing Unifi customers","24-month contract"],color:UB.orange,pop:"Free Phone"},
+    {name:"Uni5G 39",price:"39",tag:"50GB Data",feat:["50GB 5G/4G data","Hotspot from your quota","Unlimited calls","No contract"],color:UB.blue},
+    {name:"Uni5G 69",price:"69",tag:"500GB Data",feat:["500GB 5G/4G data","Hotspot from your quota","Unlimited calls","No contract (SIM only)"],color:UB.sky,pop:"Best Value"},
+    {name:"Unifi Air 99",price:"99",tag:"Wireless Broadband",feat:["Unlimited 5G (FUP)","Free 5G router or Mi-Fi","Plug & play","24-month contract"],color:UB.green},
+    {name:"Uni5G + Free 5G Phone",price:"69",tag:"Device Bundle",feat:["On Uni5G 69 & above","Free 5G phone, subject to stock & eligibility","24-month contract"],color:UB.orange,pop:"Free Phone"},
   ],
   home_new: {
     "Just Internet": [
@@ -262,15 +262,16 @@ const P = {
       {name:"100Mbps + Max",price:"114",tag:"HBO & Cinemax",feat:["HBO, HBO Hits, Family, Cinemax","Star Pack (36 channels)"],color:UB.navy},
     ],
     "With Mobile Combo": [
-      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo"],color:UB.sky},
-      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo"],color:UB.sky,pop:"Family Deal"},
-      {name:"300Mbps + Unlimited",price:"188",tag:"Postpaid 69",feat:["1 SIM unlimited 5G","Device add-on from RM18/mo"],color:UB.green},
+      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIMs with 50GB each","Device add-on from RM1/mo"],color:UB.sky},
+      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIMs with 50GB each","Device add-on from RM1/mo"],color:UB.sky,pop:"Family Deal"},
+      {name:"300Mbps + 500GB 5G",price:"188",tag:"Postpaid 69",feat:["1 SIM with 500GB 5G/4G","Device add-on from RM18/mo"],color:UB.green},
     ],
     "Business": [
-      {name:"Biz 300Mbps",price:"139",tag:"No Frills",feat:["Static IP, SLA","24-month contract"],color:UB.blue},
-      {name:"Biz 500Mbps",price:"179",tag:"Mesh WiFi",feat:["Free mesh WiFi","Static IP, priority"],color:UB.sky,pop:"Most Popular"},
-      {name:"Biz 1Gbps",price:"319",tag:"TV / iPad / Credit",feat:["Choose your free device","Enterprise performance"],color:UB.red},
-      {name:"Biz 2Gbps",price:"369",tag:"Ultimate",feat:["Choose your free device","Maximum bandwidth"],color:UB.red},
+      {name:"Biz 100Mbps",price:"129",tag:"Starter",feat:["Free WiFi 6 router + DECT phone","24-month contract"],color:UB.blue},
+      {name:"Biz 300Mbps",price:"199",tag:"Mesh WiFi",feat:["Free WiFi 6 mesh","24-month contract"],color:UB.sky,pop:"Most Popular"},
+      {name:"Biz 500Mbps",price:"239",tag:"Mesh WiFi",feat:["Free WiFi 6 mesh","24-month contract"],color:UB.sky},
+      {name:"Biz 1Gbps",price:"319",tag:"Wireless Backup",feat:["Free wireless backup","24-month contract"],color:UB.red},
+      {name:"Biz 2Gbps",price:"369",tag:"Wireless Backup",feat:["Free wireless backup","24-month contract"],color:UB.red},
     ],
   },
   home_switch: {
@@ -289,7 +290,7 @@ const P = {
   },
   biz_dms: [
     {name:"Standard",price:"100",tag:"Awareness",feat:["840 ad credits","1.5-2 month campaign"],color:UB.blue},
-    {name:"Premium",price:"200",tag:"Engagement",feat:["1,680 credits","Video production included"],color:UB.sky},
+    {name:"Premium",price:"200",tag:"Engagement",feat:["1,680 credits","Video optional (680 credits)"],color:UB.sky},
     {name:"Prime",price:"450",tag:"Sales Conversion",feat:["3,500 credits","5-6 months campaign"],color:UB.orange,pop:"Best Value"},
     {name:"Pro",price:"900",tag:"Dominate",feat:["7,000 credits","Up to 12 months"],color:UB.red},
   ],
@@ -307,12 +308,12 @@ const P = {
       {name:"FSU 300Mbps + Max + Shield",price:"144",tag:"FREE Speed Upgrade",feat:["100Mbps → 300Mbps FREE upgrade","HBO Max + Shield Advance","AI camera + solar cam included"],color:UB.green,pop:"Best Upgrade"},
     ],
     "Add Mobile Combo": [
-      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo","36-month contract"],color:UB.sky},
-      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIMs with 30GB each","Device add-on from RM1/mo"],color:UB.sky,pop:"Family Deal"},
-      {name:"300Mbps + Unlimited 5G",price:"188",tag:"Postpaid 69",feat:["1 SIM unlimited 5G/4G","60GB hotspot","Device add-on from RM18/mo"],color:UB.green},
+      {name:"100Mbps + 2 SIM",price:"167",tag:"Postpaid 39 × 2",feat:["2 SIMs with 50GB each","Device add-on from RM1/mo","36-month contract"],color:UB.sky},
+      {name:"300Mbps + 2 SIM",price:"207",tag:"Postpaid 39 × 2",feat:["2 SIMs with 50GB each","Device add-on from RM1/mo"],color:UB.sky,pop:"Family Deal"},
+      {name:"300Mbps + 500GB 5G",price:"188",tag:"Postpaid 69",feat:["1 SIM with 500GB 5G/4G","Hotspot from your quota","Device add-on from RM18/mo"],color:UB.green},
     ],
     "Free Smartphone": [
-      {name:"Uni5G 99 → RM69",price:"69",tag:"RM30 Rebate",feat:["Unlimited 5G + 100GB hotspot","FREE phone: Samsung/OPPO/Redmi/HONOR","Must be existing Unifi customer","24-month contract"],color:UB.orange,pop:"Free Phone"},
+      {name:"Uni5G + Free 5G Phone",price:"69",tag:"Device Bundle",feat:["On Uni5G 69 & above","Free 5G phone, subject to stock & eligibility","24-month contract"],color:UB.orange,pop:"Free Phone"},
     ],
   },
 };
@@ -340,11 +341,11 @@ const FAQ = [
   ["What is UnifiBiz.digital?","We are Synergy Spark Sdn Bhd (SSM 1221398-T), an authorized reseller for all Unifi products — Home, Business, Mobile, 5G, DMS, and Cloud Storage. 140,000+ installations over 15 years."],
   ["How do I apply?","Just tap any WhatsApp button on this page. Tell us what you need, and we'll process within 24 hours. Available 24/7."],
   ["Do I need to visit a TM store?","No. Everything is handled via WhatsApp — application, activation, after-sales support."],
-  ["What broadband speeds are available?","Home fibre: 100Mbps (RM89), 300Mbps (RM129), 500Mbps (RM149), 1Gbps (RM249), 2Gbps (RM319). Business: 300Mbps to 2Gbps with static IP and SLA."],
+  ["What broadband speeds are available?","Home fibre: 100Mbps (RM89), 300Mbps (RM129), 500Mbps (RM149), 1Gbps (RM249), 2Gbps (RM319). Business: 100Mbps (RM129) to 2Gbps (RM369), static IP available as an add-on."],
   ["What's included free with broadband?","All plans include a free WiFi 6 or WiFi 7 router. Prime Promo plans get 3 months free. 1Gbps and 2Gbps include smart home security kits."],
   ["Can I get free months if I switch from another provider?","Yes — bring your competitor bill and get up to 6 months free on selected plans. Free TV or iPad options also available for switchers."],
-  ["What mobile plans do you offer?","Uni5G RM39 (30GB, no contract), Uni5G RM69 (unlimited, no contract), Unifi Air RM99 (unlimited + free router, 24 months). Existing Unifi customers can get a free 5G smartphone."],
-  ["What is Unifi DMS?","Digital Marketing Solution — Malaysia's first instalment-based marketing. A dedicated team runs Facebook, Google, TikTok & Instagram ads for you. From RM100/month over 12 months."],
+  ["What mobile plans do you offer?","Uni5G RM39 (50GB), Uni5G RM69 (500GB), Uni5G RM99 (100GB+) — no contract on SIM only. Family plans RM129–189 with free extra lines. Unifi Air from RM69. Free 5G phones available with device bundles, subject to stock & eligibility."],
+  ["What is Unifi DMS?","Digital Marketing Solution — Malaysia's first instalment-based marketing. A dedicated team runs Facebook, Instagram, Google Search & Rev Media ads for you. From RM100/month over 12 months."],
   ["How is DMS different from hiring an agency?","Agencies charge RM1,500–5,000/month upfront. DMS starts at RM100/month on instalments with no upfront cost. Includes campaign manager, designer, and copywriter."],
   ["Is there a contract?","Broadband: 24–36 months depending on plan. Mobile SIM-only: no contract. DMS: 12-month instalment period."],
   ["Can I bundle broadband with mobile?","Yes — combo plans start from RM128 (100Mbps + 1 SIM). Family plans with 2 SIMs from RM167. Includes device add-on options."],

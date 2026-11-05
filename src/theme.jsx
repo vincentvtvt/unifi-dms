@@ -58,7 +58,7 @@ export const I = Icons; // alias
 export const PartnerLogos = ({T}) => {
   const c=T.muted;
   return <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:32,flexWrap:"wrap",opacity:0.55}}>
-    {["Facebook","Google Ads","TikTok","Instagram","Rev Media"].map(n=><span key={n} style={{fontSize:15,fontWeight:700,color:c,letterSpacing:"-0.02em",whiteSpace:"nowrap"}}>{n}</span>)}
+    {["Facebook","Instagram","Google Search","Rev Media"].map(n=><span key={n} style={{fontSize:15,fontWeight:700,color:c,letterSpacing:"-0.02em",whiteSpace:"nowrap"}}>{n}</span>)}
   </div>;
 };
 

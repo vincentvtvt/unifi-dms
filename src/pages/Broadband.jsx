@@ -11,13 +11,11 @@ const HOME = [
   {name:"2Gbps + Smart Home",speed:"2Gbps",price:"319",highlight:"Full Security Kit"},
 ];
 const BIZ = [
-  {name:"Biz 300Mbps",speed:"300Mbps",price:"139"},
-  {name:"Biz 300Mbps + 43\" TV",speed:"300Mbps",price:"199",highlight:"FREE TV"},
-  {name:"Biz 500Mbps + Mesh",speed:"500Mbps",price:"179",highlight:"Mesh WiFi"},
-  {name:"Biz 500Mbps + 55\" TV",speed:"500Mbps",price:"239",highlight:"FREE TV"},
-  {name:"Biz 800Mbps",speed:"800Mbps",price:"259",highlight:"RM70 Credit"},
-  {name:"Biz 1Gbps",speed:"1Gbps",price:"319",highlight:"TV / iPad / Credit"},
-  {name:"Biz 2Gbps",speed:"2Gbps",price:"369",highlight:"TV / iPad / Credit"},
+  {name:"Biz 100Mbps",speed:"100Mbps",price:"129",highlight:"Free DECT Phone"},
+  {name:"Biz 300Mbps",speed:"300Mbps",price:"199",highlight:"Free Mesh WiFi"},
+  {name:"Biz 500Mbps",speed:"500Mbps",price:"239",highlight:"Free Mesh WiFi"},
+  {name:"Biz 1Gbps",speed:"1Gbps",price:"319",highlight:"Free Wireless Backup"},
+  {name:"Biz 2Gbps",speed:"2Gbps",price:"369",highlight:"Free Wireless Backup"},
 ];
 const SWITCH = [
   {name:"100Mbps",speed:"100Mbps",price:"89",highlight:"FREE 6 Months"},
@@ -51,12 +49,13 @@ export default function Broadband() {
   const active = TABS.find(t=>t.id===tab);
   return (
     <>
-      <PageHero icon={I.globe(T.primary,28)} tag="Broadband" title="Unifi Broadband Plans" subtitle="Home fibre from RM89/mo. Business fibre from RM139/mo. Free 3–6 months on selected plans." />
+      <PageHero icon={I.globe(T.primary,28)} tag="Broadband" title="Unifi Broadband Plans" subtitle="Home fibre from RM89/mo. Business fibre from RM129/mo. Free 3–6 months on selected plans." />
       <section style={{padding:"0 24px 60px",maxWidth:1100,margin:"0 auto"}}>
         <div style={{display:"flex",gap:8,flexWrap:"wrap",justifyContent:"center",marginBottom:28}}>
           {TABS.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"10px 18px",borderRadius:10,border:tab===t.id?`2px solid ${UB.blue}`:`1px solid ${T.border}`,background:tab===t.id?UB.blue:T.card,color:tab===t.id?"white":T.muted,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"}}>{t.label}</button>)}
         </div>
         {tab==="switch"&&<div style={{background:UB.green+"08",border:`1px solid ${UB.green}20`,borderRadius:10,padding:"12px 16px",marginBottom:20,fontSize:13,color:UB.green,fontWeight:500,textAlign:"center"}}>Competitor fibre/wireless broadband bill required as proof. Same address & same name.</div>}
+        {tab==="biz"&&<div style={{background:UB.blue+"08",border:`1px solid ${UB.blue}20`,borderRadius:10,padding:"12px 16px",marginBottom:20,fontSize:13,color:UB.blue,fontWeight:500,textAlign:"center"}}>All business plans: 24-month contract · Static IP add-on from RM200/mo · Wireless backup add-on from RM30/mo (100–500Mbps)</div>}
         {tab==="entertain"&&<div style={{background:UB.purple+"08",border:`1px solid ${UB.purple}20`,borderRadius:10,padding:"12px 16px",marginBottom:20,fontSize:13,color:UB.purple,fontWeight:500,textAlign:"center"}}>TV Pack choices: Wira · Ying Xiong · Veeran · Kids · Sports · Max. Optional device add-on from RM26–70/mo.</div>}
         <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(175px,1fr))",gap:12}}>
           {active.plans.map(p=><PlanCard key={p.name} plan={p} popular={p.highlight} />)}

@@ -1,12 +1,12 @@
 import { useTheme, Icons as I, Card, WaBtn, PageHero, PlanCard, SpecTable } from "../theme";
 
 const PLANS=[
-  {name:"Basic",price:"11",contract:"Monthly"},
-  {name:"Basic Plus",price:"17",contract:"Monthly"},
-  {name:"Standard",price:"32",contract:"Monthly",highlight:"Recommended"},
-  {name:"Advance",price:"52",contract:"Monthly"},
-  {name:"Enterprise",price:"95",contract:"Monthly"},
-  {name:"Freemium",price:"FREE",contract:"Monthly"},
+  {name:"Basic",price:"11",contract:"12 months"},
+  {name:"Basic Plus",price:"17",contract:"12 months"},
+  {name:"Standard",price:"32",contract:"12 months",highlight:"Recommended"},
+  {name:"Advance",price:"52",contract:"12 months"},
+  {name:"Enterprise",price:"95",contract:"12 months"},
+  {name:"Freemium",price:"FREE",contract:"1 month trial"},
 ];
 const SPECS=[
   {label:"Users",values:["Up to 2","Up to 2","Up to 3","Up to 5","Up to 10","1"]},

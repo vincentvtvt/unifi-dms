@@ -12,46 +12,38 @@ const PLANS = [
   {name:"Pro",mo:900,cr:7000,camp:"Up to 12 months",goal:"Dominate your market",color:UB.red},
 ];
 
-/* ═══ CALCULATOR BENCHMARKS — edit here ═══
-   Malaysian SME estimates. cpm = RM per 1,000 impressions, cpc = RM per click,
-   cvr = click-to-lead rate, ctr = used to estimate Google impressions. */
-const BENCH = {
-  fb:     {name:"Facebook & Instagram", color:"#1877F2", cpm:[8,15], cpc:[0.40,1.20], cvr:[0.03,0.07]},
-  google: {name:"Google Search",        color:"#EA4335", ctr:[0.03,0.06], cpc:[1.00,4.00], cvr:[0.04,0.10]},
-  tiktok: {name:"TikTok",               color:"#111111", cpm:[6,12], cpc:[0.30,1.00], cvr:[0.015,0.04]},
+/* ═══ CALCULATOR SETTINGS — edit here ═══
+   Cost per lead (RM) per platform, Malaysian SME estimates (mid-range).
+   Industry: mult = cost multiplier, deal = avg sale (RM), repeat = purchases per
+   customer in 12 months, close = % of leads that buy. */
+const PLATFORM = {
+  fb:     {name:"Facebook & Instagram", color:"#1877F2", cpl:16},
+  google: {name:"Google",               color:"#EA4335", cpl:36},
+  tiktok: {name:"TikTok",               color:"#111111", cpl:24},
 };
-/* mult = cost multiplier on CPM/CPC · split = default budget mix
-   deal = typical sale value (RM) · margin = profit % · close = % of leads that buy
-   repeat = purchases per new customer in 12 months (F&B regulars come back) */
 const INDUSTRY = {
-  "F&B":       {mult:0.8, split:{fb:60,google:15,tiktok:25}, deal:40,    margin:60, close:30, repeat:6},
-  "Retail":    {mult:0.9, split:{fb:50,google:20,tiktok:30}, deal:150,   margin:40, close:20, repeat:2},
-  "Beauty":    {mult:1.0, split:{fb:50,google:15,tiktok:35}, deal:200,   margin:60, close:25, repeat:3},
-  "Services":  {mult:1.1, split:{fb:40,google:45,tiktok:15}, deal:800,   margin:40, close:15, repeat:1},
-  "Education": {mult:1.2, split:{fb:45,google:35,tiktok:20}, deal:2500,  margin:50, close:10, repeat:1},
-  "Property":  {mult:1.6, split:{fb:45,google:45,tiktok:10}, deal:10000, margin:70, close:2, repeat:1},
+  "F&B":       {mult:0.8, deal:40,    repeat:6, close:30},
+  "Retail":    {mult:0.9, deal:150,   repeat:2, close:20},
+  "Beauty":    {mult:1.0, deal:200,   repeat:3, close:25},
+  "Services":  {mult:1.1, deal:800,   repeat:1, close:15},
+  "Education": {mult:1.2, deal:2500,  repeat:1, close:10},
+  "Property":  {mult:1.6, deal:10000, repeat:1, close:2},
 };
+const REVENUE_PRESETS = [5000,10000,30000,50000,100000];
 
-const fmt = n => n>=1e6 ? (n/1e6).toFixed(1)+"M" : n>=1e4 ? Math.round(n/1e3)+"k" : n>=1e3 ? (n/1e3).toFixed(1)+"k" : Math.round(n).toLocaleString();
-const rm = n => "RM"+(n>=100?Math.round(n).toLocaleString():n.toFixed(2));
-
-/* q(range,t): point t (0–1) within a benchmark range.
-   Conservative scenario = costs at 75% of range, conversion at 25%; optimistic = the reverse.
-   Avoids stacking every worst/best case, which would give an unrealistic 8x spread. */
-const q = (r,t) => r[0]+(r[1]-r[0])*t;
-function estimate(spend, key, mult){
-  const b = BENCH[key];
-  if(spend<=0) return null;
-  const clicksLo=spend/(q(b.cpc,0.75)*mult), clicksHi=spend/(q(b.cpc,0.25)*mult);
-  const impLo = b.cpm ? spend/(q(b.cpm,0.75)*mult)*1000 : clicksLo/q(b.ctr,0.75);
-  const impHi = b.cpm ? spend/(q(b.cpm,0.25)*mult)*1000 : clicksHi/q(b.ctr,0.25);
-  const leadsLo=clicksLo*q(b.cvr,0.25), leadsHi=clicksHi*q(b.cvr,0.75);
-  return {impLo,impHi,clicksLo,clicksHi,leadsLo,leadsHi,cplLo:spend/leadsHi,cplHi:spend/leadsLo};
+/* revenue target → customers → leads → ad budget → smallest plan that covers it */
+function plan(revenue, industry, platforms){
+  const ind = INDUSTRY[industry];
+  const keys = platforms.length ? platforms : ["fb"];
+  const cpl = keys.reduce((a,k)=>a+PLATFORM[k].cpl,0)/keys.length*ind.mult;
+  const customers = Math.ceil(revenue/(ind.deal*ind.repeat));
+  const leads = Math.ceil(customers/(ind.close/100));
+  const budget = Math.ceil(leads*cpl/10)*10;
+  const idx = PLANS.findIndex(p=>p.cr>=budget);
+  return {customers, leads, budget, cpl, pkg:PLANS[idx===-1?PLANS.length-1:idx], over:idx===-1};
 }
-
-/* hero example: Prime Pack, F&B default mix */
-const HERO = (()=>{const sp=INDUSTRY["F&B"].split, m=INDUSTRY["F&B"].mult, cr=PLANS[2].cr;
-  return Object.keys(BENCH).reduce((a,k)=>{const e=estimate(cr*sp[k]/100,k,m);return {lo:a.lo+e.leadsLo,hi:a.hi+e.leadsHi};},{lo:0,hi:0});})();
+const fmt = n => Math.round(n).toLocaleString();
+const HERO = plan(10000,"F&B",["fb","tiktok"]);
 
 const STEPS = [
   {d:"Day 1",t:"Subscribe",s:"Sign up via WhatsApp. Confirmation sent, charges go to your Unifi bill."},
@@ -74,152 +66,73 @@ const FAQ = [
 
 function Calculator(){
   const T = useTheme();
+  const [revenue,setRevenue] = useState(10000);
   const [industry,setIndustry] = useState("F&B");
-  const [mode,setMode] = useState("plan");
-  const [planIdx,setPlanIdx] = useState(2);
-  const [custom,setCustom] = useState(2000);
-  const [w,setW] = useState(INDUSTRY["F&B"].split);
-  const [deal,setDeal] = useState(INDUSTRY["F&B"].deal);
-  const [margin,setMargin] = useState(INDUSTRY["F&B"].margin);
-  const [close,setClose] = useState(INDUSTRY["F&B"].close);
-  const [repeat,setRepeat] = useState(INDUSTRY["F&B"].repeat);
+  const [platforms,setPlatforms] = useState(["fb","tiktok"]);
+  const toggle = k => setPlatforms(p => p.includes(k) ? (p.length>1 ? p.filter(x=>x!==k) : p) : [...p,k]);
+  const r = useMemo(()=>plan(revenue,industry,platforms),[revenue,industry,platforms]);
+  const p = r.pkg;
 
-  const pickIndustry = k => { const d=INDUSTRY[k]; setIndustry(k); setW(d.split); setDeal(d.deal); setMargin(d.margin); setClose(d.close); setRepeat(d.repeat); track("calc_industry_"+k); };
-  const spend = mode==="plan" ? PLANS[planIdx].cr : custom;
-  const totalW = (w.fb+w.google+w.tiktok)||1;
-  const mult = INDUSTRY[industry].mult;
-
-  const res = useMemo(()=>{
-    const rows = Object.keys(BENCH).map(k=>{
-      const s = spend*w[k]/totalW;
-      return {k, pct:Math.round(w[k]/totalW*100), spend:s, e:estimate(s,k,mult)};
-    });
-    const sum = f => rows.reduce((a,r)=>a+(r.e?r.e[f]:0),0);
-    return {rows, leadsLo:sum("leadsLo"), leadsHi:sum("leadsHi"), impLo:sum("impLo"), impHi:sum("impHi")};
-  },[spend,w,totalW,mult]);
-
-  const recIdx = mode==="plan" ? planIdx : Math.max(0, PLANS.findIndex(p=>p.cr>=custom)===-1 ? 3 : PLANS.findIndex(p=>p.cr>=custom));
-  const rec = PLANS[recIdx];
-  /* real cost = what the customer pays over 12 months (credits + team), not just ad credits */
-  const costPlan = mode==="plan" ? PLANS[planIdx] : rec;
-  const cost = Math.round(spend * (costPlan.mo*12/costPlan.cr));
-  const avgCplLo = cost/(res.leadsHi||1), avgCplHi = cost/(res.leadsLo||1);
-  const profitPerDeal = deal*margin/100*Math.max(1,repeat); /* profit per new customer over 12 months */
-  const beDeals = profitPerDeal>0 ? Math.ceil(cost/profitPerDeal) : Infinity;
-  const dealsLo = Math.floor(res.leadsLo*close/100), dealsHi = Math.floor(res.leadsHi*close/100);
-  const profitLo = dealsLo*profitPerDeal - cost, profitHi = dealsHi*profitPerDeal - cost;
-  const status = dealsLo>=beDeals ? {c:UB.green,t:"Likely profitable"} : dealsHi>=beDeals ? {c:UB.orange,t:"Can break even — depends on execution"} : {c:UB.red,t:"Unlikely to break even at these numbers"};
-  const numIn = (v,set,suffix,pre) => <div style={{display:"flex",alignItems:"center",border:`1px solid ${T.border}`,borderRadius:10,padding:"0 10px",background:"white"}}>
-    {pre&&<span style={{fontSize:13,color:T.muted,fontWeight:600}}>{pre}</span>}
-    <input type="number" min={0} value={v} onChange={e=>set(Math.max(0,+e.target.value))} style={{width:"100%",border:"none",outline:"none",padding:"10px 6px",fontSize:15,fontWeight:700,fontFamily:"'DM Sans',sans-serif",color:UB.navy,background:"transparent"}}/>
-    {suffix&&<span style={{fontSize:13,color:T.muted,fontWeight:600}}>{suffix}</span>}
-  </div>;
-
-  const waMsg = `I used the DMS lead calculator.\n• Industry: ${industry}\n• Ad budget: RM${spend.toLocaleString()}${mode==="plan"?` (${PLANS[planIdx].name} Pack)`:""}\n• Split: FB/IG ${res.rows[0].pct}% · Google ${res.rows[1].pct}% · TikTok ${res.rows[2].pct}%\n• Estimated leads: ${fmt(res.leadsLo)}–${fmt(res.leadsHi)}\n• Deal value RM${deal.toLocaleString()} · margin ${margin}% · close rate ${close}% · ${repeat}× purchases/yr\n• Break-even: ${beDeals} customers (est. ${dealsLo}–${dealsHi})\n• Recommended: *${rec.name} Pack* (RM${rec.mo}/mo)\nI want to get started.`;
+  const waMsg = `I used the DMS calculator.\n• Revenue target: RM${fmt(revenue)}\n• Industry: ${industry}\n• Platforms: ${platforms.map(k=>PLATFORM[k].name).join(", ")}\n• Leads needed: ~${fmt(r.leads)} · Ad budget: ~RM${fmt(r.budget)}\n• Suggested: *${p.name} Pack* (RM${p.mo}/mo)\nI want to get started.`;
   const goWA = () => { track("calc_whatsapp"); window.open(waL(waMsg,"dms_calculator"),"_blank"); };
 
-  const chip = (active,color=UB.blue) => ({padding:"8px 14px",borderRadius:999,border:`1.5px solid ${active?color:T.border}`,background:active?color+"10":"white",color:active?color:T.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"});
+  const chip = (on,c=UB.blue) => ({padding:"10px 16px",borderRadius:999,border:`1.5px solid ${on?c:T.border}`,background:on?c+"12":"white",color:on?c:T.text,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"});
   const label = {fontSize:12,fontWeight:700,color:T.muted,textTransform:"uppercase",letterSpacing:1,marginBottom:10};
 
-  return <div className="calc-grid" style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1.15fr)",gap:20,alignItems:"start"}}>
-    {/* INPUTS */}
-    <Card hover={false} style={{padding:24}}>
-      <div style={label}>1 · Your industry</div>
-      <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:24}}>
-        {Object.keys(INDUSTRY).map(k=><button key={k} onClick={()=>pickIndustry(k)} style={chip(industry===k)}>{k}</button>)}
-      </div>
-
-      <div style={label}>2 · Your ad budget</div>
-      <div style={{display:"flex",background:T.sub,borderRadius:10,padding:4,marginBottom:14}}>
-        {[["plan","Pick a DMS plan"],["custom","Custom budget"]].map(([m,l])=><button key={m} onClick={()=>setMode(m)} style={{flex:1,padding:"9px 0",borderRadius:8,border:"none",background:mode===m?"white":"transparent",boxShadow:mode===m?"0 1px 4px rgba(0,0,0,0.08)":"none",fontWeight:700,fontSize:13,color:mode===m?UB.blue:T.muted,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{l}</button>)}
-      </div>
-      {mode==="plan" ? <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:24}}>
-        {PLANS.map((p,i)=><button key={p.name} onClick={()=>setPlanIdx(i)} style={{...chip(planIdx===i,p.color),borderRadius:10,textAlign:"left",padding:"10px 12px"}}>
-          <div style={{fontSize:13,fontWeight:700}}>{p.name} · RM{p.mo}/mo</div>
-          <div style={{fontSize:11,color:T.muted,fontWeight:500}}>{p.cr.toLocaleString()} credits</div>
-        </button>)}
-      </div> : <div style={{marginBottom:24}}>
-        <div style={{fontSize:30,fontWeight:800,color:UB.navy}}>RM{custom.toLocaleString()}</div>
-        <input type="range" min={500} max={10000} step={100} value={custom} onChange={e=>setCustom(+e.target.value)} style={{width:"100%",accentColor:UB.orange}}/>
-        <div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:T.muted}}><span>RM500</span><span>RM10,000</span></div>
-      </div>}
-
-      <div style={label}>3 · Platform mix</div>
-      {Object.entries(BENCH).map(([k,b])=><div key={k} style={{marginBottom:12}}>
-        <div style={{display:"flex",justifyContent:"space-between",fontSize:13,fontWeight:600,marginBottom:2}}>
-          <span style={{display:"flex",alignItems:"center",gap:6}}><span style={{width:10,height:10,borderRadius:3,background:b.color}}/>{b.name}</span>
-          <span style={{color:T.muted}}>{Math.round(w[k]/totalW*100)}%</span>
+  return <div className="calc-grid" style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1fr)",gap:20,alignItems:"stretch"}}>
+    <Card hover={false} style={{padding:26,display:"flex",flexDirection:"column",gap:26}}>
+      <div>
+        <div style={label}>1 · Revenue you want from ads</div>
+        <div style={{display:"flex",alignItems:"center",border:`1.5px solid ${T.border}`,borderRadius:12,padding:"0 14px",marginBottom:10}}>
+          <span style={{fontSize:20,fontWeight:700,color:T.muted}}>RM</span>
+          <input type="number" min={0} step={1000} value={revenue} onChange={e=>setRevenue(Math.max(0,+e.target.value))} style={{width:"100%",border:"none",outline:"none",padding:"12px 8px",fontSize:26,fontWeight:800,color:UB.navy,fontFamily:"'DM Sans',sans-serif",background:"transparent"}}/>
         </div>
-        <input type="range" min={0} max={100} step={5} value={w[k]} onChange={e=>setW({...w,[k]:+e.target.value})} style={{width:"100%",accentColor:b.color}}/>
-      </div>)}
-      <button onClick={()=>setW(INDUSTRY[industry].split)} style={{background:"none",border:"none",color:UB.blue,fontSize:12,fontWeight:600,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif",marginBottom:24}}>Reset to suggested mix for {industry}</button>
-
-      <div style={label}>4 · Your business numbers</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Avg. price per deal</div>{numIn(deal,setDeal,null,"RM")}</div>
-        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Profit margin</div>{numIn(margin,v=>setMargin(Math.min(100,v)),"%")}</div>
-        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Leads that buy</div>{numIn(close,v=>setClose(Math.min(100,v)),"%")}</div>
-        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Purchases per customer / year</div>{numIn(repeat,v=>setRepeat(Math.max(1,v)),"×")}</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+          {REVENUE_PRESETS.map(v=><button key={v} onClick={()=>setRevenue(v)} style={{...chip(revenue===v,UB.orange),padding:"6px 12px",fontSize:12}}>RM{v>=1000?v/1000+"k":v}</button>)}
+        </div>
       </div>
-      <p style={{fontSize:11,color:T.muted,marginTop:8}}>Pre-filled with typical {industry} figures. Change them to your own.</p>
+      <div>
+        <div style={label}>2 · Your industry</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+          {Object.keys(INDUSTRY).map(k=><button key={k} onClick={()=>setIndustry(k)} style={chip(industry===k)}>{k}</button>)}
+        </div>
+      </div>
+      <div>
+        <div style={label}>3 · Platforms</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+          {Object.entries(PLATFORM).map(([k,v])=><button key={k} onClick={()=>toggle(k)} style={{...chip(platforms.includes(k),v.color),display:"inline-flex",alignItems:"center",gap:8}}>
+            <span style={{width:16,height:16,borderRadius:4,border:`2px solid ${v.color}`,background:platforms.includes(k)?v.color:"white",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{platforms.includes(k)&&I.check("white",11)}</span>{v.name}
+          </button>)}
+        </div>
+      </div>
     </Card>
 
-    {/* RESULTS */}
-    <div style={{display:"flex",flexDirection:"column",gap:14}}>
-      <div style={{background:`linear-gradient(135deg, ${UB.navy}, ${UB.blue})`,borderRadius:16,padding:24,color:"white"}}>
-        <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:UB.orange}}>Estimated leads</div>
-        <div style={{fontSize:"clamp(40px,7vw,56px)",fontWeight:800,lineHeight:1.1,margin:"6px 0"}}>{fmt(res.leadsLo)}–{fmt(res.leadsHi)}</div>
-        <div style={{fontSize:13,opacity:0.7,marginBottom:18}}>from RM{spend.toLocaleString()} ad credits{mode==="plan"?` · ${PLANS[planIdx].camp} campaign`:""}</div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:12}}><div style={{fontSize:11,opacity:0.6}}>Ad views (impressions)</div><div style={{fontSize:20,fontWeight:800}}>{fmt(res.impLo)}–{fmt(res.impHi)}</div></div>
-          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:12}}><div style={{fontSize:11,opacity:0.6}}>Real cost per lead*</div><div style={{fontSize:20,fontWeight:800}}>{rm(avgCplLo)}–{rm(avgCplHi)}</div></div>
+    <div style={{background:`linear-gradient(135deg, ${UB.navy}, ${UB.blue})`,borderRadius:16,padding:26,color:"white",display:"flex",flexDirection:"column",gap:18}}>
+      <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:UB.orange}}>To make RM{fmt(revenue)} you need</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        <div style={{background:"rgba(255,255,255,0.08)",borderRadius:12,padding:16}}>
+          <div style={{fontSize:12,opacity:0.65}}>Leads</div>
+          <div style={{fontSize:"clamp(30px,5vw,42px)",fontWeight:800,lineHeight:1.1}}>~{fmt(r.leads)}</div>
+          <div style={{fontSize:11,opacity:0.5}}>→ ~{fmt(r.customers)} paying customers</div>
         </div>
-        <div style={{fontSize:11,opacity:0.5,marginTop:8}}>*Based on RM{cost.toLocaleString()} you pay over 12 months ({costPlan.name}: RM{costPlan.mo} × 12), including your dedicated team.</div>
+        <div style={{background:"rgba(255,255,255,0.08)",borderRadius:12,padding:16}}>
+          <div style={{fontSize:12,opacity:0.65}}>Ad budget</div>
+          <div style={{fontSize:"clamp(30px,5vw,42px)",fontWeight:800,lineHeight:1.1}}>RM{fmt(r.budget)}</div>
+          <div style={{fontSize:11,opacity:0.5}}>≈ {fmt(r.budget)} ad credits</div>
+        </div>
       </div>
 
-      <Card hover={false} style={{padding:20,border:`2px solid ${status.c}`}}>
-        <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:status.c,marginBottom:12}}>Break-even check · {status.t}</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
-          <div style={{background:T.sub,borderRadius:10,padding:12}}><div style={{fontSize:11,color:T.muted}}>Profit per customer</div><div style={{fontSize:20,fontWeight:800,color:UB.navy}}>{rm(profitPerDeal)}</div></div>
-          <div style={{background:T.sub,borderRadius:10,padding:12}}><div style={{fontSize:11,color:T.muted}}>Customers to break even</div><div style={{fontSize:20,fontWeight:800,color:UB.navy}}>{isFinite(beDeals)?beDeals.toLocaleString():"–"}</div></div>
-          <div style={{background:T.sub,borderRadius:10,padding:12}}><div style={{fontSize:11,color:T.muted}}>Expected customers</div><div style={{fontSize:20,fontWeight:800,color:status.c}}>{dealsLo.toLocaleString()}–{dealsHi.toLocaleString()}</div></div>
+      <div style={{background:"white",color:T.text,borderRadius:14,padding:20,borderTop:`5px solid ${p.color}`}}>
+        <div style={{fontSize:11,fontWeight:700,color:UB.green,display:"flex",alignItems:"center",gap:4,marginBottom:4}}>{I.check(UB.green,14)} YOUR PACKAGE</div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",flexWrap:"wrap",gap:8}}>
+          <div style={{fontSize:24,fontWeight:800}}>{p.name} Pack</div>
+          <div style={{fontSize:30,fontWeight:800,color:p.color}}>RM{p.mo}<span style={{fontSize:14,color:T.muted,fontWeight:500}}>/mo</span></div>
         </div>
-        {isFinite(beDeals)&&<div style={{height:8,borderRadius:4,background:T.sub,marginTop:14,position:"relative",overflow:"hidden"}}>
-          <div style={{position:"absolute",left:0,top:0,bottom:0,width:Math.min(100,dealsHi/Math.max(beDeals,dealsHi)*100)+"%",background:status.c+"40"}}/>
-          <div style={{position:"absolute",left:0,top:0,bottom:0,width:Math.min(100,dealsLo/Math.max(beDeals,dealsHi)*100)+"%",background:status.c}}/>
-          <div style={{position:"absolute",top:-2,bottom:-2,width:2,background:UB.navy,left:Math.min(100,beDeals/Math.max(beDeals,dealsHi)*100)+"%"}}/>
-        </div>}
-        <p style={{fontSize:13,color:T.text,marginTop:12,lineHeight:1.5}}>
-          You need <b>{isFinite(beDeals)?beDeals:"–"} new customer{beDeals===1?"":"s"}</b>{repeat>1?` (buying ${repeat}× a year)`:""} to cover RM{cost.toLocaleString()}. Estimated profit after cost: <b style={{color:profitHi>=0?UB.green:UB.red}}>{profitLo<0?"-":""}RM{Math.abs(Math.round(profitLo)).toLocaleString()} to {profitHi<0?"-":""}RM{Math.abs(Math.round(profitHi)).toLocaleString()}</b>.
-        </p>
-      </Card>
-
-      <Card hover={false} style={{padding:0}}>
-        {res.rows.map((r,i)=>{const b=BENCH[r.k];return<div key={r.k} style={{padding:"14px 18px",borderTop:i?`1px solid ${T.border}`:"none",opacity:r.e?1:0.4}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-            <span style={{display:"flex",alignItems:"center",gap:8,fontWeight:700,fontSize:14}}><span style={{width:10,height:10,borderRadius:3,background:b.color}}/>{b.name}</span>
-            <span style={{fontSize:12,color:T.muted}}>RM{Math.round(r.spend).toLocaleString()} · {r.pct}%</span>
-          </div>
-          <div style={{height:6,borderRadius:3,background:T.sub,marginBottom:10,overflow:"hidden"}}><div style={{width:r.pct+"%",height:"100%",background:b.color,transition:"width 0.3s"}}/></div>
-          {r.e ? <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,fontSize:12}}>
-            <div><div style={{color:T.muted}}>Clicks</div><div style={{fontWeight:700}}>{fmt(r.e.clicksLo)}–{fmt(r.e.clicksHi)}</div></div>
-            <div><div style={{color:T.muted}}>Leads</div><div style={{fontWeight:700,color:UB.green}}>{fmt(r.e.leadsLo)}–{fmt(r.e.leadsHi)}</div></div>
-            <div><div style={{color:T.muted}}>Ad cost/lead</div><div style={{fontWeight:700}}>{rm(r.e.cplLo)}–{rm(r.e.cplHi)}</div></div>
-          </div> : <div style={{fontSize:12,color:T.muted}}>Not in your mix</div>}
-        </div>;})}
-      </Card>
-
-      <Card hover={false} style={{padding:18,border:`2px solid ${rec.color}`}}>
-        <div style={{display:"flex",flexWrap:"wrap",gap:12,alignItems:"center",justifyContent:"space-between"}}>
-          <div>
-            <div style={{fontSize:11,fontWeight:700,color:UB.green,display:"flex",alignItems:"center",gap:4}}>{I.check(UB.green,14)} RECOMMENDED</div>
-            <div style={{fontSize:18,fontWeight:800}}>{rec.name} Pack · <span style={{color:rec.color}}>RM{rec.mo}/mo</span></div>
-            <div style={{fontSize:12,color:T.muted}}>{rec.cr.toLocaleString()} credits · {rec.camp}</div>
-          </div>
-          <button onClick={goWA} style={{display:"inline-flex",alignItems:"center",gap:8,background:"#25D366",color:"white",border:"none",padding:"13px 22px",borderRadius:10,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",boxShadow:"0 2px 8px rgba(37,211,102,0.3)"}}>{I.msg("white",18)} Send my estimate on WhatsApp</button>
-        </div>
-      </Card>
-      <p style={{fontSize:11,color:T.muted,lineHeight:1.5}}>Estimates only, based on typical Malaysian SME ad costs. Actual results depend on your offer, creatives, location and competition. Prices exclude 6% SST.</p>
+        <div style={{fontSize:13,color:T.muted,margin:"4px 0 16px"}}>{p.cr.toLocaleString()} ad credits · {p.camp} campaign · 3-person team</div>
+        {r.over&&<div style={{fontSize:12,background:UB.orange+"12",color:UB.orange,borderRadius:8,padding:"8px 10px",marginBottom:12,fontWeight:600}}>Your target needs more than one Pro Pack — WhatsApp us for a custom plan.</div>}
+        <button onClick={goWA} style={{width:"100%",display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,background:"#25D366",color:"white",border:"none",padding:"14px 20px",borderRadius:10,fontSize:15,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{I.msg("white",18)} Get {p.name} on WhatsApp</button>
+      </div>
+      <p style={{fontSize:11,opacity:0.5,lineHeight:1.5}}>Estimate based on typical {industry} sale value, repeat purchases and Malaysian ad costs. Actual results vary. Prices exclude 6% SST.</p>
     </div>
   </div>;
 }
@@ -254,11 +167,11 @@ export default function DigitalMarketing(){
         </div>
         <div style={{flex:"0 1 380px",width:"100%",maxWidth:380}}>
           <div style={{background:"white",borderRadius:18,padding:22,color:T.text,boxShadow:"0 24px 60px rgba(0,0,0,0.25)"}}>
-            <div style={{fontSize:12,color:T.muted,fontWeight:600,marginBottom:12}}>Prime Pack · F&amp;B example</div>
-            {[["Ad credits upfront","3,500"],["You pay","RM450/mo"],["Campaign","5–6 months"],["Your team","3 people"]].map(([a,b])=><div key={a} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${T.border}`,fontSize:14}}><span style={{color:T.muted}}>{a}</span><b>{b}</b></div>)}
+            <div style={{fontSize:12,color:T.muted,fontWeight:600,marginBottom:12}}>F&amp;B example · Target RM10,000 revenue</div>
+            {[["Leads needed",`~${fmt(HERO.leads)}`],["Ad budget",`RM${fmt(HERO.budget)}`],["Platforms","Facebook + TikTok"],["Your team","3 people"]].map(([a,b])=><div key={a} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${T.border}`,fontSize:14}}><span style={{color:T.muted}}>{a}</span><b>{b}</b></div>)}
             <div style={{marginTop:14,background:UB.green+"12",borderRadius:10,padding:12,textAlign:"center"}}>
-              <div style={{fontSize:11,color:UB.green,fontWeight:700}}>Estimated leads</div>
-              <div style={{fontSize:28,fontWeight:800,color:UB.navy}}>{fmt(HERO.lo)}–{fmt(HERO.hi)}</div>
+              <div style={{fontSize:11,color:UB.green,fontWeight:700}}>Your package</div>
+              <div style={{fontSize:24,fontWeight:800,color:UB.navy}}>{HERO.pkg.name} · RM{HERO.pkg.mo}/mo</div>
             </div>
           </div>
         </div>
@@ -339,9 +252,9 @@ export default function DigitalMarketing(){
     {/* 5 · CALCULATOR */}
     <section id="calculator" style={{...wrap,padding:"72px 20px"}}>
       <div style={{textAlign:"center",marginBottom:32}}>
-        <SectionLabel text="Budget & Lead Calculator"/>
-        <h2 style={{fontSize:"clamp(24px,4vw,34px)",fontWeight:800,marginBottom:8}}>How many leads can your budget bring?</h2>
-        <p style={{fontSize:15,color:T.muted}}>Pick your industry and budget. See estimated reach, clicks and leads on Facebook, Google and TikTok.</p>
+        <SectionLabel text="Package Calculator"/>
+        <h2 style={{fontSize:"clamp(24px,4vw,34px)",fontWeight:800,marginBottom:8}}>How much do you want to make?</h2>
+        <p style={{fontSize:15,color:T.muted}}>Tell us your revenue target, industry and platforms. We'll show the leads, budget and package you need.</p>
       </div>
       <Calculator/>
     </section>

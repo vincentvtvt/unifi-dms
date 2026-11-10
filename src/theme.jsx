@@ -58,7 +58,7 @@ export const I = Icons; // alias
 export const PartnerLogos = ({T}) => {
   const c=T.muted;
   return <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:32,flexWrap:"wrap",opacity:0.55}}>
-    {["Facebook","Instagram","Google Search","Rev Media"].map(n=><span key={n} style={{fontSize:15,fontWeight:700,color:c,letterSpacing:"-0.02em",whiteSpace:"nowrap"}}>{n}</span>)}
+    {["Facebook","Instagram","Google","TikTok","YouTube","Rev Media"].map(n=><span key={n} style={{fontSize:15,fontWeight:700,color:c,letterSpacing:"-0.02em",whiteSpace:"nowrap"}}>{n}</span>)}
   </div>;
 };
 
@@ -112,7 +112,7 @@ export const FloatingWA = () => {
   </>;
 };
 
-const NAV_LINKS=[{l:"Home Fibre",h:"#solutions"},{l:"Business",h:"#solutions"},{l:"Mobile",h:"#solutions"},{l:"Marketing",h:"#dms-finder"},{l:"Coverage",h:"#coverage"}];
+const NAV_LINKS=[{l:"Home Fibre",h:"#solutions"},{l:"Business",h:"#solutions"},{l:"Mobile",h:"#solutions"},{l:"Marketing",h:"/digital-marketing"},{l:"Coverage",h:"#coverage"}];
 export const Nav = () => {
   const T=useTheme();const [open,setOpen]=useState(false);
   return <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:1000,background:T.navBg,backdropFilter:"blur(16px)",boxShadow:T.navShadow,height:60}}>

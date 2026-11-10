@@ -5,6 +5,7 @@ import Broadband from "./pages/Broadband";
 import AirBiz from "./pages/AirBiz";
 import Mobile from "./pages/Mobile";
 import CloudStorage from "./pages/CloudStorage";
+import DigitalMarketing from "./pages/DigitalMarketing";
 
 const UB = { blue:"#0033A1", sky:"#00A3E0", navy:"#001A5C", orange:"#FF6B00", green:"#00B67A", purple:"#7B2FBE", red:"#E5002B" };
 
@@ -345,7 +346,7 @@ const FAQ = [
   ["What's included free with broadband?","All plans include a free WiFi 6 or WiFi 7 router. Prime Promo plans get 3 months free. 1Gbps and 2Gbps include smart home security kits."],
   ["Can I get free months if I switch from another provider?","Yes — bring your competitor bill and get up to 6 months free on selected plans. Free TV or iPad options also available for switchers."],
   ["What mobile plans do you offer?","Uni5G RM39 (50GB), Uni5G RM69 (500GB), Uni5G RM99 (100GB+) — no contract on SIM only. Family plans RM129–189 with free extra lines. Unifi Air from RM69. Free 5G phones available with device bundles, subject to stock & eligibility."],
-  ["What is Unifi DMS?","Digital Marketing Solution — Malaysia's first instalment-based marketing. A dedicated team runs Facebook, Instagram, Google Search & Rev Media ads for you. From RM100/month over 12 months."],
+  ["What is Unifi DMS?","Digital Marketing Solution — Malaysia's first instalment-based marketing. A dedicated team runs Facebook, Instagram, Google, TikTok, YouTube & Rev Media ads for you. From RM100/month over 12 months."],
   ["How is DMS different from hiring an agency?","Agencies charge RM1,500–5,000/month upfront. DMS starts at RM100/month on instalments with no upfront cost. Includes campaign manager, designer, and copywriter."],
   ["Is there a contract?","Broadband: 24–36 months depending on plan. Mobile SIM-only: no contract. DMS: 12-month instalment period."],
   ["Can I bundle broadband with mobile?","Yes — combo plans start from RM128 (100Mbps + 1 SIM). Family plans with 2 SIMs from RM167. Includes device add-on options."],
@@ -524,6 +525,7 @@ function Home() {
             </div>;})()}
           </Card>
           <PlanGrid plans={P.biz_dms}/>
+          <div style={{textAlign:"center",marginTop:16}}><a href="/digital-marketing#calculator" style={{display:"inline-flex",alignItems:"center",gap:6,fontSize:14,fontWeight:700,color:UB.orange}}>Estimate your leads with our calculator {Icons.arrow(UB.orange,16)}</a></div>
         </div>}
       </div>
     </section>
@@ -648,4 +650,6 @@ export default function App(){return<ThemeProvider><Routes>
   <Route path="/air-biz" element={<Layout><AirBiz/></Layout>}/>
   <Route path="/mobile" element={<Layout><Mobile/></Layout>}/>
   <Route path="/cloud-storage" element={<Layout><CloudStorage/></Layout>}/>
+  <Route path="/digital-marketing" element={<Layout><DigitalMarketing/></Layout>}/>
+  <Route path="/dms" element={<Layout><DigitalMarketing/></Layout>}/>
 </Routes></ThemeProvider>;}

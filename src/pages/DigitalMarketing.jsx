@@ -16,18 +16,20 @@ const PLANS = [
    Malaysian SME estimates. cpm = RM per 1,000 impressions, cpc = RM per click,
    cvr = click-to-lead rate, ctr = used to estimate Google impressions. */
 const BENCH = {
-  fb:     {name:"Facebook & Instagram", color:"#1877F2", cpm:[8,15], cpc:[0.40,1.20], cvr:[0.04,0.10]},
-  google: {name:"Google Search",        color:"#EA4335", ctr:[0.03,0.06], cpc:[1.00,4.00], cvr:[0.05,0.12]},
-  tiktok: {name:"TikTok",               color:"#111111", cpm:[6,12], cpc:[0.30,1.00], cvr:[0.02,0.06]},
+  fb:     {name:"Facebook & Instagram", color:"#1877F2", cpm:[8,15], cpc:[0.40,1.20], cvr:[0.03,0.07]},
+  google: {name:"Google Search",        color:"#EA4335", ctr:[0.03,0.06], cpc:[1.00,4.00], cvr:[0.04,0.10]},
+  tiktok: {name:"TikTok",               color:"#111111", cpm:[6,12], cpc:[0.30,1.00], cvr:[0.015,0.04]},
 };
-/* cost multiplier on CPM/CPC + default budget split per industry */
+/* mult = cost multiplier on CPM/CPC · split = default budget mix
+   deal = typical sale value (RM) · margin = profit % · close = % of leads that buy
+   repeat = purchases per new customer in 12 months (F&B regulars come back) */
 const INDUSTRY = {
-  "F&B":       {mult:0.8, split:{fb:60,google:15,tiktok:25}},
-  "Retail":    {mult:0.9, split:{fb:50,google:20,tiktok:30}},
-  "Beauty":    {mult:1.0, split:{fb:50,google:15,tiktok:35}},
-  "Services":  {mult:1.1, split:{fb:40,google:45,tiktok:15}},
-  "Education": {mult:1.2, split:{fb:45,google:35,tiktok:20}},
-  "Property":  {mult:1.6, split:{fb:45,google:45,tiktok:10}},
+  "F&B":       {mult:0.8, split:{fb:60,google:15,tiktok:25}, deal:40,    margin:60, close:30, repeat:6},
+  "Retail":    {mult:0.9, split:{fb:50,google:20,tiktok:30}, deal:150,   margin:40, close:20, repeat:2},
+  "Beauty":    {mult:1.0, split:{fb:50,google:15,tiktok:35}, deal:200,   margin:60, close:25, repeat:3},
+  "Services":  {mult:1.1, split:{fb:40,google:45,tiktok:15}, deal:800,   margin:40, close:15, repeat:1},
+  "Education": {mult:1.2, split:{fb:45,google:35,tiktok:20}, deal:2500,  margin:50, close:10, repeat:1},
+  "Property":  {mult:1.6, split:{fb:45,google:45,tiktok:10}, deal:10000, margin:70, close:2, repeat:1},
 };
 
 const fmt = n => n>=1e6 ? (n/1e6).toFixed(1)+"M" : n>=1e4 ? Math.round(n/1e3)+"k" : n>=1e3 ? (n/1e3).toFixed(1)+"k" : Math.round(n).toLocaleString();
@@ -77,8 +79,12 @@ function Calculator(){
   const [planIdx,setPlanIdx] = useState(2);
   const [custom,setCustom] = useState(2000);
   const [w,setW] = useState(INDUSTRY["F&B"].split);
+  const [deal,setDeal] = useState(INDUSTRY["F&B"].deal);
+  const [margin,setMargin] = useState(INDUSTRY["F&B"].margin);
+  const [close,setClose] = useState(INDUSTRY["F&B"].close);
+  const [repeat,setRepeat] = useState(INDUSTRY["F&B"].repeat);
 
-  const pickIndustry = k => { setIndustry(k); setW(INDUSTRY[k].split); track("calc_industry_"+k); };
+  const pickIndustry = k => { const d=INDUSTRY[k]; setIndustry(k); setW(d.split); setDeal(d.deal); setMargin(d.margin); setClose(d.close); setRepeat(d.repeat); track("calc_industry_"+k); };
   const spend = mode==="plan" ? PLANS[planIdx].cr : custom;
   const totalW = (w.fb+w.google+w.tiktok)||1;
   const mult = INDUSTRY[industry].mult;
@@ -94,9 +100,22 @@ function Calculator(){
 
   const recIdx = mode==="plan" ? planIdx : Math.max(0, PLANS.findIndex(p=>p.cr>=custom)===-1 ? 3 : PLANS.findIndex(p=>p.cr>=custom));
   const rec = PLANS[recIdx];
-  const avgCplLo = spend/(res.leadsHi||1), avgCplHi = spend/(res.leadsLo||1);
+  /* real cost = what the customer pays over 12 months (credits + team), not just ad credits */
+  const costPlan = mode==="plan" ? PLANS[planIdx] : rec;
+  const cost = Math.round(spend * (costPlan.mo*12/costPlan.cr));
+  const avgCplLo = cost/(res.leadsHi||1), avgCplHi = cost/(res.leadsLo||1);
+  const profitPerDeal = deal*margin/100*Math.max(1,repeat); /* profit per new customer over 12 months */
+  const beDeals = profitPerDeal>0 ? Math.ceil(cost/profitPerDeal) : Infinity;
+  const dealsLo = Math.floor(res.leadsLo*close/100), dealsHi = Math.floor(res.leadsHi*close/100);
+  const profitLo = dealsLo*profitPerDeal - cost, profitHi = dealsHi*profitPerDeal - cost;
+  const status = dealsLo>=beDeals ? {c:UB.green,t:"Likely profitable"} : dealsHi>=beDeals ? {c:UB.orange,t:"Can break even — depends on execution"} : {c:UB.red,t:"Unlikely to break even at these numbers"};
+  const numIn = (v,set,suffix,pre) => <div style={{display:"flex",alignItems:"center",border:`1px solid ${T.border}`,borderRadius:10,padding:"0 10px",background:"white"}}>
+    {pre&&<span style={{fontSize:13,color:T.muted,fontWeight:600}}>{pre}</span>}
+    <input type="number" min={0} value={v} onChange={e=>set(Math.max(0,+e.target.value))} style={{width:"100%",border:"none",outline:"none",padding:"10px 6px",fontSize:15,fontWeight:700,fontFamily:"'DM Sans',sans-serif",color:UB.navy,background:"transparent"}}/>
+    {suffix&&<span style={{fontSize:13,color:T.muted,fontWeight:600}}>{suffix}</span>}
+  </div>;
 
-  const waMsg = `I used the DMS lead calculator.\n• Industry: ${industry}\n• Ad budget: RM${spend.toLocaleString()}${mode==="plan"?` (${PLANS[planIdx].name} Pack)`:""}\n• Split: FB/IG ${res.rows[0].pct}% · Google ${res.rows[1].pct}% · TikTok ${res.rows[2].pct}%\n• Estimated leads: ${fmt(res.leadsLo)}–${fmt(res.leadsHi)}\n• Recommended: *${rec.name} Pack* (RM${rec.mo}/mo)\nI want to get started.`;
+  const waMsg = `I used the DMS lead calculator.\n• Industry: ${industry}\n• Ad budget: RM${spend.toLocaleString()}${mode==="plan"?` (${PLANS[planIdx].name} Pack)`:""}\n• Split: FB/IG ${res.rows[0].pct}% · Google ${res.rows[1].pct}% · TikTok ${res.rows[2].pct}%\n• Estimated leads: ${fmt(res.leadsLo)}–${fmt(res.leadsHi)}\n• Deal value RM${deal.toLocaleString()} · margin ${margin}% · close rate ${close}% · ${repeat}× purchases/yr\n• Break-even: ${beDeals} customers (est. ${dealsLo}–${dealsHi})\n• Recommended: *${rec.name} Pack* (RM${rec.mo}/mo)\nI want to get started.`;
   const goWA = () => { track("calc_whatsapp"); window.open(waL(waMsg,"dms_calculator"),"_blank"); };
 
   const chip = (active,color=UB.blue) => ({padding:"8px 14px",borderRadius:999,border:`1.5px solid ${active?color:T.border}`,background:active?color+"10":"white",color:active?color:T.text,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"});
@@ -133,7 +152,16 @@ function Calculator(){
         </div>
         <input type="range" min={0} max={100} step={5} value={w[k]} onChange={e=>setW({...w,[k]:+e.target.value})} style={{width:"100%",accentColor:b.color}}/>
       </div>)}
-      <button onClick={()=>setW(INDUSTRY[industry].split)} style={{background:"none",border:"none",color:UB.blue,fontSize:12,fontWeight:600,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif"}}>Reset to suggested mix for {industry}</button>
+      <button onClick={()=>setW(INDUSTRY[industry].split)} style={{background:"none",border:"none",color:UB.blue,fontSize:12,fontWeight:600,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif",marginBottom:24}}>Reset to suggested mix for {industry}</button>
+
+      <div style={label}>4 · Your business numbers</div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Avg. price per deal</div>{numIn(deal,setDeal,null,"RM")}</div>
+        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Profit margin</div>{numIn(margin,v=>setMargin(Math.min(100,v)),"%")}</div>
+        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Leads that buy</div>{numIn(close,v=>setClose(Math.min(100,v)),"%")}</div>
+        <div><div style={{fontSize:12,color:T.muted,marginBottom:4}}>Purchases per customer / year</div>{numIn(repeat,v=>setRepeat(Math.max(1,v)),"×")}</div>
+      </div>
+      <p style={{fontSize:11,color:T.muted,marginTop:8}}>Pre-filled with typical {industry} figures. Change them to your own.</p>
     </Card>
 
     {/* RESULTS */}
@@ -141,12 +169,30 @@ function Calculator(){
       <div style={{background:`linear-gradient(135deg, ${UB.navy}, ${UB.blue})`,borderRadius:16,padding:24,color:"white"}}>
         <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:UB.orange}}>Estimated leads</div>
         <div style={{fontSize:"clamp(40px,7vw,56px)",fontWeight:800,lineHeight:1.1,margin:"6px 0"}}>{fmt(res.leadsLo)}–{fmt(res.leadsHi)}</div>
-        <div style={{fontSize:13,opacity:0.7,marginBottom:18}}>from RM{spend.toLocaleString()} ad spend{mode==="plan"?` · ${PLANS[planIdx].camp} campaign`:""}</div>
+        <div style={{fontSize:13,opacity:0.7,marginBottom:18}}>from RM{spend.toLocaleString()} ad credits{mode==="plan"?` · ${PLANS[planIdx].camp} campaign`:""}</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:12}}><div style={{fontSize:11,opacity:0.6}}>People reached (impressions)</div><div style={{fontSize:20,fontWeight:800}}>{fmt(res.impLo)}–{fmt(res.impHi)}</div></div>
-          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:12}}><div style={{fontSize:11,opacity:0.6}}>Avg. cost per lead</div><div style={{fontSize:20,fontWeight:800}}>{rm(avgCplLo)}–{rm(avgCplHi)}</div></div>
+          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:12}}><div style={{fontSize:11,opacity:0.6}}>Ad views (impressions)</div><div style={{fontSize:20,fontWeight:800}}>{fmt(res.impLo)}–{fmt(res.impHi)}</div></div>
+          <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:12}}><div style={{fontSize:11,opacity:0.6}}>Real cost per lead*</div><div style={{fontSize:20,fontWeight:800}}>{rm(avgCplLo)}–{rm(avgCplHi)}</div></div>
         </div>
+        <div style={{fontSize:11,opacity:0.5,marginTop:8}}>*Based on RM{cost.toLocaleString()} you pay over 12 months ({costPlan.name}: RM{costPlan.mo} × 12), including your dedicated team.</div>
       </div>
+
+      <Card hover={false} style={{padding:20,border:`2px solid ${status.c}`}}>
+        <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:status.c,marginBottom:12}}>Break-even check · {status.t}</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
+          <div style={{background:T.sub,borderRadius:10,padding:12}}><div style={{fontSize:11,color:T.muted}}>Profit per customer</div><div style={{fontSize:20,fontWeight:800,color:UB.navy}}>{rm(profitPerDeal)}</div></div>
+          <div style={{background:T.sub,borderRadius:10,padding:12}}><div style={{fontSize:11,color:T.muted}}>Customers to break even</div><div style={{fontSize:20,fontWeight:800,color:UB.navy}}>{isFinite(beDeals)?beDeals.toLocaleString():"–"}</div></div>
+          <div style={{background:T.sub,borderRadius:10,padding:12}}><div style={{fontSize:11,color:T.muted}}>Expected customers</div><div style={{fontSize:20,fontWeight:800,color:status.c}}>{dealsLo.toLocaleString()}–{dealsHi.toLocaleString()}</div></div>
+        </div>
+        {isFinite(beDeals)&&<div style={{height:8,borderRadius:4,background:T.sub,marginTop:14,position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",left:0,top:0,bottom:0,width:Math.min(100,dealsHi/Math.max(beDeals,dealsHi)*100)+"%",background:status.c+"40"}}/>
+          <div style={{position:"absolute",left:0,top:0,bottom:0,width:Math.min(100,dealsLo/Math.max(beDeals,dealsHi)*100)+"%",background:status.c}}/>
+          <div style={{position:"absolute",top:-2,bottom:-2,width:2,background:UB.navy,left:Math.min(100,beDeals/Math.max(beDeals,dealsHi)*100)+"%"}}/>
+        </div>}
+        <p style={{fontSize:13,color:T.text,marginTop:12,lineHeight:1.5}}>
+          You need <b>{isFinite(beDeals)?beDeals:"–"} new customer{beDeals===1?"":"s"}</b>{repeat>1?` (buying ${repeat}× a year)`:""} to cover RM{cost.toLocaleString()}. Estimated profit after cost: <b style={{color:profitHi>=0?UB.green:UB.red}}>{profitLo<0?"-":""}RM{Math.abs(Math.round(profitLo)).toLocaleString()} to {profitHi<0?"-":""}RM{Math.abs(Math.round(profitHi)).toLocaleString()}</b>.
+        </p>
+      </Card>
 
       <Card hover={false} style={{padding:0}}>
         {res.rows.map((r,i)=>{const b=BENCH[r.k];return<div key={r.k} style={{padding:"14px 18px",borderTop:i?`1px solid ${T.border}`:"none",opacity:r.e?1:0.4}}>
@@ -158,7 +204,7 @@ function Calculator(){
           {r.e ? <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,fontSize:12}}>
             <div><div style={{color:T.muted}}>Clicks</div><div style={{fontWeight:700}}>{fmt(r.e.clicksLo)}–{fmt(r.e.clicksHi)}</div></div>
             <div><div style={{color:T.muted}}>Leads</div><div style={{fontWeight:700,color:UB.green}}>{fmt(r.e.leadsLo)}–{fmt(r.e.leadsHi)}</div></div>
-            <div><div style={{color:T.muted}}>Cost/lead</div><div style={{fontWeight:700}}>{rm(r.e.cplLo)}–{rm(r.e.cplHi)}</div></div>
+            <div><div style={{color:T.muted}}>Ad cost/lead</div><div style={{fontWeight:700}}>{rm(r.e.cplLo)}–{rm(r.e.cplHi)}</div></div>
           </div> : <div style={{fontSize:12,color:T.muted}}>Not in your mix</div>}
         </div>;})}
       </Card>

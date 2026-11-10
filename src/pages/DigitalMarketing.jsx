@@ -13,37 +13,40 @@ const PLANS = [
 ];
 
 /* ═══ CALCULATOR SETTINGS — edit here ═══
-   Cost per lead (RM) per platform, Malaysian SME estimates (mid-range).
-   Industry: mult = cost multiplier, deal = avg sale (RM), repeat = purchases per
-   customer in 12 months, close = % of leads that buy. */
-const PLATFORM = {
-  fb:     {name:"Facebook & Instagram", color:"#1877F2", cpl:16},
-  google: {name:"Google",               color:"#EA4335", cpl:36},
-  tiktok: {name:"TikTok",               color:"#111111", cpl:24},
-};
+   INDUSTRY: cpl = cost per lead on Facebook (RM), close = % of leads that buy,
+   deal = default sale value (customer can change it).
+   PLATFORM: x = cost-per-lead multiplier vs Facebook. */
 const INDUSTRY = {
-  "F&B":       {mult:0.8, deal:40,    repeat:6, close:30},
-  "Retail":    {mult:0.9, deal:150,   repeat:2, close:20},
-  "Beauty":    {mult:1.0, deal:200,   repeat:3, close:25},
-  "Services":  {mult:1.1, deal:800,   repeat:1, close:15},
-  "Education": {mult:1.2, deal:2500,  repeat:1, close:10},
-  "Property":  {mult:1.6, deal:10000, repeat:1, close:2},
+  "F&B":       {cpl:5,  close:40, deal:50},
+  "Retail":    {cpl:8,  close:20, deal:150},
+  "Beauty":    {cpl:12, close:25, deal:200},
+  "Services":  {cpl:20, close:15, deal:800},
+  "Education": {cpl:25, close:10, deal:2500},
+  "Property":  {cpl:35, close:2,  deal:10000},
 };
-const REVENUE_PRESETS = [5000,10000,30000,50000,100000];
+const PLATFORM = {
+  fb:     {name:"Facebook & Instagram", color:"#1877F2", x:1.0},
+  google: {name:"Google",               color:"#EA4335", x:1.8},
+  tiktok: {name:"TikTok",               color:"#111111", x:1.2},
+};
+const REVENUE_PRESETS = [1000,2000,3000,5000,10000];
+/* DMS credits are spread over the 12 months you pay → average ad budget per month */
+const adPerMonth = p => Math.round(p.cr/12);
 
-/* revenue target → customers → leads → ad budget → smallest plan that covers it */
-function plan(revenue, industry, platforms){
+/* monthly revenue → sales → leads → monthly ad budget → smallest plan that covers it */
+function plan(revenue, deal, industry, platforms){
   const ind = INDUSTRY[industry];
   const keys = platforms.length ? platforms : ["fb"];
-  const cpl = keys.reduce((a,k)=>a+PLATFORM[k].cpl,0)/keys.length*ind.mult;
-  const customers = Math.ceil(revenue/(ind.deal*ind.repeat));
-  const leads = Math.ceil(customers/(ind.close/100));
+  const cpl = ind.cpl * keys.reduce((a,k)=>a+PLATFORM[k].x,0)/keys.length;
+  const sales = Math.ceil(revenue/Math.max(1,deal));
+  const leads = Math.ceil(sales/(ind.close/100));
   const budget = Math.ceil(leads*cpl/10)*10;
-  const idx = PLANS.findIndex(p=>p.cr>=budget);
-  return {customers, leads, budget, cpl, pkg:PLANS[idx===-1?PLANS.length-1:idx], over:idx===-1};
+  const idx = PLANS.findIndex(p=>adPerMonth(p)>=budget);
+  const pkg = PLANS[idx===-1?PLANS.length-1:idx];
+  return {sales, leads, budget, cpl, pkg, over:idx===-1, topup:Math.max(0,budget-adPerMonth(pkg))};
 }
 const fmt = n => Math.round(n).toLocaleString();
-const HERO = plan(10000,"F&B",["fb","tiktok"]);
+const HERO = plan(2000,50,"F&B",["fb","tiktok"]);
 
 const STEPS = [
   {d:"Day 1",t:"Subscribe",s:"Sign up via WhatsApp. Confirmation sent, charges go to your Unifi bill."},
@@ -66,14 +69,16 @@ const FAQ = [
 
 function Calculator(){
   const T = useTheme();
-  const [revenue,setRevenue] = useState(10000);
+  const [revenue,setRevenue] = useState(2000);
   const [industry,setIndustry] = useState("F&B");
+  const [deal,setDeal] = useState(INDUSTRY["F&B"].deal);
+  const pickIndustry = k => { setIndustry(k); setDeal(INDUSTRY[k].deal); };
   const [platforms,setPlatforms] = useState(["fb","tiktok"]);
   const toggle = k => setPlatforms(p => p.includes(k) ? (p.length>1 ? p.filter(x=>x!==k) : p) : [...p,k]);
-  const r = useMemo(()=>plan(revenue,industry,platforms),[revenue,industry,platforms]);
+  const r = useMemo(()=>plan(revenue,deal,industry,platforms),[revenue,deal,industry,platforms]);
   const p = r.pkg;
 
-  const waMsg = `I used the DMS calculator.\n• Revenue target: RM${fmt(revenue)}\n• Industry: ${industry}\n• Platforms: ${platforms.map(k=>PLATFORM[k].name).join(", ")}\n• Leads needed: ~${fmt(r.leads)} · Ad budget: ~RM${fmt(r.budget)}\n• Suggested: *${p.name} Pack* (RM${p.mo}/mo)\nI want to get started.`;
+  const waMsg = `I used the DMS calculator.\n• Monthly revenue target: RM${fmt(revenue)}\n• Avg. sale: RM${fmt(deal)}\n• Industry: ${industry}\n• Platforms: ${platforms.map(k=>PLATFORM[k].name).join(", ")}\n• Per month: ${fmt(r.sales)} sales · ~${fmt(r.leads)} leads · ~RM${fmt(r.budget)} ads\n• Suggested: *${p.name} Pack* (RM${p.mo}/mo)\nI want to get started.`;
   const goWA = () => { track("calc_whatsapp"); window.open(waL(waMsg,"dms_calculator"),"_blank"); };
 
   const chip = (on,c=UB.blue) => ({padding:"10px 16px",borderRadius:999,border:`1.5px solid ${on?c:T.border}`,background:on?c+"12":"white",color:on?c:T.text,fontSize:14,fontWeight:600,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",transition:"all 0.2s"});
@@ -82,7 +87,7 @@ function Calculator(){
   return <div className="calc-grid" style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1fr)",gap:20,alignItems:"stretch"}}>
     <Card hover={false} style={{padding:26,display:"flex",flexDirection:"column",gap:26}}>
       <div>
-        <div style={label}>1 · Revenue you want from ads</div>
+        <div style={label}>1 · Revenue you want from ads (per month)</div>
         <div style={{display:"flex",alignItems:"center",border:`1.5px solid ${T.border}`,borderRadius:12,padding:"0 14px",marginBottom:10}}>
           <span style={{fontSize:20,fontWeight:700,color:T.muted}}>RM</span>
           <input type="number" min={0} step={1000} value={revenue} onChange={e=>setRevenue(Math.max(0,+e.target.value))} style={{width:"100%",border:"none",outline:"none",padding:"12px 8px",fontSize:26,fontWeight:800,color:UB.navy,fontFamily:"'DM Sans',sans-serif",background:"transparent"}}/>
@@ -92,13 +97,21 @@ function Calculator(){
         </div>
       </div>
       <div>
-        <div style={label}>2 · Your industry</div>
-        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
-          {Object.keys(INDUSTRY).map(k=><button key={k} onClick={()=>setIndustry(k)} style={chip(industry===k)}>{k}</button>)}
+        <div style={label}>2 · Your average sale value</div>
+        <div style={{display:"flex",alignItems:"center",border:`1.5px solid ${T.border}`,borderRadius:12,padding:"0 14px"}}>
+          <span style={{fontSize:16,fontWeight:700,color:T.muted}}>RM</span>
+          <input type="number" min={1} value={deal} onChange={e=>setDeal(Math.max(1,+e.target.value))} style={{width:"100%",border:"none",outline:"none",padding:"10px 8px",fontSize:20,fontWeight:800,color:UB.navy,fontFamily:"'DM Sans',sans-serif",background:"transparent"}}/>
+          <span style={{fontSize:12,color:T.muted,whiteSpace:"nowrap"}}>per sale</span>
         </div>
       </div>
       <div>
-        <div style={label}>3 · Platforms</div>
+        <div style={label}>3 · Your industry</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+          {Object.keys(INDUSTRY).map(k=><button key={k} onClick={()=>pickIndustry(k)} style={chip(industry===k)}>{k}</button>)}
+        </div>
+      </div>
+      <div>
+        <div style={label}>4 · Platforms</div>
         <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
           {Object.entries(PLATFORM).map(([k,v])=><button key={k} onClick={()=>toggle(k)} style={{...chip(platforms.includes(k),v.color),display:"inline-flex",alignItems:"center",gap:8}}>
             <span style={{width:16,height:16,borderRadius:4,border:`2px solid ${v.color}`,background:platforms.includes(k)?v.color:"white",display:"inline-flex",alignItems:"center",justifyContent:"center"}}>{platforms.includes(k)&&I.check("white",11)}</span>{v.name}
@@ -108,19 +121,15 @@ function Calculator(){
     </Card>
 
     <div style={{background:`linear-gradient(135deg, ${UB.navy}, ${UB.blue})`,borderRadius:16,padding:26,color:"white",display:"flex",flexDirection:"column",gap:18}}>
-      <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:UB.orange}}>To make RM{fmt(revenue)} you need</div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-        <div style={{background:"rgba(255,255,255,0.08)",borderRadius:12,padding:16}}>
-          <div style={{fontSize:12,opacity:0.65}}>Leads</div>
-          <div style={{fontSize:"clamp(30px,5vw,42px)",fontWeight:800,lineHeight:1.1}}>~{fmt(r.leads)}</div>
-          <div style={{fontSize:11,opacity:0.5}}>→ ~{fmt(r.customers)} paying customers</div>
-        </div>
-        <div style={{background:"rgba(255,255,255,0.08)",borderRadius:12,padding:16}}>
-          <div style={{fontSize:12,opacity:0.65}}>Ad budget</div>
-          <div style={{fontSize:"clamp(30px,5vw,42px)",fontWeight:800,lineHeight:1.1}}>RM{fmt(r.budget)}</div>
-          <div style={{fontSize:11,opacity:0.5}}>≈ {fmt(r.budget)} ad credits</div>
-        </div>
+      <div style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:UB.orange}}>To make RM{fmt(revenue)} every month you need</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>
+        {[["Sales",fmt(r.sales),`at RM${fmt(deal)} each`],["Leads",`~${fmt(r.leads)}`,`${INDUSTRY[industry].close}% buy`],["Ad budget",`RM${fmt(r.budget)}`,`~RM${fmt(r.cpl)}/lead`]].map(([a,b,c])=><div key={a} style={{background:"rgba(255,255,255,0.08)",borderRadius:12,padding:"14px 12px"}}>
+          <div style={{fontSize:12,opacity:0.65}}>{a}</div>
+          <div style={{fontSize:"clamp(22px,3.6vw,32px)",fontWeight:800,lineHeight:1.15}}>{b}</div>
+          <div style={{fontSize:11,opacity:0.5}}>{c}</div>
+        </div>)}
       </div>
+      <div style={{fontSize:11,opacity:0.5,marginTop:-8,textAlign:"right"}}>all figures per month</div>
 
       <div style={{background:"white",color:T.text,borderRadius:14,padding:20,borderTop:`5px solid ${p.color}`}}>
         <div style={{fontSize:11,fontWeight:700,color:UB.green,display:"flex",alignItems:"center",gap:4,marginBottom:4}}>{I.check(UB.green,14)} YOUR PACKAGE</div>
@@ -128,11 +137,11 @@ function Calculator(){
           <div style={{fontSize:24,fontWeight:800}}>{p.name} Pack</div>
           <div style={{fontSize:30,fontWeight:800,color:p.color}}>RM{p.mo}<span style={{fontSize:14,color:T.muted,fontWeight:500}}>/mo</span></div>
         </div>
-        <div style={{fontSize:13,color:T.muted,margin:"4px 0 16px"}}>{p.cr.toLocaleString()} ad credits · {p.camp} campaign · 3-person team</div>
-        {r.over&&<div style={{fontSize:12,background:UB.orange+"12",color:UB.orange,borderRadius:8,padding:"8px 10px",marginBottom:12,fontWeight:600}}>Your target needs more than one Pro Pack — WhatsApp us for a custom plan.</div>}
+        <div style={{fontSize:13,color:T.muted,margin:"4px 0 16px"}}>{p.cr.toLocaleString()} ad credits ≈ <b style={{color:T.text}}>RM{fmt(adPerMonth(p))} of ads every month</b> · 3-person team</div>
+        {r.over&&<div style={{fontSize:12,background:UB.orange+"12",color:UB.orange,borderRadius:8,padding:"8px 10px",marginBottom:12,fontWeight:600}}>Your target needs about RM{fmt(r.topup)}/month more in ads than Pro covers. WhatsApp us for top-up credits or a custom plan.</div>}
         <button onClick={goWA} style={{width:"100%",display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,background:"#25D366",color:"white",border:"none",padding:"14px 20px",borderRadius:10,fontSize:15,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>{I.msg("white",18)} Get {p.name} on WhatsApp</button>
       </div>
-      <p style={{fontSize:11,opacity:0.5,lineHeight:1.5}}>Estimate based on typical {industry} sale value, repeat purchases and Malaysian ad costs. Actual results vary. Prices exclude 6% SST.</p>
+      <p style={{fontSize:11,opacity:0.5,lineHeight:1.5}}>Estimate based on typical {industry} cost per lead and close rate in Malaysia. Ad credits are averaged over your 12-month subscription; your campaign may spend them faster. Actual results vary. Prices exclude 6% SST.</p>
     </div>
   </div>;
 }
@@ -167,8 +176,8 @@ export default function DigitalMarketing(){
         </div>
         <div style={{flex:"0 1 380px",width:"100%",maxWidth:380}}>
           <div style={{background:"white",borderRadius:18,padding:22,color:T.text,boxShadow:"0 24px 60px rgba(0,0,0,0.25)"}}>
-            <div style={{fontSize:12,color:T.muted,fontWeight:600,marginBottom:12}}>F&amp;B example · Target RM10,000 revenue</div>
-            {[["Leads needed",`~${fmt(HERO.leads)}`],["Ad budget",`RM${fmt(HERO.budget)}`],["Platforms","Facebook + TikTok"],["Your team","3 people"]].map(([a,b])=><div key={a} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${T.border}`,fontSize:14}}><span style={{color:T.muted}}>{a}</span><b>{b}</b></div>)}
+            <div style={{fontSize:12,color:T.muted,fontWeight:600,marginBottom:12}}>F&amp;B example · RM2,000 revenue per month</div>
+            {[["Sales per month",fmt(HERO.sales)],["Leads per month",`~${fmt(HERO.leads)}`],["Ad budget per month",`RM${fmt(HERO.budget)}`],["Platforms","Facebook + TikTok"]].map(([a,b])=><div key={a} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${T.border}`,fontSize:14}}><span style={{color:T.muted}}>{a}</span><b>{b}</b></div>)}
             <div style={{marginTop:14,background:UB.green+"12",borderRadius:10,padding:12,textAlign:"center"}}>
               <div style={{fontSize:11,color:UB.green,fontWeight:700}}>Your package</div>
               <div style={{fontSize:24,fontWeight:800,color:UB.navy}}>{HERO.pkg.name} · RM{HERO.pkg.mo}/mo</div>
@@ -254,7 +263,7 @@ export default function DigitalMarketing(){
       <div style={{textAlign:"center",marginBottom:32}}>
         <SectionLabel text="Package Calculator"/>
         <h2 style={{fontSize:"clamp(24px,4vw,34px)",fontWeight:800,marginBottom:8}}>How much do you want to make?</h2>
-        <p style={{fontSize:15,color:T.muted}}>Tell us your revenue target, industry and platforms. We'll show the leads, budget and package you need.</p>
+        <p style={{fontSize:15,color:T.muted}}>Tell us your monthly revenue target and average sale. We'll show the sales, leads, budget and package you need each month.</p>
       </div>
       <Calculator/>
     </section>

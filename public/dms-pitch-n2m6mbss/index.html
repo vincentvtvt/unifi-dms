@@ -349,6 +349,9 @@ tr.tot td{border-top-color:#1400DD}
 /* Plan cards: price wraps under the name instead of spilling out of the card */
 .pc .in{flex-wrap:wrap;row-gap:2px}
 .pc .pr{white-space:nowrap}
+
+/* Presentation mode: single "48 hours" tile instead of a running countdown */
+.count.one>div{flex:0 0 auto;min-width:140px}
 </style>
 </head>
 <body>
@@ -527,7 +530,7 @@ en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["se
  d_tag:"Sign up within 48 hours",d_h:"Never miss a customer",d_p:"When customers message you from your ads, they get a reply in seconds, even at night. We set it up for you before your ads start, and the free period starts when your ads do.",
  d_none:"Standard doesn’t come with the free gift. Premium and Prime get 1 free month, Pro gets 2.",d_up:"Switch to Premium",d_gift:"Pick your free gift:",
  items:[["botku","BotKu, an AI that replies on WhatsApp",199],["q4u","Q4U online ordering and delivery",99]],fnb:"for food businesses",free1:"free for your first month of ads",free2:"free for your first 2 months of ads",
- ends:"Offer ends in",dd:"days",hh:"hours",mm:"min",ended:"This offer has ended.",by:"This gift comes from your consultant (BotKu.ai and Q4U.store), not from TM, and isn’t part of the TM contract.",
+ v48:"48 hours",v48long:"Valid for 48 hours after today’s presentation",ends:"Offer ends in",dd:"days",hh:"hours",mm:"min",ended:"This offer has ended.",by:"This gift comes from your consultant (BotKu.ai and Q4U.store), not from TM, and isn’t part of the TM contract.",
  confirm:"I’ll take {p}",copy:"Copy summary",copied:"Copied! Send it to your consultant and we’ll do the rest.",copy2:"Copy the summary below and send it to your consultant.",
  mk:"Copy 48-hour link for customer",mkd:"Link copied. Offer ends:",close:"Close",head:"My DMS package"},
 bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"],["services","Servis"]], pick_hint:"Tekan satu kisah untuk paparkan di sebelah kiri.",tabs:["Kenapa DMS","Cara ia berjalan","Hasil","Harga","Pakej anda"],
@@ -552,7 +555,7 @@ bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"
  d_tag:"Daftar dalam 48 jam",d_h:"Takkan terlepas pelanggan",d_p:"Bila pelanggan mesej anda dari iklan, mereka dapat balasan dalam beberapa saat, malam pun boleh. Kami pasangkan untuk anda sebelum iklan mula, dan tempoh percuma mula bila iklan mula.",
  d_none:"Pelan Standard tak termasuk hadiah percuma. Premium dan Prime dapat 1 bulan percuma, Pro dapat 2 bulan.",d_up:"Tukar ke Premium",d_gift:"Pilih hadiah percuma anda:",
  items:[["botku","BotKu, AI yang balas WhatsApp",199],["q4u","Q4U, pesanan online dan penghantaran",99]],fnb:"untuk perniagaan makanan",free1:"percuma untuk bulan pertama iklan",free2:"percuma untuk 2 bulan pertama iklan",
- ends:"Tawaran tamat dalam",dd:"hari",hh:"jam",mm:"min",ended:"Tawaran ini dah tamat.",by:"Hadiah ini daripada perunding anda (BotKu.ai dan Q4U.store), bukan daripada TM, dan bukan sebahagian kontrak TM.",
+ v48:"48 jam",v48long:"Sah selama 48 jam selepas pembentangan hari ini",ends:"Tawaran tamat dalam",dd:"hari",hh:"jam",mm:"min",ended:"Tawaran ini dah tamat.",by:"Hadiah ini daripada perunding anda (BotKu.ai dan Q4U.store), bukan daripada TM, dan bukan sebahagian kontrak TM.",
  confirm:"Saya ambil {p}",copy:"Salin ringkasan",copied:"Dah disalin! Hantar kepada perunding anda, kami uruskan selebihnya.",copy2:"Salin ringkasan di bawah dan hantar kepada perunding anda.",
  mk:"Salin link 48 jam untuk pelanggan",mkd:"Link disalin. Tawaran tamat:",close:"Tutup",head:"Pakej DMS saya"},
 zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["services","服务业"]], pick_hint:"点一个案例，就会显示在左边。",tabs:["为什么选 DMS","怎么运作","成效","价钱","你的配套"],
@@ -577,7 +580,7 @@ zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["servic
  d_tag:"48 小时内签约",d_h:"不漏掉任何顾客",d_p:"顾客从广告发讯息给你，几秒内就有回复，半夜也行。我们会在广告开始前帮你弄好，免费期从广告上线那天开始算。",
  d_none:"Standard 没有赠品。Premium 和 Prime 免费 1 个月，Pro 免费 2 个月。",d_up:"换成 Premium",d_gift:"选你的赠品：",
  items:[["botku","BotKu，会回 WhatsApp 的 AI",199],["q4u","Q4U 网上点餐和送货",99]],fnb:"适合餐饮业",free1:"广告第一个月免费",free2:"广告头 2 个月免费",
- ends:"优惠还剩",dd:"天",hh:"小时",mm:"分",ended:"这个优惠已经结束了。",by:"赠品由你的顾问提供（BotKu.ai 和 Q4U.store），不是 TM 提供，也不属于 TM 合约。",
+ v48:"48 小时",v48long:"今天介绍后 48 小时内有效",ends:"优惠还剩",dd:"天",hh:"小时",mm:"分",ended:"这个优惠已经结束了。",by:"赠品由你的顾问提供（BotKu.ai 和 Q4U.store），不是 TM 提供，也不属于 TM 合约。",
  confirm:"我要 {p}",copy:"复制摘要",copied:"已复制！发给你的顾问，其余交给我们。",copy2:"请复制下面的摘要，发给你的顾问。",
  mk:"复制 48 小时客户链接",mkd:"链接已复制，优惠截止：",close:"关闭",head:"我的 DMS 配套"}
 };
@@ -591,14 +594,14 @@ function addWD(n){var x=new Date(); x.setHours(0,0,0,0); while(n>0){x.setDate(x.
 function fmtD(d){var loc={en:"en-MY",bm:"ms-MY",zh:"zh-CN"}[state.lang]; try{return d.toLocaleDateString(loc,{day:"numeric",month:"short"});}catch(e){return d.toDateString();}}
 function fmtDT(d){var loc={en:"en-MY",bm:"ms-MY",zh:"zh-CN"}[state.lang]; try{return d.toLocaleString(loc,{timeZone:"Asia/Kuala_Lumpur",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});}catch(e){return d.toString();}}
 function nice(n){var st=n>=10000?1000:(n>=1000?100:10); return (Math.round(n/st)*st).toLocaleString("en-MY");}
-/* 48-hour deadline: from a #o-YYYYMMDDHHMM customer link (Malaysia time), else 48 hours from first open on this device */
-function deadline(){var m=/^#o-(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$/.exec(location.hash||""); if(m) return new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-8,+m[5]));
-  var f=null; try{f=+localStorage.getItem("dms-first"); if(!f){f=Date.now(); localStorage.setItem("dms-first",String(f));}}catch(e){} if(!f){ if(!window.__f) window.__f=Date.now(); f=window.__f; } return new Date(f+48*3600e3);}
+/* 48-hour deadline: only on a customer link (#o-YYYYMMDDHHMM, Malaysia time). In the live presentation there is no timer,
+   just "valid for 48 hours", so the offer never looks like it resets on refresh. */
+function deadline(){var m=/^#o-(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$/.exec(location.hash||""); return m? new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-8,+m[5])) : null;}
 function dlCode(d){var x=new Date(d.getTime()+8*3600e3); function z(n){return String(n).padStart(2,"0");} return "o-"+x.getUTCFullYear()+z(x.getUTCMonth()+1)+z(x.getUTCDate())+z(x.getUTCHours())+z(x.getUTCMinutes());}
-function ended(){return new Date()>=deadline();}
+function ended(){var d=deadline(); return d? new Date()>=d : false;}
 
 function summaryText(){var t=T[state.lang],p=PLANS[state.plan],L=[t.head, t.sum_t.replace("{p}",p.id).replace("{m}",p.p), t.s[0]+": "+rm(p.cr), t.s[1]+": "+rm(p.tot/12), t.s[2]+": "+rm(p.tot/6), t.s[3]+": "+rm(p.tot)];
-  if(p.bon && !ended()){var it=t.items.filter(function(x){return x[0]===state.pick;})[0]; L.push(t.s[4]+": "+it[1]+", "+(p.bon===1?t.free1:t.free2)+" ("+fmtDT(deadline())+")");}
+  if(p.bon && !ended()){var it=t.items.filter(function(x){return x[0]===state.pick;})[0]; L.push(t.s[4]+": "+it[1]+", "+(p.bon===1?t.free1:t.free2)+" ("+(deadline()? fmtDT(deadline()) : t.v48)+")");}
   return L.join("\n");}
 
 function render(){
@@ -665,9 +668,13 @@ function growBars(){ if(state.s!==2) return; document.querySelectorAll('.slide[d
 function deal(t,p){var box=$("deal"); box.textContent=""; box.appendChild(el("span",t.d_tag,"tag"));
   if(ended()){ box.appendChild(el("h3",t.ended)); return; }
   box.appendChild(el("h3",t.d_h)); box.appendChild(el("p",t.d_p));
-  var dl=deadline(), ms=dl-new Date(), c=el("div",null,"count num");
-  [[Math.floor(ms/864e5),t.dd],[Math.floor(ms%864e5/36e5),t.hh],[Math.floor(ms%36e5/6e4),t.mm]].forEach(function(x){var d=el("div"); d.appendChild(el("b",String(x[0]))); d.appendChild(el("span",x[1])); c.appendChild(d);});
-  box.appendChild(el("p",t.ends+" · "+fmtDT(dl),"fine")); box.appendChild(c);
+  var dl=deadline(), c=el("div",null,"count num");
+  if(dl){ var ms=dl-new Date();
+    [[Math.floor(ms/864e5),t.dd],[Math.floor(ms%864e5/36e5),t.hh],[Math.floor(ms%36e5/6e4),t.mm]].forEach(function(x){var d=el("div"); d.appendChild(el("b",String(x[0]))); d.appendChild(el("span",x[1])); c.appendChild(d);});
+    box.appendChild(el("p",t.ends+" · "+fmtDT(dl),"fine")); }
+  else { var d=el("div"); d.appendChild(el("b","48")); d.appendChild(el("span",t.hh)); c.appendChild(d); c.classList.add("one");
+    box.appendChild(el("p",t.v48long,"fine")); }
+  box.appendChild(c);
   if(!p.bon){ box.appendChild(el("p",t.d_none)); var g0=el("div",null,"gift"), u=el("button",t.d_up); u.type="button"; u.setAttribute("aria-pressed","true"); u.addEventListener("click",function(){state.plan=1; render();}); g0.appendChild(u); box.appendChild(g0); }
   else { box.appendChild(el("p",t.d_gift)); var g=el("div",null,"gift");
     t.items.forEach(function(it){var b=el("button",it[1]+" · "+(p.bon===1?t.free1:t.free2)); b.type="button"; b.setAttribute("aria-pressed",String(state.pick===it[0])); if(it[0]==="q4u") b.title=t.fnb;

@@ -328,11 +328,32 @@ tr.tot td{border-top-color:#1400DD}
 .pi span{font-size:12px;color:rgba(18,23,37,.65)}
 @media (max-width:860px){.plist{max-height:none;overflow:visible}.v-h{font-size:24px}}
 @media (prefers-reduced-motion: reduce){.swap{animation:none}}
+
+/* ===== Brand block (top left) ===== */
+.brand{display:flex;align-items:center;gap:12px;flex:0 0 auto;min-width:0}
+.brand-logo{height:34px;width:auto;display:block}
+.brand-div{width:1px;height:26px;background:rgba(18,23,37,.15)}
+.brand-txt{font-family:var(--display);font-weight:800;font-size:15px;line-height:1.1;color:#1400DD;white-space:nowrap}
+.brand-plats{display:flex;gap:6px}
+.brand-plats svg{width:20px;height:20px;display:block}
+@media (max-width:1280px){.brand-txt{font-size:13px;white-space:normal;max-width:110px}}
+@media (max-width:1000px){.brand-txt,.brand-div{display:none}}
+@media (max-width:700px){.brand-plats{display:none}.brand-logo{height:28px}}
 </style>
 </head>
 <body>
 <div class="bar">
-  <span class="logo">DMS</span>
+  <div class="brand">
+    <img src="/dms-pitch-n2m6mbss/unifi-business-logo.webp" alt="Unifi Business" class="brand-logo">
+    <span class="brand-div"></span>
+    <span class="brand-txt">Digital Marketing Solutions</span>
+    <span class="brand-plats" aria-label="Facebook, Instagram, Google, TikTok">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#1877F2"/><path d="M13.4 24v-8.5h2.9l.4-3.4h-3.3V10c0-1 .3-1.6 1.7-1.6h1.8v-3a24 24 0 0 0-2.6-.1c-2.6 0-4.3 1.6-4.3 4.4v2.4H7v3.4h3V24z" fill="#fff"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FEDA75"/><stop offset=".35" stop-color="#FA7E1E"/><stop offset=".6" stop-color="#D62976"/><stop offset=".85" stop-color="#962FBF"/><stop offset="1" stop-color="#4F5BD5"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#igg)"/><rect x="5" y="5" width="14" height="14" rx="4.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.3" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.4" cy="7.6" r="1.1" fill="#fff"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.5a5.6 5.6 0 0 1-2.4 3.6v3h3.9c2.2-2.1 3.5-5.1 3.5-8.7z" fill="#4285F4"/><path d="M12 24c3.2 0 6-1.1 8-2.9l-3.9-3c-1.1.7-2.5 1.2-4.1 1.2-3.1 0-5.8-2.1-6.7-5H1.3v3.1A12 12 0 0 0 12 24z" fill="#34A853"/><path d="M5.3 14.3a7.2 7.2 0 0 1 0-4.6V6.6h-4a12 12 0 0 0 0 10.8z" fill="#FBBC05"/><path d="M12 4.8c1.8 0 3.3.6 4.6 1.8l3.4-3.4A12 12 0 0 0 1.3 6.6l4 3.1c.9-2.8 3.6-4.9 6.7-4.9z" fill="#EA4335"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#111"/><g transform="translate(-.6 .4) scale(.86) translate(2 1.6)"><path d="M13.2 3h2.6c.2 1.6 1.1 3.1 2.6 3.8.6.3 1.2.4 1.8.4v2.7c-1.6 0-3.1-.5-4.4-1.4v6.3c0 3-2.4 5.4-5.4 5.4S5 17.8 5 14.8s2.4-5.4 5.4-5.4c.3 0 .6 0 .9.1v2.8c-.3-.1-.6-.2-.9-.2-1.5 0-2.7 1.2-2.7 2.7s1.2 2.7 2.7 2.7 2.7-1.2 2.7-2.7V3z" fill="#25F4EE" transform="translate(-.8 -.8)"/><path d="M13.2 3h2.6c.2 1.6 1.1 3.1 2.6 3.8.6.3 1.2.4 1.8.4v2.7c-1.6 0-3.1-.5-4.4-1.4v6.3c0 3-2.4 5.4-5.4 5.4S5 17.8 5 14.8s2.4-5.4 5.4-5.4c.3 0 .6 0 .9.1v2.8c-.3-.1-.6-.2-.9-.2-1.5 0-2.7 1.2-2.7 2.7s1.2 2.7 2.7 2.7 2.7-1.2 2.7-2.7V3z" fill="#FE2C55" transform="translate(.8 .8)"/><path d="M13.2 3h2.6c.2 1.6 1.1 3.1 2.6 3.8.6.3 1.2.4 1.8.4v2.7c-1.6 0-3.1-.5-4.4-1.4v6.3c0 3-2.4 5.4-5.4 5.4S5 17.8 5 14.8s2.4-5.4 5.4-5.4c.3 0 .6 0 .9.1v2.8c-.3-.1-.6-.2-.9-.2-1.5 0-2.7 1.2-2.7 2.7s1.2 2.7 2.7 2.7 2.7-1.2 2.7-2.7V3z" fill="#fff"/></g></svg>
+    </span>
+  </div>
   <div class="tabs" id="tabs" role="tablist" aria-label="Slides"></div>
   <div class="lang" role="group" aria-label="Language">
     <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="bm" aria-pressed="false">BM</button><button type="button" data-lang="zh" aria-pressed="false">中文</button>

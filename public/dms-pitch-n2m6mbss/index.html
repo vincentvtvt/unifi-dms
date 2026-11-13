@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DMS Presentation</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..900&family=Roboto:wght@400;500;700&family=Noto+Sans+SC:wght@400;700&display=swap">
+<style>
+:root{
+  /* Light theme follows biz.unifi.com.my (see the override block at the end). Original dark palette: Dark Blue #06013A, Cobalt #1800E7/#1400DD, Light Blue #99B6FF, Orange #FF5E00/#EC692C, Light Orange #F7B986.
+     Layout: five 16:9 slides designed at 1600x900 and scaled to fit the window, for screen sharing. */
+  --bg:#06013A; --ink:#FFFFFF; --muted:#99B6FF; --line:rgba(153,182,255,.2); --glass:rgba(153,182,255,.07);
+  --cobalt:#1800E7; --blue2:#1400DD; --lb:#99B6FF; --or:#FF5E00; --or2:#EC692C; --lo:#F7B986;
+  --display:'Archivo','Noto Sans SC',Arial,sans-serif; --body:'Roboto','Noto Sans SC',Arial,sans-serif; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#06013A;color:var(--ink);font-family:var(--body)}
+h1,h2,h3,p,ul,ol{margin:0}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:3px solid var(--lb);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.bar{position:fixed;left:0;right:0;top:0;height:52px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(6,1,58,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:10}
+.logo{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:20px;text-shadow:0 0 14px rgba(153,182,255,.9)}
+.tabs{flex:1;display:flex;gap:6px;justify-content:center;min-width:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:none;border:1px solid var(--line);background:var(--glass);color:var(--muted);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.tabs button[aria-current="true"]{background:var(--cobalt);border-color:var(--lb);color:#fff;box-shadow:0 0 14px rgba(24,0,231,.9)}
+.tabs button span{opacity:.6;margin-right:5px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;padding:7px 9px;cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--cobalt);color:#fff}
+.icon-btn{border:1px solid var(--line);background:var(--glass);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--cobalt),var(--lb),var(--or));box-shadow:0 0 10px var(--or);transition:width .5s}
+
+/* stage */
+.viewport{position:fixed;left:0;right:0;top:52px;bottom:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.viewport::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 500px at 85% 0%,rgba(24,0,231,.5),transparent 60%),radial-gradient(700px 420px at 5% 100%,rgba(236,105,44,.22),transparent 60%);pointer-events:none}
+.viewport::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(153,182,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(153,182,255,.05) 1px,transparent 1px);background-size:44px 44px}
+.stage{width:1600px;height:900px;position:relative;flex:none;transform-origin:center center;z-index:1}
+.slide{position:absolute;inset:0;padding:40px 52px 34px;display:flex;flex-direction:column;gap:22px;opacity:0;visibility:hidden;transform:translateX(40px);transition:opacity .5s,transform .6s cubic-bezier(.2,.7,.2,1),visibility .5s}
+.slide.on{opacity:1;visibility:visible;transform:none}
+.slide.back{transform:translateX(-40px)}
+.slide .rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .7s cubic-bezier(.2,.7,.2,1)}
+.slide.on .rv{opacity:1;transform:none}
+.slide.on .rv:nth-child(2){transition-delay:.08s}.slide.on .rv:nth-child(3){transition-delay:.16s}.slide.on .rv:nth-child(4){transition-delay:.24s}
+.navbtns{position:fixed;right:16px;bottom:14px;display:flex;gap:8px;z-index:11}
+.navbtns button{border:1px solid var(--line);background:rgba(6,1,58,.8);border-radius:999px;width:46px;height:46px;font-size:20px;cursor:pointer;color:#fff}
+.navbtns button.next{background:linear-gradient(135deg,var(--cobalt),var(--blue2));border-color:var(--lb);box-shadow:0 0 18px rgba(24,0,231,.8)}
+.navbtns button[disabled]{opacity:.35;cursor:default}
+
+/* shared */
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.eyebrow{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:15px;letter-spacing:3px;text-transform:uppercase;color:var(--lo)}
+.h{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:52px;line-height:1;text-transform:uppercase;letter-spacing:-.5px}
+.h.grad{background:linear-gradient(90deg,#fff,var(--lb) 55%,var(--lo));-webkit-background-clip:text;background-clip:text;color:transparent}
+.snum{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:120px;line-height:.8;color:transparent;-webkit-text-stroke:1.5px rgba(153,182,255,.4)}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.card h3{font-family:var(--display);font-stretch:120%;font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:.3px;margin-bottom:12px}
+.muted{color:var(--muted)}
+.small{font-size:14px;color:var(--muted)}
+.grid{display:grid;gap:18px;flex:1;min-height:0}
+.ticks{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px;font-size:19px}
+.ticks li{display:flex;gap:12px;align-items:flex-start}
+.ticks li::before{content:"✓";color:var(--or);font-weight:900;text-shadow:0 0 10px rgba(255,94,0,.8)}
+.nums{list-style:none;padding:0;display:flex;flex-direction:column;gap:12px;font-size:18px;counter-reset:n}
+.nums li{counter-increment:n;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:center}
+.nums li::before{content:counter(n);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;background:var(--or);color:#06013A;box-shadow:0 0 12px rgba(255,94,0,.7)}
+.nums.blue li::before{background:#fff;color:var(--blue2);box-shadow:0 0 12px rgba(153,182,255,.8)}
+.chipset{display:flex;flex-wrap:wrap;gap:8px}
+.chipset span{border:1px solid var(--line);background:rgba(153,182,255,.1);border-radius:999px;padding:7px 13px;font-size:15px;font-weight:700}
+.btn{border:0;border-radius:999px;padding:14px 22px;font-weight:700;font-size:18px;cursor:pointer;background:linear-gradient(135deg,var(--cobalt),var(--blue2));color:#fff;box-shadow:0 0 0 1px rgba(153,182,255,.4),0 10px 30px -10px rgba(24,0,231,.9)}
+.btn.or{background:linear-gradient(135deg,var(--or2),var(--or));color:#06013A;box-shadow:0 0 0 1px rgba(255,94,0,.5),0 10px 30px -8px rgba(255,94,0,.8)}
+.btn.ghost{background:transparent;color:var(--lb);box-shadow:none;border:1px solid rgba(153,182,255,.5)}
+table{width:100%;border-collapse:collapse;font-size:18px}
+td{padding:9px 0;border-top:1px solid var(--line)}
+td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+tr.tot td{border-top:2px solid var(--lb);font-size:21px}
+
+/* slide 1 */
+.s1{grid-template-columns:1.25fr 1fr;grid-template-rows:auto 1fr}
+.hero1{grid-column:1/3;display:flex;flex-direction:column;gap:12px}
+.hero1 .h{font-size:76px;max-width:16ch}
+.hero1 p{font-size:22px;color:var(--muted);max-width:60ch}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat{background:var(--glass);border:1px solid var(--line);border-top:3px solid var(--or);border-radius:20px;padding:18px}
+.stat b{display:block;font-family:var(--display);font-stretch:125%;font-weight:900;font-size:54px;line-height:1;text-shadow:0 0 24px rgba(153,182,255,.7)}
+.stat span{color:var(--muted);font-size:16px}
+.agenda{display:flex;gap:10px;margin-top:14px}
+.agenda button{flex:1;border:1px solid var(--line);background:var(--glass);border-radius:16px;padding:12px;text-align:left;cursor:pointer}
+.agenda b{display:block;font-family:var(--display);font-weight:900;color:var(--or);font-size:22px}
+.agenda span{font-size:14px;font-weight:700}
+
+/* slide 2 */
+.s2{grid-template-columns:1fr 1fr;grid-template-rows:1fr auto}
+.we{background:linear-gradient(160deg,rgba(24,0,231,.85),rgba(20,0,221,.5));border-color:rgba(153,182,255,.45);box-shadow:0 10px 40px -10px rgba(24,0,231,.8)}
+.team{display:flex;gap:10px;margin-bottom:16px}
+.team div{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:14px;padding:10px;text-align:center;font-weight:700;font-size:15px}
+.team div i{display:block;font-style:normal;font-size:26px;margin-bottom:2px}
+.tl{grid-column:1/3}
+.tl-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;position:relative}
+.tl-row::before{content:"";position:absolute;left:3%;right:3%;top:17px;height:3px;background:linear-gradient(90deg,var(--or),var(--lb),var(--cobalt));box-shadow:0 0 10px rgba(255,94,0,.6)}
+.tl-row div{position:relative;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center}
+.tl-row div::before{content:"";width:22px;height:22px;border-radius:50%;background:#06013A;border:3px solid var(--or);margin:6px 0 8px;box-shadow:0 0 12px rgba(255,94,0,.8)}
+.tl-row b{font-family:var(--display);font-stretch:110%;font-size:17px}
+.tl-row span{font-size:14px;color:var(--lo);font-weight:700}
+
+/* slide 3 */
+.s3{grid-template-columns:1.05fr 1fr}
+.kk{display:flex;flex-direction:column;gap:14px}
+.kk-top{display:flex;gap:16px;align-items:center}
+.kk-top img{width:230px;aspect-ratio:16/9;object-fit:cover;border-radius:12px;cursor:zoom-in;border:1px solid var(--line)}
+.kk-res{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:64px;line-height:1;color:var(--or);text-shadow:0 0 34px rgba(255,94,0,.6)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.br{display:grid;grid-template-columns:170px 1fr 90px;gap:12px;align-items:center;font-size:16px;color:var(--muted)}
+.br .tr{height:16px;border-radius:8px;background:rgba(153,182,255,.12);overflow:hidden}
+.br .fl{height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,var(--cobalt),var(--lb));transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.br.or .fl{background:linear-gradient(90deg,var(--or2),var(--or));box-shadow:0 0 12px rgba(255,94,0,.8)}
+.br b{text-align:right;font-family:var(--display);font-weight:900;color:#fff;font-size:19px}
+.kk-mini{display:grid;grid-template-columns:1.7fr 1fr;gap:12px}
+.kk-mini div{background:rgba(153,182,255,.08);border-radius:14px;padding:12px}
+.kk-mini b{font-family:var(--display);font-stretch:120%;font-weight:900;font-size:30px;display:block}
+.others{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.oc{display:grid;grid-template-columns:124px 1fr;gap:12px;align-items:center;background:rgba(153,182,255,.06);border:1px solid var(--line);border-radius:14px;padding:8px;cursor:zoom-in;text-align:left}
+.oc img{width:124px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.oc b{display:block;font-size:15px;line-height:1.25}
+.oc small{font-size:12px;color:var(--lo);font-weight:700}
+.oc span{font-size:12px;color:var(--muted)}
+
+/* slide 4 */
+.s4{grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr}
+.plans{grid-column:1/4;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.pc{border:2px solid var(--line);background:var(--glass);border-radius:20px;overflow:hidden;cursor:pointer;text-align:left;display:flex;flex-direction:column;padding:0;transition:transform .25s,box-shadow .25s,border-color .25s}
+.pc:hover{transform:translateY(-3px)}
+.pc[aria-pressed="true"]{border-color:var(--lb);box-shadow:0 0 0 1px var(--lb),0 0 36px -6px rgba(153,182,255,.8)}
+.pc .lab{font-size:14px;font-weight:700;padding:6px 14px;min-height:30px;color:#fff}
+.pc .lab.aw{background:linear-gradient(90deg,var(--or2),var(--cobalt))}
+.pc .lab.bv{background:linear-gradient(90deg,#CA401F,var(--or2))}
+.pc .lab.none{background:rgba(153,182,255,.08)}
+.pc .in{padding:12px 16px 14px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.pc .nm{font-family:var(--display);font-stretch:120%;font-weight:900;font-size:24px;text-transform:uppercase}
+.pc .pr{font-family:var(--display);font-stretch:115%;font-weight:900;font-size:34px;color:var(--or);text-shadow:0 0 18px rgba(255,94,0,.45)}
+.pc .pr small{font-size:15px;color:var(--muted);text-shadow:none}
+.pc .bon{margin:0 16px 14px;font-size:13px;font-weight:700;border-radius:8px;padding:5px 9px;align-self:flex-start;background:var(--or);color:#06013A}
+.pc .bon.no{background:rgba(153,182,255,.1);color:var(--muted);font-weight:500}
+.split{display:flex;height:18px;border-radius:9px;overflow:hidden;margin:14px 0 8px}
+.split i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:middle}
+.big{font-family:var(--display);font-stretch:120%;font-weight:900;font-size:56px;color:var(--or);text-shadow:0 0 28px rgba(255,94,0,.55);line-height:1}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
+.pills button{border:1px solid var(--line);background:rgba(153,182,255,.08);border-radius:999px;padding:8px 13px;font-size:15px;font-weight:700;cursor:pointer}
+.pills button[aria-pressed="true"]{background:var(--cobalt);border-color:var(--lb);box-shadow:0 0 14px rgba(24,0,231,.8)}
+.est{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.est div{background:rgba(153,182,255,.08);border-radius:14px;padding:12px}
+.est b{display:block;font-family:var(--display);font-stretch:110%;font-weight:900;font-size:26px}
+.bills{display:flex;align-items:flex-end;gap:5px;height:80px;margin:8px 0 6px}
+.bills i{flex:1;background:rgba(153,182,255,.18);border-radius:5px 5px 2px 2px;height:45%}
+.bills i.first{background:var(--or);height:90%;box-shadow:0 0 14px rgba(255,94,0,.7)}
+
+/* slide 5 */
+.s5{grid-template-columns:1fr 1.15fr}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rules div{background:rgba(153,182,255,.07);border:1px solid var(--line);border-radius:14px;padding:12px}
+.rules b{display:block;font-family:var(--display);font-stretch:110%;font-weight:900;font-size:17px}
+.rules span{font-size:14px;color:var(--muted)}
+.close{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sum{background:linear-gradient(160deg,rgba(24,0,231,.85),rgba(20,0,221,.5));border-color:rgba(153,182,255,.45)}
+.sum td{font-size:17px}
+.deal{background:linear-gradient(110deg,#CA401F,var(--or2));border:0;box-shadow:0 20px 60px -25px rgba(255,94,0,.9);display:flex;flex-direction:column;gap:10px}
+.deal .tag{font-family:var(--display);font-stretch:120%;font-weight:900;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#06013A}
+.deal h3{margin:0;font-size:24px;line-height:1.1}
+.deal p{font-size:15px}
+.count{display:flex;gap:8px}
+.count div{flex:1;background:rgba(6,1,58,.55);border:1px solid rgba(255,255,255,.35);border-radius:12px;padding:8px;text-align:center}
+.count b{display:block;font-family:var(--display);font-weight:900;font-size:30px}
+.count span{font-size:12px;color:var(--lo)}
+.gift{display:flex;gap:8px;flex-wrap:wrap}
+.gift button{border:2px solid #fff;background:transparent;border-radius:999px;padding:8px 12px;font-size:14px;font-weight:700;cursor:pointer}
+.gift button[aria-pressed="true"]{background:#fff;color:var(--blue2)}
+.gift button[disabled]{opacity:.5;cursor:default}
+.fine{font-size:12px;opacity:.9}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.toast{font-size:15px;color:var(--lo)}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(6,1,58,.94);z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:20px}
+.lb img{max-width:min(1200px,96vw);max-height:84vh;border-radius:12px}
+[hidden]{display:none!important}
+
+/* phones: stop scaling, stack and scroll instead */
+@media (max-width:860px){
+  html,body{overflow:auto;height:auto}
+  .viewport{position:static;display:block;padding-top:52px}
+  .stage{width:auto;height:auto;transform:none!important}
+  .slide{position:static;padding:22px 16px 90px;transform:none!important}
+  .slide:not(.on){display:none}
+  .grid,.s1,.s2,.s3,.s4,.s5,.close,.plans,.stats,.others,.rules,.est,.kk-mini{grid-template-columns:1fr!important;grid-template-rows:auto!important}
+  .plans{grid-template-columns:1fr 1fr!important}
+  .hero1,.tl,.plans{grid-column:auto!important}
+  .hero1 .h{font-size:40px}.h{font-size:32px}.snum{display:none}
+  .tl-row{grid-template-columns:1fr 1fr 1fr}.tl-row::before{display:none}
+  .agenda{flex-wrap:wrap}.agenda button{flex:1 1 40%}
+  .br{grid-template-columns:110px 1fr 70px}
+  .tabs{justify-content:flex-start}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== Light theme from biz.unifi.com.my: white, blue #1400DD, orange #EC692C, peach #FCF0E4 / #FCF5EF, text #121725 ===== */
+:root{--ink:#121725;--muted:rgba(18,23,37,.72);--line:#FCF0E4;--glass:#FCF5EF;--cobalt:#1400DD;--blue2:#1400DD;--lb:#1400DD;--or:#EC692C;--or2:#EC692C;--lo:#EC692C;color-scheme:light}
+html,body{background:#FFFFFF;color:#121725}
+.viewport::before,.viewport::after{display:none}
+.bar{background:#FFFFFF;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:0;box-shadow:0 2px 8px rgba(18,23,37,.08)}
+.logo{color:#1400DD;text-shadow:none}
+.tabs button{background:#FCF0E4;border-color:#FCF0E4;color:#121725}
+.tabs button[aria-current="true"]{background:#1400DD;border-color:#1400DD;color:#FFFFFF;box-shadow:none}
+.lang{border-color:#FCF0E4;background:#FCF0E4}
+.lang button{color:#121725}
+.lang button[aria-pressed="true"]{background:#1400DD;color:#FFFFFF}
+.icon-btn{background:#FCF0E4;border-color:#FCF0E4;color:#121725}
+.progress{background:#EC692C;box-shadow:none}
+.eyebrow{color:#EC692C}
+.h{color:#121725}
+.h.grad{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#1400DD}
+.snum{-webkit-text-stroke:1.5px #F1A270}
+.card{background:#FCF5EF;border:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+.card h3{color:#121725}
+.ticks li::before{color:#EC692C;text-shadow:none}
+.nums li::before{background:#EC692C;color:#FFFFFF;box-shadow:none}
+.nums.blue li::before{background:#FFFFFF;color:#1400DD;box-shadow:none}
+.chipset span{background:#FFFFFF;border-color:#FCF0E4;color:#121725}
+.stat{background:#FCF5EF;border:0;border-top:4px solid #EC692C}
+.stat b{color:#1400DD;text-shadow:none}
+.agenda button{background:#FFFFFF;border-color:#FCF0E4;color:#121725}
+.agenda b{color:#EC692C}
+.we{background:#1400DD;border:0;box-shadow:none;color:#FFFFFF}
+.we h3{color:#FFFFFF}
+.team div{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#FFFFFF}
+.tl-row::before{background:linear-gradient(90deg,#EC692C,#1400DD);box-shadow:none}
+.tl-row div::before{background:#FFFFFF;border-color:#EC692C;box-shadow:none}
+.tl-row span{color:#EC692C}
+.kk-top img,.oc{border-color:#FCF0E4}
+.kk-res{color:#EC692C;text-shadow:none}
+.br{color:rgba(18,23,37,.72)}
+.br .tr{background:#FFFFFF}
+.br .fl{background:#1400DD}
+.br.or .fl{background:#EC692C;box-shadow:none}
+.br b{color:#121725}
+.kk-mini div{background:#FFFFFF}
+.oc{background:#FFFFFF}
+.oc small{color:#EC692C}
+.pc{background:#FCF5EF;border-color:#FCF5EF}
+.pc[aria-pressed="true"]{border-color:#1400DD;box-shadow:none}
+.pc .lab{color:#FFFFFF}
+.pc .lab.aw{background:linear-gradient(90deg,#E3642C,#1B04D5)}
+.pc .lab.bv{background:linear-gradient(90deg,#CA401F,#EC692C)}
+.pc .lab.none{background:#FCF0E4}
+.pc .nm{color:#121725}
+.pc .pr{color:#EC692C;text-shadow:none}
+.pc .pr small{color:rgba(18,23,37,.6)}
+.pc .bon{background:#EC692C;color:#FFFFFF}
+.pc .bon.no{background:#FCF0E4;color:rgba(18,23,37,.72)}
+.pills button{background:#FFFFFF;border-color:#FCF0E4;color:#121725}
+.pills button[aria-pressed="true"]{background:#1400DD;border-color:#1400DD;color:#FFFFFF;box-shadow:none}
+.est div{background:#FFFFFF}
+.bills i{background:#FCF0E4}
+.bills i.first{background:#EC692C;box-shadow:none}
+.rules div{background:#FFFFFF;border-color:#FCF0E4}
+.rules b{color:#121725}
+.sum{background:#1400DD;border:0;color:#FFFFFF}
+.sum h3{color:#FFFFFF}
+.sum td{border-color:rgba(255,255,255,.3)}
+.sum tr.tot td{border-top-color:#FFFFFF}
+.deal{background:linear-gradient(110deg,#CA401F,#EC692C);box-shadow:none;color:#FFFFFF}
+.deal .tag{color:#FFFFFF;opacity:.9}
+.deal h3{color:#FFFFFF}
+.count div{background:#FFFFFF;border:0;color:#1400DD}
+.count span{color:#121725}
+.gift button{border-color:#FFFFFF;color:#FFFFFF}
+.gift button[aria-pressed="true"]{background:#FFFFFF;color:#1400DD}
+.btn{background:#1400DD;color:#FFFFFF;box-shadow:none}
+.btn.or{background:#EC692C;color:#FFFFFF;box-shadow:none}
+.btn.ghost{background:#FFFFFF;color:#1400DD;border:2px solid #1400DD}
+td{border-top-color:#FCF0E4}
+tr.tot td{border-top-color:#1400DD}
+.small{color:rgba(18,23,37,.72)}
+.sum .small{color:#FFFFFF}
+.navbtns button{background:#FFFFFF;border:2px solid #1400DD;color:#1400DD}
+.navbtns button.next{background:#1400DD;border-color:#1400DD;color:#FFFFFF;box-shadow:none}
+.toast{color:#EC692C}
+.lb{background:rgba(18,23,37,.9)}
+#fallback{background:#FFFFFF!important;color:#121725!important;border-color:#1400DD!important}
+.legend{color:rgba(18,23,37,.72)}
+.muted{color:rgba(18,23,37,.72)}
+.hero1 .h{font-size:66px;max-width:24ch}
+
+/* testimonials: picker on the right, chosen story on the left */
+.s3{grid-template-columns:1.55fr 1fr;grid-template-rows:minmax(0,1fr)}
+.viewer,.picker{min-height:0}
+.viewer{display:flex;flex-direction:column;gap:14px;padding:18px}
+.v-img{border-radius:14px;overflow:hidden;background:#D8DEE8;aspect-ratio:16/9;flex:none}
+.v-img img{width:100%;height:100%;object-fit:contain;display:block}
+.v-body{display:flex;flex-direction:column;gap:6px}
+.v-tags{display:flex;gap:8px;align-items:center}
+.vtag{background:#EC692C;color:#FFFFFF;font-weight:700;font-size:13px;border-radius:6px;padding:3px 9px}
+.vcat{font-size:13px;font-weight:700;color:#1400DD}
+.viewer .v-h{font-family:var(--display);font-stretch:120%;font-weight:900;font-size:30px;line-height:1.1;text-transform:none;margin:0;color:#EC692C}
+.v-who{font-weight:700;font-size:15px}
+.v-d{font-size:17px;color:rgba(18,23,37,.8)}
+.v-met{display:flex;gap:10px}
+.v-met div{flex:1;background:#FFFFFF;border-radius:12px;padding:8px 10px}
+.v-met b{display:block;font-family:var(--display);font-weight:900;font-size:22px;color:#1400DD}
+.v-met span{font-size:12px;color:rgba(18,23,37,.7)}
+.v-met:empty{display:none}
+.swap{animation:swapIn .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes swapIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.picker{display:flex;flex-direction:column;gap:10px;min-height:0}
+.picker .pills{margin:0}
+.plist{flex:1;min-height:0;overflow-y:auto;display:grid;grid-template-columns:1fr;gap:8px;padding-right:4px;align-content:start}
+.pi{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center;text-align:left;background:#FFFFFF;border:2px solid #FFFFFF;border-radius:14px;padding:6px;cursor:pointer}
+.pi:hover{border-color:#FCF0E4}
+.pi[aria-pressed="true"]{border-color:#1400DD}
+.pi img{width:120px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;display:block}
+.pi small{font-size:11px;font-weight:700;color:#EC692C}
+.pi b{display:block;font-size:14px;line-height:1.25;color:#121725}
+.pi span{font-size:12px;color:rgba(18,23,37,.65)}
+@media (max-width:860px){.plist{max-height:none;overflow:visible}.v-h{font-size:24px}}
+@media (prefers-reduced-motion: reduce){.swap{animation:none}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <span class="logo">DMS</span>
+  <div class="tabs" id="tabs" role="tablist" aria-label="Slides"></div>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="bm" aria-pressed="false">BM</button><button type="button" data-lang="zh" aria-pressed="false">中文</button>
+  </div>
+  <button type="button" class="icon-btn" id="fs" aria-label="Full screen">⛶</button>
+  <div class="progress" id="progress"></div>
+</div>
+
+<div class="viewport" id="viewport"><div class="stage" id="stage">
+
+  <!-- 1 · Why DMS -->
+  <section class="slide on" data-s="0" aria-label="Why DMS">
+    <div class="grid s1">
+      <div class="hero1 rv">
+        <span class="eyebrow" data-i="s1_e"></span>
+        <h1 class="h grad" data-i="s1_h"></h1>
+        <p data-i="s1_p"></p>
+        <div class="stats">
+          <div class="stat"><b class="num" data-count="2023">2023</b><span data-i="st1"></span></div>
+          <div class="stat"><b class="num" data-count="10000" data-post="+">10,000+</b><span data-i="st2"></span></div>
+          <div class="stat"><b class="num" data-count="400000" data-post="+">400,000+</b><span data-i="st3"></span></div>
+        </div>
+      </div>
+      <div class="card rv"><h3 data-i="s1_what"></h3><ul class="ticks" id="facts"></ul><p class="small" style="margin-top:14px" data-i="best"></p></div>
+      <div class="card rv"><h3 data-i="plat_t"></h3><div class="chipset" id="plats"></div><h3 style="margin-top:20px" data-i="agenda_t"></h3><div class="agenda" id="agenda"></div></div>
+    </div>
+  </section>
+
+  <!-- 2 · How it works -->
+  <section class="slide" data-s="1" aria-label="How it works">
+    <div class="head rv"><div><span class="eyebrow" data-i="s2_e"></span><h2 class="h" data-i="s2_h"></h2></div><span class="snum">02</span></div>
+    <div class="grid s2">
+      <div class="card we rv"><h3 data-i="we_t"></h3><div class="team" id="team"></div><ol class="nums blue" id="we"></ol></div>
+      <div class="card rv"><h3 data-i="you_t"></h3><ol class="nums" id="you"></ol></div>
+      <div class="card tl rv"><h3 data-i="tl_t"></h3><div class="tl-row" id="tl"></div><p class="small" style="margin-top:10px" data-i="tl_note"></p></div>
+    </div>
+  </section>
+
+  <!-- 3 · Proof -->
+  <section class="slide" data-s="2" aria-label="Results">
+    <div class="head rv"><div><span class="eyebrow" data-i="s3_e"></span><h2 class="h" data-i="s3_h"></h2></div><span class="snum">03</span></div>
+    <div class="grid s3">
+      <div class="card viewer rv" aria-live="polite">
+        <div class="v-img"><img id="v-img" alt=""></div>
+        <div class="v-body" id="v-body">
+          <div class="v-tags"><span class="vtag" id="v-plan"></span><span class="vcat" id="v-cat"></span></div>
+          <h3 class="v-h" id="v-h"></h3>
+          <p class="v-who" id="v-who"></p>
+          <p class="v-d" id="v-d"></p>
+          <div class="v-met" id="v-met"></div>
+        </div>
+      </div>
+      <div class="card picker rv">
+        <div class="pills" id="cats" role="group"></div>
+        <p class="small" data-i="pick_hint"></p>
+        <div class="plist" id="plist"></div>
+        <p class="small" data-i="guar"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · Plans & cost -->
+  <section class="slide" data-s="3" aria-label="Plans and cost">
+    <div class="head rv"><div><span class="eyebrow" data-i="s4_e"></span><h2 class="h" data-i="s4_h"></h2></div><span class="snum">04</span></div>
+    <div class="grid s4">
+      <div class="plans rv" id="plans"></div>
+      <div class="card rv"><h3 id="give-t"></h3><table class="num"><tbody id="give"></tbody></table><div class="split" id="split"></div><div class="legend" id="legend"></div></div>
+      <div class="card rv"><h3 data-i="est_t"></h3><div class="pills" id="estp"></div><div class="est"><div><span class="small" data-i="imp"></span><b class="num" id="e-imp"></b></div><div><span class="small" data-i="clk"></span><b class="num" id="e-clk"></b></div></div><p class="small" style="margin-top:10px" data-i="est_note"></p></div>
+      <div class="card rv"><h3 data-i="pay_t"></h3><div class="bills" id="bills" aria-hidden="true"></div><ul class="ticks" style="font-size:15px;gap:6px" id="pay"></ul><h3 style="margin-top:14px" data-i="opt_t"></h3><ul class="ticks" style="font-size:15px;gap:6px" id="opt"></ul></div>
+    </div>
+  </section>
+
+  <!-- 5 · Your package -->
+  <section class="slide" data-s="4" aria-label="Your package">
+    <div class="head rv"><div><span class="eyebrow" data-i="s5_e"></span><h2 class="h" data-i="s5_h"></h2></div><span class="snum">05</span></div>
+    <div class="grid s5">
+      <div class="card rv"><h3 data-i="rules_t"></h3><div class="rules" id="rules"></div></div>
+      <div class="close rv">
+        <div class="card sum"><h3 id="sum-t"></h3><table class="num"><tbody id="sum"></tbody></table><p class="small" style="margin-top:10px;color:#fff" data-i="need"></p></div>
+        <div class="card deal" id="deal"></div>
+        <div class="actions" style="grid-column:1/3"><button type="button" class="btn or" id="confirm"></button><button type="button" class="btn ghost" id="copy" data-i="copy"></button><button type="button" class="btn ghost" id="mk" data-i="mk" hidden></button><span class="toast" id="toast" aria-live="polite"></span></div>
+      </div>
+    </div>
+  </section>
+
+</div></div>
+
+<div class="navbtns"><button type="button" id="prev" aria-label="Previous slide">‹</button><button type="button" class="next" id="next" aria-label="Next slide">›</button></div>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true"><img id="lb-img" alt=""><button type="button" class="btn ghost" id="lb-x" data-i="close"></button></div>
+<textarea id="fallback" hidden aria-label="Summary" style="position:fixed;left:16px;bottom:70px;width:420px;height:160px;z-index:12;background:#06013A;color:#fff;border:1px solid #99B6FF;border-radius:10px;padding:8px"></textarea>
+
+<script>
+var PLANS=[{id:"Standard",p:100,cr:840,fee:360,tot:1296,lab:"aw",bon:0},{id:"Premium",p:200,cr:1680,fee:720,tot:2592,lab:"bv",bon:1},{id:"Prime",p:450,cr:3500,fee:1500,tot:5400,bon:1},{id:"Pro",p:900,cr:7000,fee:3000,tot:10800,bon:2}];
+/* Typical 2026 Malaysian ad-cost ranges (RM) from published market guides; a guide only, not TM figures. */
+var BENCH=[{cpm:[8.5,18],cpc:[0.85,2.40]},{cpm:[4.5,11],cpc:[0.40,1.20]},{cpm:null,cpc:[1.20,5.50]}];
+/* Testimonials: Unifi Business published success stories. cat: food | retail | services. m = [seen, people, clicks] where published. */
+var STORIES=[
+ {id:"mog",img:"mog-autowork.jpg",cat:"services",plan:"Premium",who:"Dinie Hazwan · MOG Autowork Senawang",
+  h:{en:"Sales up by RM100,000",bm:"Jualan naik sebanyak RM100,000",zh:"销售增加 RM100,000"},
+  d:{en:"Business grew nearly RM100,000 in a year, while yearly ad spending dropped from RM13,000 to RM2,600.",bm:"Perniagaan naik hampir RM100,000 setahun, dan kos iklan setahun turun dari RM13,000 kepada RM2,600.",zh:"一年生意增加近 RM100,000，每年的广告开销从 RM13,000 降到 RM2,600。"}},
+ {id:"kopetro",img:"kopetro.jpg",cat:"services",plan:"Premium",who:"Kopetro · proLindung Insurans",
+  h:{en:"Profit up 130%",bm:"Keuntungan naik 130%",zh:"利润增加 130%"},
+  d:{en:"Sales went up 50% from month 1 to month 2, then 130% from month 2 to month 3. They used Google ads.",bm:"Jualan naik 50% dari bulan pertama ke bulan kedua, kemudian 130% dari bulan kedua ke bulan ketiga. Guna iklan Google.",zh:"第 1 到第 2 个月销售增加 50%，第 2 到第 3 个月再增加 130%。用的是 Google 广告。"}},
+ {id:"kedai",img:"kedai-ibu-anak.jpg",cat:"retail",plan:"Premium",who:"Shahadatul Fatimah · Kedai Ibu Dan Anak",
+  h:{en:"Shopee visits up 26%, 1,000+ orders in a month",bm:"Trafik Shopee naik 26%, lebih 1,000 pesanan sebulan",zh:"Shopee 流量增加 26%，一个月超过 1,000 张订单"},
+  d:{en:"Her online sales went up many times compared with before the ads.",bm:"Jualan online meningkat berkali ganda berbanding sebelum iklan.",zh:"网上销售比打广告前多了好几倍。"}},
+ {id:"kuih",img:"kuih-karas-2.jpg",cat:"food",plan:"Standard",who:"Ros Eliana bt Mokhtar · Kuih Karas Terengganu",
+  h:{en:"Sales up 50% from January to March",bm:"Jualan naik 50% dari Januari hingga Mac",zh:"1 月到 3 月销售增加 50%"},
+  d:{en:"Lots of wholesale orders, and her kuih karas is now known outside Terengganu.",bm:"Order borong masuk banyak, dan kuih karas beliau dah dikenali di luar Terengganu.",zh:"批发订单很多，她的 kuih karas 在登嘉楼以外也有名了。"},m:["19,145","9,980","964"]},
+ {id:"suria",img:"suria-pest.jpg",cat:"services",plan:"Standard",who:"Tinesh Rao · Suria Pest Control",
+  h:{en:"Business now reaches the whole country",bm:"Perniagaan meluas ke seluruh negara",zh:"生意扩展到全国"},
+  d:{en:"Enquiries went from 9–10 to more than 25 a day.",bm:"Pertanyaan naik dari 9–10 kepada lebih 25 sehari.",zh:"询问从 9–10 个增加到每天超过 25 个。"}},
+ {id:"hotel",img:"paya-bunga.jpg",cat:"services",plan:"Premium",who:"Abdul Hadi Alias · Hotel Paya Bunga Terengganu",
+  h:{en:"82 room bookings straight from the hotel website",bm:"82 tempahan bilik terus dari laman web hotel",zh:"82 个房间预订直接来自酒店网站"},
+  d:{en:"Direct bookings keep growing every day.",bm:"Tempahan terus semakin meningkat setiap hari.",zh:"直接预订一天比一天多。"}},
+ {id:"azifa",img:"azifa-88.jpg",cat:"food",plan:"Premium",who:"Munah Suaidi · Azifa Eighty-Eight",
+  h:{en:"From Sarawak to London",bm:"Dari Sarawak ke Kota London",zh:"从砂拉越卖到伦敦"},
+  d:{en:"Halal Street UK contacted her to sell her products online. Her kolo mee and terubuk fish are now sold in the UK.",bm:"Halal Street UK hubungi beliau untuk pasarkan produk. Kolo Mee dan Terubuk Bersira kini dijual di UK.",zh:"Halal Street UK 主动找她上架，她的哥罗面和鲥鱼现在已在英国销售。"}},
+ {id:"coffee",img:"coffee-classic.jpg",cat:"food",plan:"Starter",who:"Busra binti Yahya · Coffee Classic",
+  h:{en:"Found 3 kiosk operators in just 14 days",bm:"Dapat 3 operator kiosk dalam 14 hari sahaja",zh:"14 天内招到 3 位档口经营者"},
+  d:{en:"Before this, almost no one enquired. WhatsApp messages poured in from the first day of ads.",bm:"Sebelum ini hampir tiada prospek. Mesej WhatsApp masuk bertalu-talu sejak hari pertama iklan.",zh:"以前几乎没人询问，广告第一天 WhatsApp 讯息就不停进来。"}},
+ {id:"kambing",img:"kambing-aneh.jpg",cat:"food",plan:"Premium",who:"Azroy Manaf · Temasek Agro",
+  h:{en:"Easy. Just wait for orders to come in",bm:"Senang dan mudah, tunggu order masuk sahaja",zh:"轻松简单，等订单进来就好"},
+  d:{en:"No more headaches over ad content. The DMS team handles all of it.",bm:"Tak pening lagi pasal konten iklan, semuanya diuruskan team DMS.",zh:"不用再为广告内容头痛，DMS 团队全部搞定。"}},
+ {id:"sesudip",img:"sesudip-house.jpg",cat:"food",plan:"Premium",who:"Norsahira binti Mohd. Affandi · Sesudip House",
+  h:{en:"Sales went up 50%",bm:"Jualan naik 50%",zh:"生意增加 50%"},
+  d:{en:"More than 100 people asked about her products through DMS ads.",bm:"Lebih 100 orang bertanya tentang produk melalui iklan DMS.",zh:"通过 DMS 广告，超过 100 人来询问她的产品。"},m:["22,514","9,924","1,273"]},
+ {id:"umi",img:"umis-kitchen.jpg",cat:"food",plan:"Premium",who:"Nazryn Azlan · Umi’s Kitchen",
+  h:{en:"89 new customers asking",bm:"89 pelanggan baru bertanya",zh:"89 个新顾客来询问"},
+  d:{en:"The campaign manager replies fast, even after office hours, and the posters look great.",bm:"Campaign manager balas cepat walaupun luar waktu pejabat, dan poster sangat menarik.",zh:"广告经理下班后也回得很快，海报也很好看。"},m:["30,903","11,420","587"]},
+ {id:"aura",img:"aurabees.jpg",cat:"food",plan:"Standard",who:"Mohamad Fitri bin Aziz · AuraBees",
+  h:{en:"Sold more than 8 barrels of honey",bm:"Jual lebih 8 tong madu",zh:"卖出超过 8 桶蜂蜜"},
+  d:{en:"Lots of private messages came in. They just had to follow up.",bm:"Banyak PM masuk, cuma perlu follow up.",zh:"私讯很多，他们只需要跟进。"}},
+ {id:"hedy",img:"hedys.jpg",cat:"food",plan:"Premium",who:"Nor Hedayah Kaulan · Hedy’s",
+  h:{en:"Got known for just RM200 a month",bm:"Makin dikenali dengan RM200 sebulan",zh:"每月 RM200 就让更多人认识"},
+  d:{en:"Far cheaper than the agencies she paid before.",bm:"Jauh lebih murah berbanding agensi yang dibayar sebelum ini.",zh:"比她以前请的代理公司便宜很多。"}},
+ {id:"angah",img:"angah-katering.jpg",cat:"food",plan:"Starter",who:"Angah Katering · Kuantan",
+  h:{en:"New customers for her catering",bm:"Pelanggan baru untuk katering",zh:"外烩生意多了新顾客"},
+  d:{en:"So many customers came from the ads that she wants to run them again for Ramadan.",bm:"Ramai pelanggan datang dari iklan, jadi beliau mahu buat lagi untuk bulan puasa.",zh:"很多顾客都是从广告来的，她想在斋戒月再打一次。"},m:["8,273","3,429","284"]}
+];
+var T={
+en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["services","Services"]], pick_hint:"Tap a story to show it on the left.",tabs:["Why DMS","How it works","Results","Price","Your package"],
+ s1_e:"Unifi Business · Digital Marketing Solution",s1_h:"Run your ads now. Pay monthly for 12 months.",s1_p:"You get the full ad budget from day one, and pay a small amount every month. Our team handles the ads for you.",
+ st1:"The year DMS started",st2:"businesses already joined DMS",st3:"businesses served by Unifi Business",
+ s1_what:"What you get",facts:["No deposit and no setup fee","Your own campaign manager, copywriter and designer","A report every month showing how your ads did","Open to everyone, Unifi customer or not"],best:"Great for shops, restaurants, clinics, property agents and service businesses.",
+ plat_t:"Where your ads can appear",plats:["Facebook","Instagram","Google","TikTok","Rev Media news sites"],agenda_t:"What we’ll cover today",
+ s2_e:"How it works",s2_h:"You do a little. We do the rest.",we_t:"What we do for you",team:["Campaign manager","Copywriter","Designer"],
+ we:["Plan your ads and pick the right platforms","Write your ads and design the pictures","Put your ads live and keep improving them","Send you a simple report every month"],
+ you_t:"What you do · about 30 minutes total",you:["Sign up with your company registration (or the owner’s IC)","Send us your photos and business info","Give TM access to your Facebook page (only for Facebook ads)","Check the ad design once and say OK","Reply to customers who message you","Pay one bill a month, on the 22nd"],
+ tl_t:"If you sign up today",tl:[["Sign up","Today"],["We call you","By {c}"],["First design","About 5 working days after you send your photos"],["Ads go live","Around {l}"],["Report","Every month"],["After 12 months","Continue or change plan"]],tl_note:"Rough dates only. Public holidays not counted.",
+ s3_e:"Results",s3_h:"Real shops. Real results.",kk_t:"Kuih Karas Terengganu · Standard plan, RM100 a month",kk_res:"more sales from January to March",kb:["Times ad was seen","People who saw it","People who clicked"],ctr_t:"Out of 100 people, how many clicked",cb:["Her ads","Normal ads"],fol_t:"Facebook followers",
+ others_t:"More businesses that used DMS",guar:"Every business is different. TM promises your ads will be seen, but can’t promise sales. These stories are from Unifi Business.",metric:"Seen · People · Clicks",starter:"Starter (old plan)",
+ s4_e:"Price",s4_h:"Pick a plan. See what you pay.",aw:"Awareness",bv:"Best Value",mo:"/month",bon1:"+1 month BotKu or Q4U free",bon2:"+2 months BotKu or Q4U free",bon0:"No free gift",
+ give_t:"With {p}, you get",g:["Ad money to spend","Monthly bill (with SST)","First bill (covers 2 months)","Total for 12 months (with SST)"],seg:["Ad money","Team fee","SST"],
+ est_t:"What your ad money can do",estp:["Facebook / Instagram","TikTok","Google"],imp:"Your ad could be seen",clk:"Or get this many clicks",na:"Not for this platform",est_note:"Rough guide based on average Malaysian ad prices. Not a promise from TM.",
+ pay_t:"How you pay",pay:["No deposit. Your first bill covers 2 months, then it’s monthly","One bill every month, on the 22nd","Pay by Autopay, the MyUnifi app, JomPAY, e-wallet or at TMpoint"],opt_t:"Extras",opt:["Video ad: uses 680 of your ad money, takes 30–45 working days","Add more ad money any time"],
+ s5_e:"Your package",s5_h:"No hidden surprises.",rules_t:"Good to know before you sign",
+ rules:[["12 months","The contract is for 12 months"],["Same plan throughout","You can’t upgrade or downgrade halfway"],["First bill is 2 months","That’s just how billing works. It’s not a deposit"],["Approved means final","Once you OK the ad, it can’t be changed or stopped"],["What TM promises","People will see your ads. Sales aren’t promised"],["Malay and English ads","Chinese ads aren’t available yet"],["Stopping early","You still pay the remaining months, and unused ad money is lost"],["After 12 months","Stop anytime, no penalty. Unused ad money is lost after month 12"]],
+ sum_t:"{p} · RM{m}/month",s:["Ad money","Monthly bill (with SST)","First bill (2 months)","Total for 12 months","Free gift","Ads go live around"],none:"Not included with this plan",
+ need:"To sign up, you need your company registration (or the owner’s IC or passport). For Facebook ads, TM also needs access to your page.",
+ d_tag:"Sign up within 48 hours",d_h:"Never miss a customer",d_p:"When customers message you from your ads, they get a reply in seconds, even at night. We set it up for you before your ads start, and the free period starts when your ads do.",
+ d_none:"Standard doesn’t come with the free gift. Premium and Prime get 1 free month, Pro gets 2.",d_up:"Switch to Premium",d_gift:"Pick your free gift:",
+ items:[["botku","BotKu, an AI that replies on WhatsApp",199],["q4u","Q4U online ordering and delivery",99]],fnb:"for food businesses",free1:"free for your first month of ads",free2:"free for your first 2 months of ads",
+ ends:"Offer ends in",dd:"days",hh:"hours",mm:"min",ended:"This offer has ended.",by:"This gift comes from your consultant (BotKu.ai and Q4U.store), not from TM, and isn’t part of the TM contract.",
+ confirm:"I’ll take {p}",copy:"Copy summary",copied:"Copied! Send it to your consultant and we’ll do the rest.",copy2:"Copy the summary below and send it to your consultant.",
+ mk:"Copy 48-hour link for customer",mkd:"Link copied. Offer ends:",close:"Close",head:"My DMS package"},
+bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"],["services","Servis"]], pick_hint:"Tekan satu kisah untuk paparkan di sebelah kiri.",tabs:["Kenapa DMS","Cara ia berjalan","Hasil","Harga","Pakej anda"],
+ s1_e:"Unifi Business · Digital Marketing Solution",s1_h:"Iklan sekarang. Bayar bulanan selama 12 bulan.",s1_p:"Bajet iklan penuh dah tersedia dari hari pertama, anda cuma bayar sikit setiap bulan. Pasukan kami uruskan iklan untuk anda.",
+ st1:"Tahun DMS bermula",st2:"perniagaan dah sertai DMS",st3:"perniagaan dilayan oleh Unifi Business",
+ s1_what:"Apa yang anda dapat",facts:["Tiada deposit, tiada yuran pasang","Pengurus kempen, penulis iklan dan pereka khas untuk anda","Laporan setiap bulan tunjuk prestasi iklan","Terbuka untuk semua, pelanggan Unifi atau bukan"],best:"Sesuai untuk kedai, restoran, klinik, ejen hartanah dan perniagaan servis.",
+ plat_t:"Di mana iklan anda boleh keluar",plats:["Facebook","Instagram","Google","TikTok","Laman berita Rev Media"],agenda_t:"Apa yang kita akan bincang hari ini",
+ s2_e:"Cara ia berjalan",s2_h:"Anda buat sikit. Kami buat selebihnya.",we_t:"Apa yang kami buat untuk anda",team:["Pengurus kempen","Penulis iklan","Pereka"],
+ we:["Rancang iklan dan pilih platform yang sesuai","Tulis ayat iklan dan reka gambar","Siarkan iklan dan terus perbaiki","Hantar laporan ringkas setiap bulan"],
+ you_t:"Apa yang anda buat · lebih kurang 30 minit",you:["Daftar guna SSM syarikat (atau IC pemilik)","Hantar gambar dan maklumat bisnes","Beri TM akses ke page Facebook (untuk iklan Facebook sahaja)","Semak reka bentuk iklan sekali dan setuju","Balas pelanggan yang mesej anda","Bayar satu bil sebulan, pada 22 haribulan"],
+ tl_t:"Kalau daftar hari ini",tl:[["Daftar","Hari ini"],["Kami telefon","Sebelum {c}"],["Reka bentuk pertama","Lebih kurang 5 hari bekerja lepas hantar gambar"],["Iklan keluar","Sekitar {l}"],["Laporan","Setiap bulan"],["Lepas 12 bulan","Teruskan atau tukar pelan"]],tl_note:"Tarikh anggaran sahaja. Cuti umum tidak dikira.",
+ s3_e:"Hasil",s3_h:"Kedai sebenar. Hasil sebenar.",kk_t:"Kuih Karas Terengganu · Pelan Standard, RM100 sebulan",kk_res:"jualan naik dari Januari hingga Mac",kb:["Kali iklan dilihat","Orang yang nampak","Orang yang klik"],ctr_t:"Daripada 100 orang, berapa yang klik",cb:["Iklannya","Iklan biasa"],fol_t:"Pengikut Facebook",
+ others_t:"Lagi perniagaan yang guna DMS",guar:"Setiap perniagaan berbeza. TM janji iklan anda akan dilihat, tapi jualan tak dapat dijanjikan. Kisah-kisah ini daripada Unifi Business.",metric:"Dilihat · Orang · Klik",starter:"Starter (pelan lama)",
+ s4_e:"Harga",s4_h:"Pilih pelan. Tengok berapa anda bayar.",aw:"Kesedaran",bv:"Nilai Terbaik",mo:"/bulan",bon1:"+1 bulan BotKu atau Q4U percuma",bon2:"+2 bulan BotKu atau Q4U percuma",bon0:"Tiada hadiah percuma",
+ give_t:"Dengan {p}, anda dapat",g:["Duit iklan untuk digunakan","Bil bulanan (dengan SST)","Bil pertama (untuk 2 bulan)","Jumlah 12 bulan (dengan SST)"],seg:["Duit iklan","Yuran pasukan","SST"],
+ est_t:"Apa duit iklan anda boleh buat",estp:["Facebook / Instagram","TikTok","Google"],imp:"Iklan anda boleh dilihat",clk:"Atau dapat klik sebanyak",na:"Tidak untuk platform ini",est_note:"Panduan kasar berdasarkan harga iklan purata di Malaysia. Bukan janji daripada TM.",
+ pay_t:"Cara bayar",pay:["Tiada deposit. Bil pertama untuk 2 bulan, lepas tu bulanan","Satu bil setiap bulan, pada 22 haribulan","Bayar guna Autopay, app MyUnifi, JomPAY, e-wallet atau di TMpoint"],opt_t:"Tambahan",opt:["Iklan video: guna 680 duit iklan, siap dalam 30–45 hari bekerja","Tambah duit iklan bila-bila masa"],
+ s5_e:"Pakej anda",s5_h:"Tiada kejutan tersembunyi.",rules_t:"Perlu tahu sebelum daftar",
+ rules:[["12 bulan","Kontrak untuk 12 bulan"],["Pelan sama sepanjang kontrak","Tak boleh naik atau turun pelan di tengah jalan"],["Bil pertama 2 bulan","Memang cara bil berjalan. Ini bukan deposit"],["Dah setuju, muktamad","Lepas anda setuju iklan, ia tak boleh diubah atau dihentikan"],["Apa TM janji","Orang akan nampak iklan anda. Jualan tak dijanjikan"],["Iklan BM dan Inggeris","Iklan bahasa Cina belum ada"],["Berhenti awal","Masih perlu bayar baki bulan, dan duit iklan yang tak guna akan hangus"],["Lepas 12 bulan","Boleh berhenti bila-bila, tiada penalti. Duit iklan yang tak guna hangus lepas bulan ke-12"]],
+ sum_t:"{p} · RM{m} sebulan",s:["Duit iklan","Bil bulanan (dengan SST)","Bil pertama (2 bulan)","Jumlah 12 bulan","Hadiah percuma","Iklan keluar sekitar"],none:"Tidak termasuk dalam pelan ini",
+ need:"Untuk daftar, anda perlukan SSM syarikat (atau IC atau pasport pemilik). Untuk iklan Facebook, TM juga perlukan akses ke page anda.",
+ d_tag:"Daftar dalam 48 jam",d_h:"Takkan terlepas pelanggan",d_p:"Bila pelanggan mesej anda dari iklan, mereka dapat balasan dalam beberapa saat, malam pun boleh. Kami pasangkan untuk anda sebelum iklan mula, dan tempoh percuma mula bila iklan mula.",
+ d_none:"Pelan Standard tak termasuk hadiah percuma. Premium dan Prime dapat 1 bulan percuma, Pro dapat 2 bulan.",d_up:"Tukar ke Premium",d_gift:"Pilih hadiah percuma anda:",
+ items:[["botku","BotKu, AI yang balas WhatsApp",199],["q4u","Q4U, pesanan online dan penghantaran",99]],fnb:"untuk perniagaan makanan",free1:"percuma untuk bulan pertama iklan",free2:"percuma untuk 2 bulan pertama iklan",
+ ends:"Tawaran tamat dalam",dd:"hari",hh:"jam",mm:"min",ended:"Tawaran ini dah tamat.",by:"Hadiah ini daripada perunding anda (BotKu.ai dan Q4U.store), bukan daripada TM, dan bukan sebahagian kontrak TM.",
+ confirm:"Saya ambil {p}",copy:"Salin ringkasan",copied:"Dah disalin! Hantar kepada perunding anda, kami uruskan selebihnya.",copy2:"Salin ringkasan di bawah dan hantar kepada perunding anda.",
+ mk:"Salin link 48 jam untuk pelanggan",mkd:"Link disalin. Tawaran tamat:",close:"Tutup",head:"Pakej DMS saya"},
+zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["services","服务业"]], pick_hint:"点一个案例，就会显示在左边。",tabs:["为什么选 DMS","怎么运作","成效","价钱","你的配套"],
+ s1_e:"Unifi Business · Digital Marketing Solution",s1_h:"现在就打广告，分 12 个月慢慢付。",s1_p:"整笔广告预算第一天就给你用，你每个月只付一小笔。广告由我们的团队帮你搞定。",
+ st1:"DMS 开始的年份",st2:"家商家已经加入 DMS",st3:"家商家由 Unifi Business 服务",
+ s1_what:"你会得到",facts:["不用订金，也没有开通费","专属广告经理、文案和设计师","每个月一份报告，看广告做得怎样","人人都可以申请，不是 Unifi 用户也行"],best:"很适合店铺、餐馆、诊所、房产经纪和服务业。",
+ plat_t:"你的广告可以出现在",plats:["Facebook","Instagram","Google","TikTok","Rev Media 新闻网站"],agenda_t:"今天会讲的内容",
+ s2_e:"怎么运作",s2_h:"你做一点点，其余交给我们。",we_t:"我们帮你做",team:["广告经理","文案","设计师"],
+ we:["规划广告，选对平台","写广告文字，设计图片","把广告推出去，并不断改进","每个月给你一份简单报告"],
+ you_t:"你要做的 · 总共大约 30 分钟",you:["用公司注册（或老板 IC）签约","把照片和生意资料发给我们","给 TM 你 Facebook 专页的权限（只限 Facebook 广告）","看一次广告设计，点头就行","回复来询问的顾客","每个月 22 号付一张账单"],
+ tl_t:"如果今天签约",tl:[["签约","今天"],["我们打给你","{c} 前"],["第一版设计","发照片后大约 5 个工作天"],["广告上线","大约 {l}"],["报告","每个月"],["12 个月后","继续或换配套"]],tl_note:"日期只是大概，不包括公共假期。",
+ s3_e:"成效",s3_h:"真实店家，真实成效。",kk_t:"Kuih Karas Terengganu · Standard 配套，每月 RM100",kk_res:"1 月到 3 月的销售增加",kb:["广告被看的次数","看到的人数","点击的人数"],ctr_t:"每 100 人里有几人点击",cb:["她的广告","一般广告"],fol_t:"Facebook 粉丝",
+ others_t:"更多用过 DMS 的商家",guar:"每家生意都不一样。TM 保证你的广告会被看到，但不能保证生意。以上案例来自 Unifi Business。",metric:"看到 · 人数 · 点击",starter:"Starter（旧配套）",
+ s4_e:"价钱",s4_h:"选一个配套，看看要付多少。",aw:"品牌曝光",bv:"最划算",mo:"/月",bon1:"+免费 1 个月 BotKu 或 Q4U",bon2:"+免费 2 个月 BotKu 或 Q4U",bon0:"没有赠品",
+ give_t:"选 {p}，你会得到",g:["可用的广告费","每月账单（含 SST）","第一张账单（2 个月）","12 个月总共（含 SST）"],seg:["广告费","团队服务费","SST"],
+ est_t:"你的广告费能做到什么",estp:["Facebook / Instagram","TikTok","Google"],imp:"广告大约可被看到",clk:"或者获得这么多点击",na:"这个平台不适用",est_note:"根据马来西亚一般广告价格的大概估算，不是 TM 的承诺。",
+ pay_t:"怎么付钱",pay:["不用订金。第一张账单是 2 个月，之后每月付","每个月 22 号一张账单","可用 Autopay、MyUnifi app、JomPAY、电子钱包或到 TMpoint 付"],opt_t:"额外服务",opt:["视频广告：用掉 680 广告费，30–45 个工作天完成","随时可以加广告费"],
+ s5_e:"你的配套",s5_h:"没有隐藏的意外。",rules_t:"签约前要知道的事",
+ rules:[["12 个月","合约是 12 个月"],["配套不能中途换","中途不能升级或降级"],["第一张账单是 2 个月","账单就是这样算的，不是订金"],["批准了就定了","广告一旦你同意，就不能改或停"],["TM 保证什么","保证有人看到你的广告，但不保证生意"],["马来文和英文广告","暂时还没有中文广告"],["提早停","剩下的月份还是要付，没用完的广告费会作废"],["12 个月后","随时可停，没有罚款。没用完的广告费在第 12 个月后作废"]],
+ sum_t:"{p} · 每月 RM{m}",s:["广告费","每月账单（含 SST）","第一张账单（2 个月）","12 个月总共","赠品","广告大约上线"],none:"这个配套没有",
+ need:"签约需要公司注册（或老板的 IC／护照）。如果打 Facebook 广告，TM 也需要你专页的权限。",
+ d_tag:"48 小时内签约",d_h:"不漏掉任何顾客",d_p:"顾客从广告发讯息给你，几秒内就有回复，半夜也行。我们会在广告开始前帮你弄好，免费期从广告上线那天开始算。",
+ d_none:"Standard 没有赠品。Premium 和 Prime 免费 1 个月，Pro 免费 2 个月。",d_up:"换成 Premium",d_gift:"选你的赠品：",
+ items:[["botku","BotKu，会回 WhatsApp 的 AI",199],["q4u","Q4U 网上点餐和送货",99]],fnb:"适合餐饮业",free1:"广告第一个月免费",free2:"广告头 2 个月免费",
+ ends:"优惠还剩",dd:"天",hh:"小时",mm:"分",ended:"这个优惠已经结束了。",by:"赠品由你的顾问提供（BotKu.ai 和 Q4U.store），不是 TM 提供，也不属于 TM 合约。",
+ confirm:"我要 {p}",copy:"复制摘要",copied:"已复制！发给你的顾问，其余交给我们。",copy2:"请复制下面的摘要，发给你的顾问。",
+ mk:"复制 48 小时客户链接",mkd:"链接已复制，优惠截止：",close:"关闭",head:"我的 DMS 配套"}
+};
+var state={lang:"en",s:0,plan:1,plat:0,pick:"botku"};
+try{var sv=localStorage.getItem("dms-deck-lang"); if(T[sv]) state.lang=sv;}catch(e){}
+function $(i){return document.getElementById(i);}
+function el(tag,txt,cls){var e=document.createElement(tag); if(txt!=null) e.textContent=txt; if(cls) e.className=cls; return e;}
+function fill(id,arr,fn){var h=$(id); h.textContent=""; arr.forEach(function(x,i){h.appendChild(fn(x,i));});}
+function rm(n){return "RM"+(Math.round(n*100)/100).toLocaleString("en-MY",{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});}
+function addWD(n){var x=new Date(); x.setHours(0,0,0,0); while(n>0){x.setDate(x.getDate()+1); var w=x.getDay(); if(w&&w!==6) n--;} return x;}
+function fmtD(d){var loc={en:"en-MY",bm:"ms-MY",zh:"zh-CN"}[state.lang]; try{return d.toLocaleDateString(loc,{day:"numeric",month:"short"});}catch(e){return d.toDateString();}}
+function fmtDT(d){var loc={en:"en-MY",bm:"ms-MY",zh:"zh-CN"}[state.lang]; try{return d.toLocaleString(loc,{timeZone:"Asia/Kuala_Lumpur",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});}catch(e){return d.toString();}}
+function nice(n){var st=n>=10000?1000:(n>=1000?100:10); return (Math.round(n/st)*st).toLocaleString("en-MY");}
+/* 48-hour deadline: from a #o-YYYYMMDDHHMM customer link (Malaysia time), else 48 hours from first open on this device */
+function deadline(){var m=/^#o-(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$/.exec(location.hash||""); if(m) return new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-8,+m[5]));
+  var f=null; try{f=+localStorage.getItem("dms-first"); if(!f){f=Date.now(); localStorage.setItem("dms-first",String(f));}}catch(e){} if(!f){ if(!window.__f) window.__f=Date.now(); f=window.__f; } return new Date(f+48*3600e3);}
+function dlCode(d){var x=new Date(d.getTime()+8*3600e3); function z(n){return String(n).padStart(2,"0");} return "o-"+x.getUTCFullYear()+z(x.getUTCMonth()+1)+z(x.getUTCDate())+z(x.getUTCHours())+z(x.getUTCMinutes());}
+function ended(){return new Date()>=deadline();}
+
+function summaryText(){var t=T[state.lang],p=PLANS[state.plan],L=[t.head, t.sum_t.replace("{p}",p.id).replace("{m}",p.p), t.s[0]+": "+rm(p.cr), t.s[1]+": "+rm(p.tot/12), t.s[2]+": "+rm(p.tot/6), t.s[3]+": "+rm(p.tot)];
+  if(p.bon && !ended()){var it=t.items.filter(function(x){return x[0]===state.pick;})[0]; L.push(t.s[4]+": "+it[1]+", "+(p.bon===1?t.free1:t.free2)+" ("+fmtDT(deadline())+")");}
+  return L.join("\n");}
+
+function render(){
+  var t=T[state.lang], p=PLANS[state.plan], bill=p.tot/12, sst=p.tot-p.cr-p.fee;
+  document.documentElement.lang=state.lang==="zh"?"zh-Hans":(state.lang==="bm"?"ms":"en");
+  document.querySelectorAll("[data-i]").forEach(function(n){var k=n.getAttribute("data-i"); if(t[k]!=null) n.textContent=t[k];});
+  document.querySelectorAll(".lang button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.lang===state.lang));});
+  fill("tabs",t.tabs,function(x,i){var b=el("button"); b.type="button"; b.setAttribute("role","tab"); b.setAttribute("aria-current",String(i===state.s)); b.appendChild(el("span","0"+(i+1))); b.appendChild(document.createTextNode(x)); b.addEventListener("click",function(){go(i);}); return b;});
+  $("progress").style.width=((state.s+1)/5*100)+"%"; $("prev").disabled=state.s===0; $("next").disabled=state.s===4;
+  // 1
+  fill("facts",t.facts,function(x){return el("li",x);}); fill("plats",t.plats,function(x){return el("span",x);});
+  fill("agenda",t.tabs,function(x,i){var b=el("button"); b.type="button"; b.appendChild(el("b","0"+(i+1))); b.appendChild(el("span",x)); b.addEventListener("click",function(){go(i);}); return b;});
+  // 2
+  fill("team",t.team,function(x,i){var d=el("div"); d.appendChild(el("i",["◎","✎","◆"][i])); d.appendChild(document.createTextNode(x)); return d;});
+  fill("we",t.we,function(x){return el("li",x);}); fill("you",t.you,function(x){return el("li",x);});
+  fill("tl",t.tl,function(x){var d=el("div"); d.appendChild(el("b",x[0])); d.appendChild(el("span",x[1].replace("{c}",fmtD(addWD(3))).replace("{l}",fmtD(addWD(9))))); return d;});
+  // 3
+  renderStories(t);
+  // 4
+  fill("plans",PLANS,function(q,i){var b=el("button",null,"pc"); b.type="button"; b.setAttribute("aria-pressed",String(i===state.plan));
+    b.appendChild(el("span",q.lab?t[q.lab]:"","lab "+(q.lab||"none")));
+    var inn=el("div",null,"in"); inn.appendChild(el("span",q.id,"nm")); var pr=el("span","RM"+q.p,"pr num"); pr.appendChild(el("small",t.mo)); inn.appendChild(pr); b.appendChild(inn);
+    b.appendChild(el("span",q.bon===2?t.bon2:(q.bon===1?t.bon1:t.bon0),q.bon?"bon":"bon no"));
+    b.addEventListener("click",function(){state.plan=i; render();}); return b;});
+  $("give-t").textContent=t.give_t.replace("{p}",p.id);
+  fill("give",[[t.g[0],rm(p.cr)],[t.g[1],rm(bill)],[t.g[2],rm(bill*2)],[t.g[3],rm(p.tot)]],function(r,i){var tr=el("tr",null,i===3?"tot":""); tr.appendChild(el("td",r[0])); tr.appendChild(el("td",r[1])); return tr;});
+  var segs=[[p.cr,"#EC692C"],[p.fee,"#1400DD"],[sst,"#F1A270"]];
+  fill("split",segs,function(sg){var i=el("i"); i.style.width=(sg[0]/p.tot*100)+"%"; i.style.background=sg[1]; return i;});
+  fill("legend",segs,function(sg,i){var s=el("span"); var k=el("i"); k.style.background=sg[1]; s.appendChild(k); s.appendChild(document.createTextNode(t.seg[i]+" "+rm(sg[0]))); return s;});
+  fill("estp",t.estp,function(x,i){var b=el("button",x); b.type="button"; b.setAttribute("aria-pressed",String(i===state.plat)); b.addEventListener("click",function(){state.plat=i; render();}); return b;});
+  var bn=BENCH[state.plat]; $("e-imp").textContent=bn.cpm? nice(p.cr/bn.cpm[1]*1000)+" – "+nice(p.cr/bn.cpm[0]*1000) : t.na; $("e-clk").textContent=nice(p.cr/bn.cpc[1])+" – "+nice(p.cr/bn.cpc[0]);
+  var bh=$("bills"); if(!bh.childNodes.length){ for(var k=0;k<11;k++) bh.appendChild(el("i",null,k===0?"first":"")); }
+  fill("pay",t.pay,function(x){return el("li",x);}); fill("opt",t.opt,function(x){return el("li",x);});
+  // 5
+  fill("rules",t.rules,function(r){var d=el("div"); d.appendChild(el("b",r[0])); d.appendChild(el("span",r[1])); return d;});
+  $("sum-t").textContent=t.sum_t.replace("{p}",p.id).replace("{m}",p.p);
+  var it=t.items.filter(function(x){return x[0]===state.pick;})[0];
+  var bonus = (!p.bon||ended()) ? t.none : it[1]+" · "+(p.bon===1?t.free1:t.free2);
+  fill("sum",[[t.s[0],rm(p.cr)],[t.s[1],rm(bill)],[t.s[2],rm(bill*2)],[t.s[4],bonus],[t.s[5],fmtD(addWD(9))],[t.s[3],rm(p.tot)]],function(r,i){var tr=el("tr",null,i===5?"tot":""); tr.appendChild(el("td",r[0])); var td=el("td",r[1]); if(i===3) td.style.whiteSpace="normal"; tr.appendChild(td); return tr;});
+  deal(t,p);
+  $("confirm").textContent=t.confirm.replace("{p}",p.id);
+  $("mk").hidden = location.hash!=="#consultant";
+}
+function bar(label,frac,val,cls,narrow){var r=el("div",null,"br"+(cls?" "+cls:"")); if(narrow) r.style.gridTemplateColumns="90px 1fr 70px"; r.appendChild(el("span",label)); var tr=el("div",null,"tr"), fl=el("div",null,"fl"); fl.dataset.w=(frac*100)+"%"; tr.appendChild(fl); r.appendChild(tr); r.appendChild(el("b",val)); return r;}
+var STATE_STORY={cat:"all",id:"mog"};
+function renderStories(t){
+  fill("cats",t.cats,function(c){var n=c[0]==="all"?STORIES.length:STORIES.filter(function(x){return x.cat===c[0];}).length;
+    var b=el("button",c[1]+" ("+n+")"); b.type="button"; b.setAttribute("aria-pressed",String(STATE_STORY.cat===c[0]));
+    b.addEventListener("click",function(){STATE_STORY.cat=c[0]; var first=STORIES.filter(function(x){return c[0]==="all"||x.cat===c[0];})[0]; if(first) STATE_STORY.id=first.id; renderStories(T[state.lang]);}); return b;});
+  var list=STORIES.filter(function(x){return STATE_STORY.cat==="all"||x.cat===STATE_STORY.cat;});
+  fill("plist",list,function(x){var b=el("button",null,"pi"); b.type="button"; b.setAttribute("aria-pressed",String(x.id===STATE_STORY.id));
+    var im=el("img"); im.src="/dms-pitch-n2m6mbss/stories/"+x.img; im.alt=""; im.loading="lazy"; b.appendChild(im);
+    var d=el("div"); d.appendChild(el("small",x.plan==="Starter"?t.starter:x.plan)); d.appendChild(el("b",x.h[state.lang])); d.appendChild(el("span",x.who.split(" · ").pop())); b.appendChild(d);
+    b.addEventListener("click",function(){STATE_STORY.id=x.id; renderStories(T[state.lang]);}); return b;});
+  var cur=STORIES.filter(function(x){return x.id===STATE_STORY.id;})[0]||list[0];
+  var img=$("v-img"); if(img.getAttribute("data-id")!==cur.id){ var body=$("v-body"); body.classList.remove("swap"); img.classList.remove("swap"); void body.offsetWidth; body.classList.add("swap"); img.classList.add("swap"); }
+  img.src="/dms-pitch-n2m6mbss/stories/"+cur.img; img.alt=cur.who+": "+cur.h.en; img.setAttribute("data-id",cur.id);
+  $("v-plan").textContent=cur.plan==="Starter"?t.starter:("DMS "+cur.plan);
+  $("v-cat").textContent=(t.cats.filter(function(c){return c[0]===cur.cat;})[0]||["",""])[1];
+  $("v-h").textContent=cur.h[state.lang]; $("v-who").textContent=cur.who; $("v-d").textContent=cur.d[state.lang];
+  var met=$("v-met"); met.textContent=""; if(cur.m){ cur.m.forEach(function(v,i){var d=el("div"); d.appendChild(el("b",v)); d.appendChild(el("span",t.kb[i])); met.appendChild(d);}); }
+}
+function growBars(){ if(state.s!==2) return; document.querySelectorAll('.slide[data-s="2"] .fl').forEach(function(f){ f.style.width="0"; requestAnimationFrame(function(){requestAnimationFrame(function(){ f.style.width=f.dataset.w; });}); }); }
+function deal(t,p){var box=$("deal"); box.textContent=""; box.appendChild(el("span",t.d_tag,"tag"));
+  if(ended()){ box.appendChild(el("h3",t.ended)); return; }
+  box.appendChild(el("h3",t.d_h)); box.appendChild(el("p",t.d_p));
+  var dl=deadline(), ms=dl-new Date(), c=el("div",null,"count num");
+  [[Math.floor(ms/864e5),t.dd],[Math.floor(ms%864e5/36e5),t.hh],[Math.floor(ms%36e5/6e4),t.mm]].forEach(function(x){var d=el("div"); d.appendChild(el("b",String(x[0]))); d.appendChild(el("span",x[1])); c.appendChild(d);});
+  box.appendChild(el("p",t.ends+" · "+fmtDT(dl),"fine")); box.appendChild(c);
+  if(!p.bon){ box.appendChild(el("p",t.d_none)); var g0=el("div",null,"gift"), u=el("button",t.d_up); u.type="button"; u.setAttribute("aria-pressed","true"); u.addEventListener("click",function(){state.plan=1; render();}); g0.appendChild(u); box.appendChild(g0); }
+  else { box.appendChild(el("p",t.d_gift)); var g=el("div",null,"gift");
+    t.items.forEach(function(it){var b=el("button",it[1]+" · "+(p.bon===1?t.free1:t.free2)); b.type="button"; b.setAttribute("aria-pressed",String(state.pick===it[0])); if(it[0]==="q4u") b.title=t.fnb;
+      b.addEventListener("click",function(){state.pick=it[0]; render();}); g.appendChild(b);}); box.appendChild(g); }
+  box.appendChild(el("p",t.by,"fine"));
+}
+function countStats(){ if(state.s!==0||matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll(".stat b[data-count]").forEach(function(b){ var to=+b.dataset.count, post=b.dataset.post||"", t0=null; if(to===2023) return;
+    (function f(ts){ if(ts){ if(!t0) t0=ts; var k=Math.min(1,(ts-t0)/1300), v=Math.round(to*(1-Math.pow(1-k,3))); b.textContent=v.toLocaleString("en-MY")+post; if(k<1) requestAnimationFrame(f);} else requestAnimationFrame(f); })(); }); }
+function go(i){ i=Math.max(0,Math.min(4,i)); var prev=state.s; state.s=i;
+  document.querySelectorAll(".slide").forEach(function(sl){ var n=+sl.dataset.s; sl.classList.toggle("on",n===i); sl.classList.toggle("back",n<i); });
+  render(); growBars(); if(prev!==i) countStats(); if(innerWidth<=860) window.scrollTo(0,0); }
+function fit(){ var vp=$("viewport"), st=$("stage"); if(innerWidth<=860){ st.style.transform=""; return; } var s=Math.min(vp.clientWidth/1600, vp.clientHeight/900); st.style.transform="scale("+s+")"; }
+function openLb(src,alt){ $("lb-img").src=src; $("lb-img").alt=alt; $("lb").hidden=false; $("lb-x").focus(); }
+$("lb-x").addEventListener("click",function(){$("lb").hidden=true;}); $("lb").addEventListener("click",function(e){ if(e.target.id==="lb") $("lb").hidden=true; });
+$("prev").addEventListener("click",function(){go(state.s-1);}); $("next").addEventListener("click",function(){go(state.s+1);});
+document.addEventListener("keydown",function(e){ if(!$("lb").hidden){ if(e.key==="Escape") $("lb").hidden=true; return; } if(/INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){ e.preventDefault(); go(state.s+1);} else if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); go(state.s-1);} else if(/^[1-5]$/.test(e.key)) go(+e.key-1); });
+document.querySelectorAll(".lang button").forEach(function(b){ b.addEventListener("click",function(){ state.lang=b.dataset.lang; try{localStorage.setItem("dms-deck-lang",state.lang);}catch(e){} render(); }); });
+$("fs").addEventListener("click",function(){ try{ if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function(){}); }catch(e){} });
+function copyText(text,ok,fail){ var fb=function(){ var ta=$("fallback"); ta.hidden=false; ta.value=text; ta.focus(); ta.select(); $("toast").textContent=fail; };
+  try{ navigator.clipboard.writeText(text).then(function(){ $("toast").textContent=ok; },fb); }catch(e){ fb(); } }
+$("confirm").addEventListener("click",function(){ var t=T[state.lang]; copyText(summaryText(),t.copied,t.copy2); });
+$("copy").addEventListener("click",function(){ var t=T[state.lang]; copyText(summaryText(),t.copied,t.copy2); });
+$("mk").addEventListener("click",function(){ var t=T[state.lang], d=new Date(Date.now()+48*3600e3), url=location.href.split("#")[0]+"#"+dlCode(d); copyText(url,t.mkd+" "+fmtDT(d),url); });
+addEventListener("resize",fit); addEventListener("hashchange",render); setInterval(function(){ if(state.s===4) render(); },30000);
+render(); fit(); go(0);
+</script>
+</body>
+</html>

@@ -1,5 +1,10 @@
 {
+  "headers": [
+    { "source": "/dms-pitch-n2m6mbss(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" } ] }
+  ],
   "rewrites": [
+    { "source": "/dms-pitch-n2m6mbss", "destination": "/dms-pitch-n2m6mbss/index.html" },
+    { "source": "/dms-pitch-n2m6mbss/", "destination": "/dms-pitch-n2m6mbss/index.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

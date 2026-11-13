@@ -339,6 +339,16 @@ tr.tot td{border-top-color:#1400DD}
 @media (max-width:1280px){.brand-txt{font-size:13px;white-space:normal;max-width:110px}}
 @media (max-width:1000px){.brand-txt,.brand-div{display:none}}
 @media (max-width:700px){.brand-plats{display:none}.brand-logo{height:28px}}
+
+/* ===== Full-window canvas ===== */
+@media (min-width:861px){
+  .viewport{display:block;overscroll-behavior:none}
+  .stage{position:absolute;left:50%;top:50%;transform-origin:center center}
+}
+
+/* Plan cards: price wraps under the name instead of spilling out of the card */
+.pc .in{flex-wrap:wrap;row-gap:2px}
+.pc .pr{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -670,7 +680,28 @@ function countStats(){ if(state.s!==0||matchMedia("(prefers-reduced-motion: redu
 function go(i){ i=Math.max(0,Math.min(4,i)); var prev=state.s; state.s=i;
   document.querySelectorAll(".slide").forEach(function(sl){ var n=+sl.dataset.s; sl.classList.toggle("on",n===i); sl.classList.toggle("back",n<i); });
   render(); growBars(); if(prev!==i) countStats(); if(innerWidth<=860) window.scrollTo(0,0); }
-function fit(){ var vp=$("viewport"), st=$("stage"); if(innerWidth<=860){ st.style.transform=""; return; } var s=Math.min(vp.clientWidth/1600, vp.clientHeight/900); st.style.transform="scale("+s+")"; }
+/* Fill the whole window: scale so the 1600x900 design fits, then stretch the canvas to the window's shape (no empty bars, no cropping). */
+function fit(){ var vp=$("viewport"), st=$("stage"); if(innerWidth<=860){ st.style.transform=""; st.style.width=""; st.style.height=""; return; }
+  var W=vp.clientWidth, H=vp.clientHeight, s=Math.min(W/1600, H/900);
+  st.style.width=(W/s)+"px"; st.style.height=(H/s)+"px"; st.style.transform="translate(-50%,-50%) scale("+s+")"; }
+/* Scroll wheel / trackpad / swipe = next or previous slide (desktop & tablet). Lists that scroll keep scrolling first. */
+(function(){
+  var acc=0, lockUntil=0, lastEvt=0, waitGap=false;
+  function scroller(el,dy){ while(el&&el!==document.body){ var cs=getComputedStyle(el);
+      if(/(auto|scroll)/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight+1){ if(dy>0? el.scrollTop+el.clientHeight<el.scrollHeight-1 : el.scrollTop>0) return el; }
+      el=el.parentElement; } return null; }
+  function step(d){ if((d>0&&state.s<4)||(d<0&&state.s>0)) go(state.s+d); }
+  addEventListener("wheel",function(e){ if(innerWidth<=860||!$("lb").hidden) return;
+    var dy=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX; if(scroller(e.target,dy)) return;
+    e.preventDefault(); var now=Date.now(), gap=now-lastEvt; lastEvt=now;
+    if(waitGap){ if(gap<220||now<lockUntil) return; waitGap=false; acc=0; }  /* ignore trackpad momentum */
+    acc+=dy; if(Math.abs(acc)>=40){ step(acc>0?1:-1); acc=0; waitGap=true; lockUntil=now+650; }
+  },{passive:false});
+  var tx=0,ty=0,tt=null;
+  addEventListener("touchstart",function(e){ if(innerWidth<=860) return; var t=e.touches[0]; tx=t.clientX; ty=t.clientY; tt=e.target; },{passive:true});
+  addEventListener("touchend",function(e){ if(innerWidth<=860||!tt||!$("lb").hidden) return; var t=e.changedTouches[0], dx=tx-t.clientX, dy=ty-t.clientY;
+    var d=Math.abs(dx)>Math.abs(dy)?dx:dy; if(Math.abs(d)<60) return; if(Math.abs(dy)>Math.abs(dx)&&scroller(tt,dy)) return; step(d>0?1:-1); tt=null; },{passive:true});
+})();
 function openLb(src,alt){ $("lb-img").src=src; $("lb-img").alt=alt; $("lb").hidden=false; $("lb-x").focus(); }
 $("lb-x").addEventListener("click",function(){$("lb").hidden=true;}); $("lb").addEventListener("click",function(e){ if(e.target.id==="lb") $("lb").hidden=true; });
 $("prev").addEventListener("click",function(){go(state.s-1);}); $("next").addEventListener("click",function(){go(state.s+1);});

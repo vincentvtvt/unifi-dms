@@ -686,16 +686,22 @@ function fit(){ var vp=$("viewport"), st=$("stage"); if(innerWidth<=860){ st.sty
   st.style.width=(W/s)+"px"; st.style.height=(H/s)+"px"; st.style.transform="translate(-50%,-50%) scale("+s+")"; }
 /* Scroll wheel / trackpad / swipe = next or previous slide (desktop & tablet). Lists that scroll keep scrolling first. */
 (function(){
-  var acc=0, lockUntil=0, lastEvt=0, waitGap=false;
+  /* Trackpads keep sending "momentum" events for 1-2s after one swipe. Ignore momentum (deltas that keep shrinking),
+     but accept a NEW swipe straight away: a pause, a direction change, or deltas that speed up again. */
+  var acc=0, lockUntil=0, lastEvt=0, armed=true, hist=[], lastDir=0;
   function scroller(el,dy){ while(el&&el!==document.body){ var cs=getComputedStyle(el);
       if(/(auto|scroll)/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight+1){ if(dy>0? el.scrollTop+el.clientHeight<el.scrollHeight-1 : el.scrollTop>0) return el; }
       el=el.parentElement; } return null; }
   function step(d){ if((d>0&&state.s<4)||(d<0&&state.s>0)) go(state.s+d); }
   addEventListener("wheel",function(e){ if(innerWidth<=860||!$("lb").hidden) return;
-    var dy=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX; if(scroller(e.target,dy)) return;
-    e.preventDefault(); var now=Date.now(), gap=now-lastEvt; lastEvt=now;
-    if(waitGap){ if(gap<220||now<lockUntil) return; waitGap=false; acc=0; }  /* ignore trackpad momentum */
-    acc+=dy; if(Math.abs(acc)>=40){ step(acc>0?1:-1); acc=0; waitGap=true; lockUntil=now+650; }
+    var dy=Math.abs(e.deltaY)>=Math.abs(e.deltaX)?e.deltaY:e.deltaX; if(!dy||scroller(e.target,dy)) return;
+    e.preventDefault(); var now=Date.now(), gap=now-lastEvt, ad=Math.abs(dy), dir=dy>0?1:-1; lastEvt=now;
+    var prev=hist.slice(-4), avg=prev.length?prev.reduce(function(a,b){return a+b;},0)/prev.length:0;
+    var fresh = gap>160 || dir!==lastDir || (prev.length>=3 && ad>avg*1.35 && ad>6);
+    hist.push(ad); if(hist.length>8) hist.shift(); lastDir=dir;
+    if(now<lockUntil) return;                          /* let the slide animation start */
+    if(!armed){ if(!fresh) return; armed=true; acc=0; } /* still momentum from the last swipe */
+    acc+=dy; if(Math.abs(acc)>=30){ step(acc>0?1:-1); acc=0; armed=false; lockUntil=now+420; }
   },{passive:false});
   var tx=0,ty=0,tt=null;
   addEventListener("touchstart",function(e){ if(innerWidth<=860) return; var t=e.touches[0]; tx=t.clientX; ty=t.clientY; tt=e.target; },{passive:true});

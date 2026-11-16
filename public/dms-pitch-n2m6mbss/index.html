@@ -432,6 +432,40 @@ tr.tot td{border-top-color:#1400DD}
   .team{flex-wrap:wrap}.team div{font-size:14px;min-width:0;flex:1 1 130px}
   .plans5 .pc .in{flex-wrap:wrap}
 }
+
+/* ===== BotKu offer block (slide 5) ===== */
+.offer{background:#FFFFFF;color:#121725;border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 8px 24px rgba(6,1,58,.18)}
+.offer.locked{opacity:.55}
+.of-hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.of-hd b{font-size:18px;font-weight:800;color:#1400DD}
+.of-hd s{font-size:16px;color:rgba(18,23,37,.6);text-decoration-thickness:2px;text-decoration-color:#E5002B}
+.of-row{display:flex;align-items:stretch;gap:10px}
+.of-free{flex:0 0 auto;background:#EC692C;color:#FFFFFF;border-radius:12px;padding:8px 16px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.of-free b{font-family:var(--display);font-stretch:115%;font-weight:900;font-size:34px;line-height:1}
+.of-free span{font-size:14px;font-weight:700}
+.of-arr{align-self:center;font-style:normal;font-size:24px;font-weight:900;color:#EC692C}
+.of-then{flex:1;min-width:0;background:#F1EFFF;border-radius:12px;padding:8px 14px;display:flex;flex-direction:column;justify-content:center}
+.of-then span{font-size:13px;font-weight:700;color:rgba(18,23,37,.7)}
+.of-then b{font-family:var(--display);font-stretch:110%;font-weight:900;font-size:30px;line-height:1.05;color:#1400DD}
+.of-then b small{font-family:var(--body);font-size:14px;font-weight:600;color:rgba(18,23,37,.7)}
+.of-then em{font-style:normal;font-size:14px;font-weight:800;color:#00875A}
+.lock-note{font-weight:700}
+
+.deal-top{display:flex;gap:14px;align-items:flex-start}
+.deal-lead{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.deal-top .count{flex:0 0 auto}
+.deal-top .count.one>div{min-width:110px}
+.up-btn{border:2px solid #FFFFFF;background:#FFFFFF;color:#1400DD;border-radius:999px;padding:8px 16px;font-size:16px;font-weight:800;cursor:pointer}
+@media (max-width:600px){
+  .deal-top{flex-direction:column}
+  .of-row{flex-direction:column}
+  .of-arr{transform:rotate(90deg)}
+  .of-free{align-items:flex-start}
+}
+
+.of-usual{font-size:15px;font-weight:700;color:rgba(18,23,37,.65)}
+.of-free s{font-size:18px;font-weight:800;opacity:.85;text-decoration-thickness:2px;line-height:1}
+.of-free b{font-size:40px!important}
 </style>
 </head>
 <body>
@@ -540,7 +574,7 @@ tr.tot td{border-top-color:#1400DD}
 <textarea id="fallback" hidden aria-label="Summary" style="position:fixed;left:16px;bottom:70px;width:420px;height:160px;z-index:12;background:#06013A;color:#fff;border:1px solid #99B6FF;border-radius:10px;padding:8px"></textarea>
 
 <script>
-var PLANS=[{id:"Standard",p:100,cr:840,fee:360,tot:1296,lab:"aw",bon:0},{id:"Premium",p:200,cr:1680,fee:720,tot:2592,lab:"bv",bon:1},{id:"Prime",p:450,cr:3500,fee:1500,tot:5400,bon:1},{id:"Pro",p:900,cr:7000,fee:3000,tot:10800,bon:2}];
+var PLANS=[{id:"Standard",p:100,cr:840,fee:360,tot:1296,lab:"aw",bon:0},{id:"Premium",p:200,cr:1680,fee:720,tot:2592,bon:0},{id:"Prime",p:450,cr:3500,fee:1500,tot:5400,lab:"bv",bon:1,after:300},{id:"Pro",p:900,cr:7000,fee:3000,tot:10800,bon:2,after:200}];
 /* Typical 2026 Malaysian ad-cost ranges (RM) from published market guides; a guide only, not TM figures. */
 var BENCH=[{cpm:[8.5,18],cpc:[0.85,2.40]},{cpm:[4.5,11],cpc:[0.40,1.20]},{cpm:null,cpc:[1.20,5.50]}];
 /* Testimonials: Unifi Business published success stories. cat: food | retail | services. m = [seen, people, clicks] where published. */
@@ -600,7 +634,7 @@ en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["se
  tl_t:"If you sign up today",tl:[["Sign up","Today"],["We call you","By {c}"],["First design","About 5 working days after you send your photos"],["Ads go live","Around {l}"],["Report","Every month"],["After 12 months","Continue or change plan"]],tl_note:"Rough dates only. Public holidays not counted.",
  s3_e:"Results",s3_h:"Real shops. Real results.",kk_t:"Kuih Karas Terengganu · Standard plan, RM100 a month",kk_res:"more sales from January to March",kb:["Times ad was seen","People who saw it","People who clicked"],ctr_t:"Out of 100 people, how many clicked",cb:["Her ads","Normal ads"],fol_t:"Facebook followers",
  others_t:"More businesses that used DMS",guar:"Every business is different. TM promises your ads will be seen, but can’t promise sales. These stories are from Unifi Business.",metric:"Seen · People · Clicks",starter:"Starter (old plan)",
- s4_e:"Price",s4_h:"Pick a plan. See what you pay.",aw:"Awareness",bv:"Best Value",mo:"/month",bon1:"+1 month BotKu or Q4U free",bon2:"+2 months BotKu or Q4U free",bon0:"No free gift",
+ s4_e:"Price",s4_h:"Pick a plan. See what you pay.",aw:"Awareness",bv:"Best Value",mo:"/month",bon1:"BotKu RM500 → RM0 for 1 month",bon2:"BotKu RM500 → RM0 for 2 months",bon0:"No free gift",
  give_t:"With {p}, you get",g:["Ad money to spend","Monthly bill (with SST)","First bill (covers 2 months)","Total for 12 months (with SST)"],seg:["Ad money","Team fee","SST"],
  est_t:"What your ad money can do",estp:["Facebook / Instagram","TikTok","Google"],imp:"Your ad could be seen",clk:"Or get this many clicks",na:"Not for this platform",est_note:"Rough guide based on average Malaysian ad prices. Not a promise from TM.",
  pay_t:"How you pay",pay:["No deposit. Your first bill covers 2 months, then it’s monthly","One bill every month, on the 22nd","Pay by Autopay, the MyUnifi app, JomPAY, e-wallet or at TMpoint"],opt_t:"Extras",opt:["Video ad: uses 680 of your ad money, takes 30–45 working days","Add more ad money any time"],
@@ -609,9 +643,9 @@ en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["se
  sum_t:"{p} · RM{m}/month",s:["Ad money","Monthly bill (with SST)","First bill (2 months)","Total for 12 months","Free gift","Ads go live around"],none:"Not included with this plan",
  need:"To sign up, you need your company registration (or the owner’s IC or passport). For Facebook ads, TM also needs access to your page.",
  d_tag:"Sign up within 48 hours",d_h:"Never miss a customer",d_p:"When customers message you from your ads, they get a reply in seconds, even at night. We set it up for you before your ads start, and the free period starts when your ads do.",
- d_none:"Standard doesn’t come with the free gift. Premium and Prime get 1 free month, Pro gets 2.",d_up:"Switch to Premium",d_gift:"Pick your free gift:",
+ d_none:"Free BotKu is only for Prime (RM450) and Pro (RM900).",d_up:"Switch to Prime",d_gift:"Pick your free gift:",
  items:[["botku","BotKu, an AI that replies on WhatsApp",199],["q4u","Q4U online ordering and delivery",99]],fnb:"for food businesses",free1:"free for your first month of ads",free2:"free for your first 2 months of ads",
- v48:"48 hours",v48long:"Valid for 48 hours after today’s presentation",k_ad:"Ad credit",k_svc:"Service fee · your 3-person team",k_yr:"per year",k_mo:"per month",k_sst:"SST (8%)",k_bill:"Monthly bill (with SST)",k_first:"First bill (covers 2 months)",k_tot:"Total for 12 months (with SST)",bc1:"Bill 1 · {a} (2 months)",bc2:"Bills 2–11 · {b} each",ends:"Offer ends in",dd:"days",hh:"hours",mm:"min",ended:"This offer has ended.",by:"This gift comes from your consultant (BotKu.ai and Q4U.store), not from TM, and isn’t part of the TM contract.",
+ v48:"48 hours",v48long:"Valid for 48 hours after today’s presentation",k_ad:"Ad credit",k_svc:"Service fee · your 3-person team",k_yr:"per year",k_mo:"per month",k_sst:"SST (8%)",k_bill:"Monthly bill (with SST)",k_first:"First bill (covers 2 months)",k_tot:"Total for 12 months (with SST)",bc1:"Bill 1 · {a} (2 months)",bc2:"Bills 2–11 · {b} each",g_name:"BotKu AI chatbot for your WhatsApp",g_norm:"Usual price RM{l}/month",g_free:"FREE",g_mo1:"first month",g_mo2:"first 2 months",g_then:"then",g_save:"Save RM{x} every month",gsum:"RM0 for {n} month{s} (usual price RM{l}), then RM{a}/month",pl:"s",ends:"Offer ends in",dd:"days",hh:"hours",mm:"min",ended:"This offer has ended.",by:"BotKu is provided by your consultant (BotKu.ai). It is not provided by TM and is not part of the TM contract.",
  confirm:"I’ll take {p}",copy:"Copy summary",copied:"Copied! Send it to your consultant and we’ll do the rest.",copy2:"Copy the summary below and send it to your consultant.",
  mk:"Copy 48-hour link for customer",mkd:"Link copied. Offer ends:",close:"Close",head:"My DMS package"},
 bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"],["services","Servis"]], pick_hint:"Tekan satu kisah untuk paparkan di sebelah kiri.",tabs:["Kenapa DMS","Cara ia berfungsi","Hasil","Harga","Pakej anda"],
@@ -625,7 +659,7 @@ bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"
  tl_t:"Kalau daftar hari ini",tl:[["Daftar","Hari ini"],["Kami telefon","Sebelum {c}"],["Reka bentuk pertama","Lebih kurang 5 hari bekerja lepas hantar gambar"],["Iklan keluar","Sekitar {l}"],["Laporan","Setiap bulan"],["Lepas 12 bulan","Teruskan atau tukar pelan"]],tl_note:"Tarikh anggaran sahaja. Cuti umum tidak dikira.",
  s3_e:"Hasil",s3_h:"Perniagaan sebenar. Hasil sebenar.",kk_t:"Kuih Karas Terengganu · Pelan Standard, RM100 sebulan",kk_res:"jualan naik dari Januari hingga Mac",kb:["Kali iklan dilihat","Orang yang nampak","Orang yang klik"],ctr_t:"Daripada 100 orang, berapa yang klik",cb:["Iklannya","Iklan biasa"],fol_t:"Pengikut Facebook",
  others_t:"Lagi perniagaan yang guna DMS",guar:"Setiap perniagaan berbeza. TM menjamin iklan anda akan dilihat, tetapi jualan tidak dijamin. Kisah-kisah ini daripada Unifi Business.",metric:"Dilihat · Orang · Klik",starter:"Starter (pelan lama)",
- s4_e:"Harga",s4_h:"Pilih pelan. Tengok berapa anda bayar.",aw:"Kesedaran jenama",bv:"Nilai Terbaik",mo:"/bulan",bon1:"+1 bulan BotKu atau Q4U percuma",bon2:"+2 bulan BotKu atau Q4U percuma",bon0:"Tiada hadiah percuma",
+ s4_e:"Harga",s4_h:"Pilih pelan. Tengok berapa anda bayar.",aw:"Kesedaran jenama",bv:"Nilai Terbaik",mo:"/bulan",bon1:"BotKu RM500 → RM0 selama 1 bulan",bon2:"BotKu RM500 → RM0 selama 2 bulan",bon0:"Tiada hadiah percuma",
  give_t:"Dengan {p}, anda dapat",g:["Kredit iklan untuk digunakan","Bil bulanan (dengan SST)","Bil pertama (untuk 2 bulan)","Jumlah 12 bulan (dengan SST)"],seg:["Kredit iklan","Yuran pasukan","SST"],
  est_t:"Apa yang kredit iklan anda boleh capai",estp:["Facebook / Instagram","TikTok","Google"],imp:"Iklan anda boleh dilihat",clk:"Atau dapat klik sebanyak",na:"Tidak untuk platform ini",est_note:"Panduan kasar berdasarkan harga iklan purata di Malaysia. Bukan janji daripada TM.",
  pay_t:"Cara bayar",pay:["Tiada deposit. Bil pertama untuk 2 bulan, lepas tu bulanan","Satu bil setiap bulan, pada 22 haribulan","Bayar guna Autopay, app MyUnifi, JomPAY, e-wallet atau di TMpoint"],opt_t:"Tambahan",opt:["Iklan video: guna 680 kredit iklan, siap dalam 30–45 hari bekerja","Tambah kredit iklan bila-bila masa"],
@@ -634,9 +668,9 @@ bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"
  sum_t:"{p} · RM{m} sebulan",s:["Kredit iklan","Bil bulanan (dengan SST)","Bil pertama (2 bulan)","Jumlah 12 bulan","Hadiah percuma","Iklan keluar sekitar"],none:"Tidak termasuk dalam pelan ini",
  need:"Untuk daftar, anda perlukan SSM syarikat (atau IC atau pasport pemilik). Untuk iklan Facebook, TM juga perlukan akses ke page anda.",
  d_tag:"Daftar dalam 48 jam",d_h:"Takkan terlepas pelanggan",d_p:"Bila pelanggan mesej anda dari iklan, mereka dapat balasan dalam beberapa saat, malam pun boleh. Kami sediakan untuk anda sebelum iklan bermula, dan tempoh percuma dikira dari hari iklan keluar.",
- d_none:"Pelan Standard tak termasuk hadiah percuma. Premium dan Prime dapat 1 bulan percuma, Pro dapat 2 bulan.",d_up:"Tukar ke Premium",d_gift:"Pilih hadiah percuma anda:",
+ d_none:"BotKu percuma hanya untuk Prime (RM450) dan Pro (RM900).",d_up:"Tukar ke Prime",d_gift:"Pilih hadiah percuma anda:",
  items:[["botku","BotKu, AI yang balas WhatsApp",199],["q4u","Q4U, pesanan online dan penghantaran",99]],fnb:"untuk perniagaan makanan",free1:"percuma untuk bulan pertama iklan",free2:"percuma untuk 2 bulan pertama iklan",
- v48:"48 jam",v48long:"Sah selama 48 jam selepas pembentangan hari ini",k_ad:"Kredit iklan",k_svc:"Yuran servis · pasukan 3 orang",k_yr:"setahun",k_mo:"sebulan",k_sst:"SST (8%)",k_bill:"Bil bulanan (dengan SST)",k_first:"Bil pertama (untuk 2 bulan)",k_tot:"Jumlah 12 bulan (dengan SST)",bc1:"Bil 1 · {a} (2 bulan)",bc2:"Bil 2–11 · {b} sebulan",ends:"Tawaran tamat dalam",dd:"hari",hh:"jam",mm:"min",ended:"Tawaran ini dah tamat.",by:"Hadiah ini daripada perunding anda (BotKu.ai dan Q4U.store), bukan daripada TM, dan bukan sebahagian kontrak TM.",
+ v48:"48 jam",v48long:"Sah selama 48 jam selepas pembentangan hari ini",k_ad:"Kredit iklan",k_svc:"Yuran servis · pasukan 3 orang",k_yr:"setahun",k_mo:"sebulan",k_sst:"SST (8%)",k_bill:"Bil bulanan (dengan SST)",k_first:"Bil pertama (untuk 2 bulan)",k_tot:"Jumlah 12 bulan (dengan SST)",bc1:"Bil 1 · {a} (2 bulan)",bc2:"Bil 2–11 · {b} sebulan",g_name:"BotKu, AI chatbot untuk WhatsApp anda",g_norm:"Harga biasa RM{l}/bulan",g_free:"PERCUMA",g_mo1:"bulan pertama",g_mo2:"2 bulan pertama",g_then:"kemudian",g_save:"Jimat RM{x} setiap bulan",gsum:"RM0 selama {n} bulan (harga biasa RM{l}), kemudian RM{a}/bulan",pl:"",ends:"Tawaran tamat dalam",dd:"hari",hh:"jam",mm:"min",ended:"Tawaran ini dah tamat.",by:"BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.",
  confirm:"Saya ambil {p}",copy:"Salin ringkasan",copied:"Dah disalin! Hantar kepada perunding anda, kami uruskan selebihnya.",copy2:"Salin ringkasan di bawah dan hantar kepada perunding anda.",
  mk:"Salin link 48 jam untuk pelanggan",mkd:"Link disalin. Tawaran tamat:",close:"Tutup",head:"Pakej DMS saya"},
 zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["services","服务业"]], pick_hint:"点击案例，左边会显示详情。",tabs:["为什么选 DMS","运作方式","成效","配套价格","你的配套"],
@@ -650,7 +684,7 @@ zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["servic
  tl_t:"如果今天签约",tl:[["签约","今天"],["我们联系你","{c} 前"],["第一版设计","收到照片后约 5 个工作日"],["广告上线","约 {l}"],["报告","每月"],["12 个月后","续约或更换配套"]],tl_note:"日期仅供参考，不含公共假期。",
  s3_e:"成效",s3_h:"真实商家，真实成效。",kk_t:"Kuih Karas Terengganu · Standard 配套，每月 RM100",kk_res:"1 月至 3 月销售增长",kb:["广告曝光次数","触及人数","点击人数"],ctr_t:"每 100 人中的点击人数",cb:["她的广告","一般广告"],fol_t:"Facebook 粉丝",
  others_t:"更多 DMS 商家案例",guar:"每家生意情况不同。TM 保证广告曝光，但不保证销售成绩。以上案例来自 Unifi Business。",metric:"曝光 · 触及 · 点击",starter:"Starter（旧配套）",
- s4_e:"配套价格",s4_h:"选择配套，费用一目了然。",aw:"品牌曝光",bv:"最划算",mo:"/月",bon1:"+免费 1 个月 BotKu 或 Q4U",bon2:"+免费 2 个月 BotKu 或 Q4U",bon0:"无赠品",
+ s4_e:"配套价格",s4_h:"选择配套，费用一目了然。",aw:"品牌曝光",bv:"最划算",mo:"/月",bon1:"BotKu RM500 → RM0，1 个月",bon2:"BotKu RM500 → RM0，2 个月",bon0:"无赠品",
  give_t:"{p} 配套包括",g:["广告额度","每月账单（含 SST）","第一张账单（2 个月）","12 个月总共（含 SST）"],seg:["广告额度","团队服务费","SST"],
  est_t:"广告额度能带来什么",estp:["Facebook / Instagram","TikTok","Google"],imp:"预计广告曝光",clk:"或预计点击",na:"此平台不适用",est_note:"根据马来西亚平均广告价格估算，仅供参考，并非 TM 的承诺。",
  pay_t:"付款方式",pay:["无需订金。第一张账单包括 2 个月，之后按月付","每月 22 日出账单","可通过 Autopay、MyUnifi app、JomPAY、电子钱包或 TMpoint 付款"],opt_t:"附加服务",opt:["视频广告：扣除 680 广告额度，30–45 个工作日完成","可随时增加广告额度"],
@@ -659,13 +693,14 @@ zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["servic
  sum_t:"{p} · 每月 RM{m}",s:["广告额度","每月账单（含 SST）","第一张账单（2 个月）","12 个月总共","赠品","广告预计上线"],none:"此配套不包括",
  need:"签约需提供公司 SSM（或老板的 IC／护照）。投放 Facebook 广告需开放专页权限给 TM。",
  d_tag:"48 小时内签约",d_h:"不再错过任何顾客",d_p:"顾客看到广告发讯息给你，几秒内就能收到回复，半夜也一样。我们会在广告上线前帮你设置好，免费期从广告上线当天开始计算。",
- d_none:"Standard 配套不含赠品。Premium 和 Prime 送 1 个月，Pro 送 2 个月。",d_up:"升级到 Premium",d_gift:"选择你的赠品：",
+ d_none:"免费 BotKu 只适用于 Prime（RM450）和 Pro（RM900）。",d_up:"升级到 Prime",d_gift:"选择你的赠品：",
  items:[["botku","BotKu，自动回复 WhatsApp 的 AI",199],["q4u","Q4U，网上点餐和外送",99]],fnb:"适合餐饮业",free1:"广告首月免费",free2:"广告前 2 个月免费",
- v48:"48 小时",v48long:"今天讲解后 48 小时内有效",k_ad:"广告额度",k_svc:"服务费 · 3 人团队",k_yr:"每年",k_mo:"每月",k_sst:"SST（8%）",k_bill:"每月账单（含 SST）",k_first:"第一张账单（2 个月）",k_tot:"12 个月总共（含 SST）",bc1:"第 1 张 · {a}（2 个月）",bc2:"第 2–11 张 · 每张 {b}",ends:"优惠倒数",dd:"天",hh:"小时",mm:"分",ended:"这个优惠已经结束了。",by:"赠品由你的顾问（BotKu.ai 和 Q4U.store）提供，并非 TM 提供，也不属于 TM 合约。",
+ v48:"48 小时",v48long:"今天讲解后 48 小时内有效",k_ad:"广告额度",k_svc:"服务费 · 3 人团队",k_yr:"每年",k_mo:"每月",k_sst:"SST（8%）",k_bill:"每月账单（含 SST）",k_first:"第一张账单（2 个月）",k_tot:"12 个月总共（含 SST）",bc1:"第 1 张 · {a}（2 个月）",bc2:"第 2–11 张 · 每张 {b}",g_name:"BotKu WhatsApp AI 聊天机器人",g_norm:"原价 RM{l}/月",g_free:"免费",g_mo1:"首月",g_mo2:"前 2 个月",g_then:"之后",g_save:"每月省 RM{x}",gsum:"{n} 个月 RM0（原价 RM{l}），之后 RM{a}/月",pl:"",ends:"优惠倒数",dd:"天",hh:"小时",mm:"分",ended:"这个优惠已经结束了。",by:"BotKu 由你的顾问（BotKu.ai）提供，并非 TM 提供，也不属于 TM 合约。",
  confirm:"我选 {p}",copy:"复制摘要",copied:"已复制！发给你的顾问，接下来交给我们。",copy2:"请复制以下摘要，发给你的顾问。",
  mk:"复制 48 小时客户链接",mkd:"链接已复制，优惠截止：",close:"关闭",head:"我的 DMS 配套"}
 };
-var state={lang:"en",s:0,plan:1,plat:0,pick:"botku"};
+var state={lang:"en",s:0,plan:2,plat:0,pick:"botku"};
+var BOTKU_LIST=500; /* BotKu normal price per month */
 try{var sv=localStorage.getItem("dms-deck-lang"); if(T[sv]) state.lang=sv;}catch(e){}
 function $(i){return document.getElementById(i);}
 function el(tag,txt,cls){var e=document.createElement(tag); if(txt!=null) e.textContent=txt; if(cls) e.className=cls; return e;}
@@ -681,8 +716,9 @@ function deadline(){var m=/^#o-(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})$/.exec(locati
 function dlCode(d){var x=new Date(d.getTime()+8*3600e3); function z(n){return String(n).padStart(2,"0");} return "o-"+x.getUTCFullYear()+z(x.getUTCMonth()+1)+z(x.getUTCDate())+z(x.getUTCHours())+z(x.getUTCMinutes());}
 function ended(){var d=deadline(); return d? new Date()>=d : false;}
 
+function giftText(t,p){ return t.gsum.replace("{n}",p.bon).replace("{s}",p.bon>1?t.pl:"").replace("{a}",p.after).replace("{l}",BOTKU_LIST); }
 function summaryText(){var t=T[state.lang],p=PLANS[state.plan],L=[t.head, t.sum_t.replace("{p}",p.id).replace("{m}",p.p), t.s[0]+": "+rm(p.cr), t.s[1]+": "+rm(p.tot/12), t.s[2]+": "+rm(p.tot/6), t.s[3]+": "+rm(p.tot)];
-  if(p.bon && !ended()){var it=t.items.filter(function(x){return x[0]===state.pick;})[0]; L.push(t.s[4]+": "+it[1]+", "+(p.bon===1?t.free1:t.free2)+" ("+(deadline()? fmtDT(deadline()) : t.v48)+")");}
+  if(p.bon && !ended()){ L.push(t.s[4]+": BotKu, "+giftText(t,p)+" ("+(deadline()? fmtDT(deadline()) : t.v48)+")"); }
   return L.join("\n");}
 
 function render(){
@@ -711,7 +747,7 @@ function render(){
   var base=p.cr+p.fee, pa=Math.round(p.cr/base*100), pf=100-pa;
   fill("brk",[[t.k_ad,pa,p.cr,"ad"],[t.k_svc,pf,p.fee,"svc"]],function(r){var d=el("div",null,"bk "+r[3]);
     var top=el("div",null,"bk-top"); top.appendChild(el("b",r[1]+"%","bk-pc")); top.appendChild(el("span",r[0])); d.appendChild(top);
-    var row=el("div",null,"bk-row"); var y=el("div"); y.appendChild(el("b",rm(r[2]),"num")); y.appendChild(el("span",t.k_yr)); var m=el("div"); m.appendChild(el("b",rm(r[2]/12),"num")); m.appendChild(el("span",t.k_mo)); row.appendChild(y); row.appendChild(m); d.appendChild(row); return d;});
+    var row=el("div",null,"bk-row"); var y=el("div"); y.appendChild(el("b",rm(r[2]),"num")); y.appendChild(el("span",t.k_yr)); var m=el("div"); m.appendChild(el("b",rm(Math.round(r[2]/12)),"num")); m.appendChild(el("span",t.k_mo)); row.appendChild(y); row.appendChild(m); d.appendChild(row); return d;});
   var segs=[[p.cr,"#EC692C",pa+"%"],[p.fee,"#1400DD",pf+"%"],[sst,"#F1A270",""]];
   fill("split",segs,function(sg){var i=el("i",sg[2]); i.style.width=(sg[0]/p.tot*100)+"%"; i.style.background=sg[1]; return i;});
   fill("give",[[t.k_sst,rm(sst)],[t.k_bill,rm(bill)],[t.k_first,rm(bill*2)],[t.k_tot,rm(p.tot)]],function(r,i){var tr=el("tr",null,i===3?"tot":""); tr.appendChild(el("td",r[0])); tr.appendChild(el("td",r[1])); return tr;});
@@ -723,8 +759,7 @@ function render(){
   // 5
   fill("rules",t.rules,function(r){var d=el("div"); d.appendChild(el("b",r[0])); d.appendChild(el("span",r[1])); return d;});
   $("sum-t").textContent=t.sum_t.replace("{p}",p.id).replace("{m}",p.p);
-  var it=t.items.filter(function(x){return x[0]===state.pick;})[0];
-  var bonus = (!p.bon||ended()) ? t.none : it[1]+" · "+(p.bon===1?t.free1:t.free2);
+  var bonus = (!p.bon||ended()) ? t.none : "BotKu · "+giftText(t,p);
   fill("sum",[[t.s[0],rm(p.cr)],[t.s[1],rm(bill)],[t.s[2],rm(bill*2)],[t.s[4],bonus],[t.s[3],rm(p.tot)]],function(r,i){var tr=el("tr",null,i===4?"tot":""); tr.appendChild(el("td",r[0])); var td=el("td",r[1]); if(i===3) td.style.whiteSpace="normal"; tr.appendChild(td); return tr;});
   deal(t,p);
   $("confirm").textContent=t.confirm.replace("{p}",p.id);
@@ -752,17 +787,25 @@ function renderStories(t){
 function growBars(){ if(state.s!==2) return; document.querySelectorAll('.slide[data-s="2"] .fl').forEach(function(f){ f.style.width="0"; requestAnimationFrame(function(){requestAnimationFrame(function(){ f.style.width=f.dataset.w; });}); }); }
 function deal(t,p){var box=$("deal"); box.textContent=""; box.appendChild(el("span",t.d_tag,"tag"));
   if(ended()){ box.appendChild(el("h3",t.ended)); return; }
-  box.appendChild(el("h3",t.d_h)); box.appendChild(el("p",t.d_p));
+  box.appendChild(el("h3",t.d_h));
+  var top=el("div",null,"deal-top"), lead=el("div",null,"deal-lead");
+  if(p.bon){ lead.appendChild(el("p",t.d_p)); }
+  else { lead.appendChild(el("p",t.d_none,"lock-note")); var u=el("button",t.d_up,"up-btn"); u.type="button"; u.addEventListener("click",function(){state.plan=2; render();}); lead.appendChild(u); }
+  top.appendChild(lead);
   var dl=deadline(), c=el("div",null,"count num");
   if(dl){ var ms=dl-new Date();
     [[Math.floor(ms/864e5),t.dd],[Math.floor(ms%864e5/36e5),t.hh],[Math.floor(ms%36e5/6e4),t.mm]].forEach(function(x){var d=el("div"); d.appendChild(el("b",String(x[0]))); d.appendChild(el("span",x[1])); c.appendChild(d);});
-    box.appendChild(el("p",t.ends+" · "+fmtDT(dl),"fine")); }
+    lead.appendChild(el("p",t.ends+" · "+fmtDT(dl),"fine")); }
   else { var d=el("div"); d.appendChild(el("b","48")); d.appendChild(el("span",t.hh)); c.appendChild(d); c.classList.add("one"); }
-  box.appendChild(c);
-  if(!p.bon){ box.appendChild(el("p",t.d_none)); var g0=el("div",null,"gift"), u=el("button",t.d_up); u.type="button"; u.setAttribute("aria-pressed","true"); u.addEventListener("click",function(){state.plan=1; render();}); g0.appendChild(u); box.appendChild(g0); }
-  else { box.appendChild(el("p",t.d_gift)); var g=el("div",null,"gift");
-    t.items.forEach(function(it){var b=el("button",it[1]+" · "+(p.bon===1?t.free1:t.free2)); b.type="button"; b.setAttribute("aria-pressed",String(state.pick===it[0])); if(it[0]==="q4u") b.title=t.fnb;
-      b.addEventListener("click",function(){state.pick=it[0]; render();}); g.appendChild(b);}); box.appendChild(g); }
+  top.appendChild(c); box.appendChild(top);
+  var o=el("div",null,"offer"+(p.bon?"":" locked"));
+  var hd=el("div",null,"of-hd"); hd.appendChild(el("b",t.g_name)); hd.appendChild(el("span",t.g_norm.replace("{l}",BOTKU_LIST),"of-usual")); o.appendChild(hd);
+  var pp=p.bon?p:PLANS[2], row=el("div",null,"of-row");
+  var a=el("div",null,"of-free"); a.appendChild(el("s","RM"+BOTKU_LIST,"num")); a.appendChild(el("b","RM0","num")); a.appendChild(el("span",pp.bon>1?t.g_mo2:t.g_mo1)); row.appendChild(a);
+  row.appendChild(el("i","→","of-arr"));
+  var c2=el("div",null,"of-then"); c2.appendChild(el("span",t.g_then)); var pr=el("b","RM"+pp.after,"num"); pr.appendChild(el("small",t.mo)); c2.appendChild(pr); c2.appendChild(el("em",t.g_save.replace("{x}",BOTKU_LIST-pp.after))); row.appendChild(c2);
+  o.appendChild(row); box.appendChild(o);
+
   box.appendChild(el("p",t.by,"fine"));
 }
 function countStats(){ if(state.s!==0||matchMedia("(prefers-reduced-motion: reduce)").matches) return;

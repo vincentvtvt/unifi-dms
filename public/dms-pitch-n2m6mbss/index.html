@@ -442,6 +442,44 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   .band h2{font-size:1.75rem;overflow-wrap:anywhere}
   .band>div{min-width:0;max-width:100%}
 }
+
+/* last slide: steps left, the WhatsApp summary the customer receives on the right */
+.s8{display:grid;grid-template-columns:1fr 31rem;gap:4.5rem;padding:4rem 4rem 5rem}
+.s8 .go{display:flex;flex-direction:column;gap:1.4rem;min-width:0}
+.s8 h2{font-size:4.25rem}
+.s8 h2 em{font-style:normal;color:var(--blue)}
+.steps3{list-style:none;margin:.6rem 0 0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.steps3 li{display:grid;grid-template-columns:4rem 1fr;gap:1.4rem;padding:1.5rem 0;border-bottom:1px solid var(--rule);align-items:start}
+.steps3 i{width:4rem;height:4rem;border-radius:50%;background:var(--or);color:#fff;font-style:normal;font-family:var(--disp);font-stretch:125%;font-weight:900;font-size:1.75rem;display:flex;align-items:center;justify-content:center}
+.steps3 li:last-child i{background:var(--blue)}
+.steps3 .w{font-size:1rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--or)}
+.steps3 li:last-child .w{color:var(--blue)}
+.steps3 b{display:flex;align-items:center;gap:.3rem;font-family:var(--disp);font-stretch:120%;font-weight:900;font-size:2rem;text-transform:uppercase;line-height:1.1;margin:.3rem 0 .4rem}
+.steps3 b .tick{width:1.4rem;height:1.4rem;font-size:.8125rem}
+.steps3 p{font-size:1.3125rem;line-height:1.45;color:var(--mute)}
+.send{display:flex;flex-direction:column;gap:.8rem;min-width:0;min-height:0}
+.chat{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:1.6rem;overflow:hidden;border:1px solid var(--rule);box-shadow:0 30px 60px -36px rgba(14,18,34,.45)}
+.chd{display:flex;align-items:center;gap:.8rem;background:#075E54;color:#fff;padding:.9rem 1.1rem;font-weight:700;font-size:1.125rem}
+.chd i{width:2.4rem;height:2.4rem;border-radius:50%;background:var(--or);flex:none}
+.chd small{display:block;font-weight:400;font-size:.875rem;opacity:.8}
+.cbd{flex:1;min-height:0;overflow:auto;background:#ECE5DD;padding:1rem}
+.msg{margin-left:auto;max-width:94%;background:#DCF8C6;border-radius:1rem;border-top-right-radius:.25rem;padding:.8rem 1rem;font-size:.9375rem;line-height:1.42;white-space:pre-line;color:var(--ink);overflow-wrap:anywhere}
+.wa2{background:var(--wa);color:#073B1C;width:100%;font-size:1.25rem;padding:1.05rem}
+.ghost2{border:1px solid var(--ink);background:none;border-radius:999px;padding:.75rem;font-weight:700;font-size:1.0625rem;cursor:pointer}
+.toast2{font-size:.9375rem;color:var(--or);min-height:1.2em;text-align:center}
+@media (max-width:53.75em){
+  .s8{grid-template-columns:1fr;gap:2rem;padding:1.8rem max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+  .s8 h2{font-size:2rem;overflow-wrap:anywhere}
+  .steps3 li{grid-template-columns:2.75rem 1fr;gap:1rem;padding:1.1rem 0}
+  .steps3 i{width:2.75rem;height:2.75rem;font-size:1.25rem}
+  .steps3 .w{font-size:.8125rem}
+  .steps3 b{font-size:1.375rem;flex-wrap:wrap}
+  .steps3 li>div{min-width:0}
+  .steps3 p{font-size:1.0625rem}
+  .chat{flex:none}
+  .cbd{max-height:26rem}
+  .msg{font-size:.875rem}
+}
 @media (prefers-reduced-motion:reduce){.slide,.slide .in{transition:none}}
 </style>
 </head>
@@ -562,11 +600,16 @@ function(){var p=PLANS[S.plan],L=S.locked,until=new Date((L||Date.now())+48*3600
  '<ul class="ticks"><li>Harga '+rm(p.p)+' sebulan tidak berubah</li><li>'+(p.gift?'Hadiah BotKu RM0 untuk '+p.gift+' bulan disimpan':'Tarikh iklan keluar sekitar '+addWD(10)+' disimpan')+'</li><li>RM0 sekarang, tiada kontrak sehingga anda balas YA</li></ul>'+
  '<button type="button" class="lockbtn" id="lock"'+(L?' disabled':'')+'>'+(L?'Dikunci ✓':'Kunci harga &amp; hadiah')+'</button></div></div>'+
  say(L?"“Dah dikunci. Anda ada 48 jam, dan langkah seterusnya cuma balas YA.”":"“Saya kunci harga dan hadiah ni untuk anda. Tak perlu bayar apa-apa sekarang.”")},
-function(){var p=PLANS[S.plan];return '<div class="s6" style="position:absolute;inset:0"><div class="top"><span class="kick in">Langkah seterusnya</span><h2 class="D in">Iklan anda keluar <em>'+addWD(10)+'</em></h2></div>'+
- '<div class="line"><div class="st in d2"><span class="w">Hari ini</span><h3>Balas “YA”</h3><p>Pakej '+p.n+' yang dikunci terus didaftarkan. Hantar gambar SSM atau IC pemilik.</p><div class="mk"><div class="bub out">YA, saya setuju</div></div></div>'+
- '<div class="st in d3"><span class="w">Dalam 3 hari bekerja</span><h3>Unifi WhatsApp anda</h3><p>Dari WhatsApp rasmi Unifi yang bertanda sah. Pengurus kempen tanya pasal bisnes anda, dan anda hantar logo serta gambar.</p><div class="mk"><div class="wa-off"><div class="hd"><i>U</i><span>Unifi Business<span class="tick" aria-label="akaun sah">✓</span></span></div><div class="bd"><p>Hi! Saya pengurus kempen DMS anda. Boleh kongsi logo dan gambar produk?</p></div></div></div></div>'+
- '<div class="st in d4"><span class="w">Sekitar '+addWD(10)+'</span><h3>Iklan keluar</h3><p>Anda setuju poster, dan pelanggan mula WhatsApp '+esc(S.biz)+'.</p><div class="mk"><div class="ping"><i></i><span>Pelanggan baru<small>“Hi, nak order…”</small></span></div></div></div></div>'+
- '<div class="band"><div><h2 class="D">Jom mula macam <em>'+esc(ST[S.story].name)+'</em>?</h2><p>Ringkasan dihantar ke WhatsApp, senang tunjuk kepada partner.</p></div><div class="acts"><button type="button" class="btn" id="wa">Hantar ke WhatsApp</button><button type="button" class="ghost" id="copy">Salin ringkasan</button><span class="toast" id="toast"></span></div></div></div>'+say("“Langkah pertama cuma balas YA. Yang lain, kami uruskan.”")}
+function(){var p=PLANS[S.plan],n=ST[S.story].name;return '<div class="s8" style="position:absolute;inset:0"><div class="go">'+
+ '<span class="kick in">Langkah seterusnya · iklan keluar sekitar '+addWD(10)+'</span><h2 class="D in">Jom mula macam <em>'+esc(n)+'</em></h2>'+
+ '<ol class="steps3">'+
+ '<li class="in d2"><i>1</i><div><span class="w">Hari ini</span><b>Balas “YA”</b><p>Pakej '+p.n+' yang dikunci terus didaftarkan. Hantar gambar SSM atau IC pemilik.</p></div></li>'+
+ '<li class="in d3"><i>2</i><div><span class="w">Dalam 3 hari bekerja</span><b>Unifi WhatsApp anda <span class="tick" aria-label="akaun sah">✓</span></b><p>Dari WhatsApp rasmi Unifi yang bertanda sah. Hantar logo dan gambar produk.</p></div></li>'+
+ '<li class="in d4"><i>3</i><div><span class="w">Sekitar '+addWD(10)+'</span><b>Iklan keluar</b><p>Anda setuju poster, dan pelanggan mula WhatsApp '+esc(S.biz)+'.</p></div></li>'+
+ '</ol></div>'+
+ '<div class="send in d2"><div class="chat"><div class="chd"><i></i><span>'+esc(S.biz)+'<small>Ringkasan yang pelanggan terima</small></span></div><div class="cbd"><div class="msg">'+esc(summary())+'</div></div></div>'+
+ '<button type="button" class="btn wa2" id="wa">Hantar ke WhatsApp</button><button type="button" class="ghost2" id="copy">Salin ringkasan</button><span class="toast2" id="toast"></span></div></div>'+
+ say("“Saya hantar ringkasan ni sekarang. Langkah pertama cuma balas YA, yang lain kami uruskan.”")}
 ];
 
 function build(){

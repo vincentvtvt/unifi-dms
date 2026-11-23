@@ -57,7 +57,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
 .tile.other{background:var(--blue)}
 .tile.other::after{background:none}
 .tile.other .q{position:absolute;right:2rem;top:1rem;font-family:var(--disp);font-stretch:125%;font-weight:900;font-size:12rem;line-height:1;color:rgba(255,255,255,.14)}
-.ask{position:absolute;left:0;top:0;z-index:2;background:var(--paper);padding:1.8rem 2.4rem 1.6rem 4rem;border-bottom-right-radius:2rem;display:flex;flex-direction:column;gap:.5rem}
+.s1wrap{display:flex;flex-direction:column}
+.s1wrap .s1{flex:1;min-height:0}
+.ask{background:var(--paper);padding:2rem 4rem 1.5rem;display:flex;flex-direction:column;gap:.5rem}
 .ask h2{font-size:3.5rem}
 .ask h2 em{font-style:normal;color:var(--blue)}
 
@@ -202,10 +204,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
 .call small{display:block;font-weight:400;color:var(--mute);font-size:.9375rem}
 .s6 .ping{border:1px solid var(--rule)}
 .s6 .bub.out{margin:0}
-.band{background:var(--ink);color:#fff;padding:2rem 4rem 4.2rem;display:flex;justify-content:space-between;align-items:center;gap:2rem;position:relative}
+.band{background:var(--blue);color:#fff;margin:0 4rem 4.4rem;border-radius:2rem;padding:2rem 2.4rem;display:flex;justify-content:space-between;align-items:center;gap:2rem;position:relative}
+.band h2 em{font-style:normal;color:#FFB487}
+.band .btn{background:#fff;color:var(--blue);display:inline-flex;align-items:center;gap:.7rem}
+.band .btn::before{content:"";width:.8rem;height:.8rem;border-radius:50%;background:var(--wa)}
+.band .toast{color:#FFD9C2}
 .band h2{font-size:3.25rem}
 .band p{font-size:1.25rem;opacity:.75;margin-top:.5rem}
-.band .say{bottom:1.2rem}
+
 .btn{border:0;border-radius:999px;padding:1.2rem 2.2rem;font-weight:700;font-size:1.375rem;cursor:pointer;background:var(--wa);color:#073B1C;white-space:nowrap}
 
 /* lock slide */
@@ -221,7 +227,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
 .pkrow button[aria-pressed="true"]{border:1px solid var(--blue);background:#F4F2FF}
 .pkrow button[disabled]{opacity:.45;cursor:default}
 .keeps{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
-.keeps div{display:flex;justify-content:space-between;gap:1rem;padding:1.35rem 0;border-bottom:1px solid var(--rule);font-size:1.625rem}
+.keeps div{display:flex;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--rule);font-size:1.625rem}
 .pkrow button{padding:1.4rem 1.2rem!important}
 .pkrow button b{font-size:1.625rem!important}
 .pkrow button span{font-size:1.25rem!important}
@@ -233,7 +239,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
 .keeps div span{color:var(--mute)}
 .lockcard{border-radius:2rem;background:var(--ink);color:#fff;padding:2.2rem;display:flex;flex-direction:column;gap:1.2rem;position:relative;overflow:hidden}
 .lockcard .k{font-size:.875rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#FFB487}
-.lockcard .pn{font-family:var(--disp);font-stretch:125%;font-weight:900;font-size:4.5rem;line-height:.9;text-transform:uppercase}
+.lockcard .pn{font-family:var(--disp);font-stretch:112%;font-weight:900;font-size:3.5rem;line-height:.95;text-transform:uppercase;overflow-wrap:anywhere}
+.lead{font-size:1.375rem;line-height:1.45;color:var(--mute);margin-top:1rem;max-width:44rem}
+.keeps .kh{font-size:.875rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--or);padding:1rem 0 .2rem}
+.ticks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.55rem;font-size:1.125rem}
+.ticks li{display:flex;gap:.6rem}
+.ticks li::before{content:"✓";color:#FFB487;font-weight:900}
+.lockcard.done .ticks li::before{color:#fff}
 .lockcard .pp{font-size:1.5rem;opacity:.85}
 .lockcard .until{font-size:1.25rem;line-height:1.4;opacity:.85}
 .lockcard .until b{color:#FFB487;opacity:1}
@@ -293,7 +305,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   .slide>div[style]{position:relative!important;inset:auto!important}
   .slide .in{transform:none;opacity:1;transition:none}
   .say{position:static;display:block;margin:0;padding:1rem max(16px,env(safe-area-inset-right,0px)) 6rem max(16px,env(safe-area-inset-left,0px));font-size:1rem;max-width:none}
-  .dark .say,.band .say{padding-bottom:1rem}
+  .dark .say{padding-bottom:1rem}
   .slide:nth-child(2) .say{left:auto}
   .D{line-height:1}
   .kick{font-size:.8125rem}
@@ -364,13 +376,16 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   /* 6 lock */
   .s7{grid-template-columns:1fr;padding:1.8rem max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));gap:1.6rem}
   .s7 h2{font-size:2.25rem}
+  .keeps .kh{font-size:.75rem}
   .pkrow{grid-template-columns:1fr 1fr}
   .pkrow button{padding:1rem!important}
   .pkrow button b{font-size:1.25rem!important}
   .pkrow button span{font-size:1rem!important}
   .keeps div{font-size:1.0625rem;padding:.9rem 0;flex-direction:column;gap:.2rem}
   .lockcard{padding:1.5rem;border-radius:1.6rem}
-  .lockcard .pn{font-size:3rem}
+  .lockcard .pn{font-size:2.5rem}
+  .lead{font-size:1.0625rem}
+  .ticks{font-size:1rem}
   .lockcard .pp{font-size:1.125rem}
   .lockcard .until{font-size:1rem}
   .stamp{font-size:1rem;right:1rem;top:1rem}
@@ -386,7 +401,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   .st::before{left:-2rem;top:.2rem}
   .st h3{font-size:1.75rem}
   .st p{font-size:1.0625rem}
-  .band{flex-direction:column;align-items:flex-start;padding:1.6rem max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));gap:1.2rem}
+  .band{flex-direction:column;align-items:flex-start;margin:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));padding:1.5rem;border-radius:1.6rem;gap:1.2rem}
   .band h2{font-size:2rem}
   .band p{font-size:1rem}
   .band .acts{align-items:flex-start;width:100%}
@@ -420,6 +435,13 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
 }
 .count{display:none;font-size:.875rem;font-weight:700;color:var(--mute);white-space:nowrap}
 @media (max-width:53.75em){.dots{display:none}.count{display:block;margin-left:auto}}
+
+@media (max-width:53.75em){
+  .stat .v{font-size:3.75rem;overflow-wrap:anywhere}
+  .creative b{overflow-wrap:anywhere}
+  .band h2{font-size:1.75rem;overflow-wrap:anywhere}
+  .band>div{min-width:0;max-width:100%}
+}
 @media (prefers-reduced-motion:reduce){.slide,.slide .in{transition:none}}
 </style>
 </head>
@@ -462,7 +484,7 @@ function addWD(n){var t=new Date();while(n>0){t.setDate(t.getDate()+1);if(t.getD
 function hook(){var x=S.sell||"Produk anda";return S.where==="near"?x+", dekat je dengan rumah anda":S.where==="online"?x+", order online sampai depan pintu":x+", kini untuk seluruh "+(S.where==="all"?"Malaysia":"negeri")}
 function ctaWord(){return S.want==="walk"?"Lihat lokasi":S.want==="order"?"Beli sekarang":S.want==="book"?"Tempah":"WhatsApp"}
 function seg(key,map){return '<div class="seg">'+Object.keys(map).map(function(k){return '<button type="button" data-k="'+key+'" data-v="'+k+'" aria-pressed="'+(S[key]===k)+'">'+esc(map[k])+'</button>'}).join("")+'</div>'}
-function cdHTML(){var ms=S.locked?Math.max(0,S.locked+48*3600e3-Date.now()):48*3600e3,h=Math.floor(ms/3600e3),m=Math.floor(ms%3600e3/60e3),x=Math.floor(ms%60e3/1e3),z=function(n){return(n<10?'0':'')+n};return '<div><b>'+z(h)+'</b><span>jam</span></div><div><b>'+z(m)+'</b><span>minit</span></div><div><b>'+z(x)+'</b><span>saat</span></div>'}
+function cdHTML(){var ms=S.locked?Math.max(0,S.locked+48*3600e3-Date.now()):48*3600e3,h=Math.min(99,Math.floor(ms/3600e3)),m=Math.floor(ms%3600e3/60e3),x=Math.floor(ms%60e3/1e3),z=function(n){return(n<10?'0':'')+n};return '<div><b>'+z(h)+'</b><span>jam</span></div><div><b>'+z(m)+'</b><span>minit</span></div><div><b>'+z(x)+'</b><span>saat</span></div>'}
 setInterval(function(){document.querySelectorAll('#cd').forEach(function(c){if(S.locked)c.innerHTML=cdHTML();});},1000);
 
 var BASE="/dms-pitch-n2m6mbss/";
@@ -499,9 +521,9 @@ function custView(){var h=parseHash();if(!h)return;S.plan=h.plan;S.locked=h.dl.g
 function say(t){return '<p class="say"><b>SKRIP</b>'+t+'</p>'}
 
 var SL=[
-function(){return '<div class="s1" style="position:absolute;inset:0">'+INDS.map(function(x){var o=x[0]==="other";
+function(){return '<div class="s1wrap" style="position:absolute;inset:0"><div class="ask in"><span class="kick">Sebelum kita mula</span><h2 class="D">Bisnes anda <em>jenis apa?</em></h2></div><div class="s1">'+INDS.map(function(x){var o=x[0]==="other";
    return '<button type="button" class="tile'+(o?' other':'')+'" data-ind="'+x[0]+'" data-story="'+x[3]+'"'+(o?'':' style="background-image:url('+ST[x[3]].img+')"')+'>'+(o?'<span class="q">?</span>':'')+'<span class="t"><b>'+x[1]+'</b><small>'+x[2]+'</small></span></button>'}).join("")+
- '</div><div class="ask in"><span class="kick">Sebelum kita mula</span><h2 class="D">Bisnes anda <em>jenis apa?</em></h2></div>'},
+ '</div></div>'},
 function(){var s=ST[S.story];return '<div class="s2" style="position:absolute;inset:0"><div class="pic"><div class="blur" style="background-image:url('+s.img+')"></div><img src="'+s.img+'" alt="'+esc(s.who)+'"><div class="cap"><div><b>'+esc(s.name)+'</b><small>'+esc(s.who)+'</small></div><span>Pakej '+s.plan+'</span></div></div>'+
  '<div class="tell"><span class="kick in">'+(S.ind?"Bisnes macam anda":"Kisah pelanggan sebenar")+'</span><h2 class="D in">Kenali <em>'+esc(s.name)+'</em></h2>'+
  '<div class="was in d2"><b>Dulu</b><span>'+esc(s.before)+'</span></div>'+
@@ -532,18 +554,19 @@ function(){var p=PLANS[S.plan],s=ST[S.story],day=Math.round(p.p/30),base=PLANS[s
  '<div class="plans">'+PLANS.map(function(q,i){return '<button type="button" data-plan="'+i+'" aria-pressed="'+(i===S.plan)+'"><b>'+q.n+'</b><span class="num">'+rm(q.p)+' sebulan</span></button>'}).join("")+'</div><p class="fine">Harga belum termasuk SST 8%. BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.</p></div></div>'+
  say("“RM"+day+" sehari. Satu pelanggan baru pun dah boleh tutup kos ni.”")},
 function(){var p=PLANS[S.plan],L=S.locked,until=new Date((L||Date.now())+48*3600e3),u=until.toLocaleString("ms-MY",{weekday:"long",day:"numeric",month:"long",hour:"numeric",minute:"2-digit"});
- return '<div class="s7" style="position:absolute;inset:0"><div class="pick"><div><span class="kick in">Sebelum kita habis</span><h2 class="D in" style="margin-top:.6rem">Kunci pakej <em>anda hari ini</em></h2></div>'+
+ return '<div class="s7" style="position:absolute;inset:0"><div class="pick"><div><span class="kick in">Sebelum anda bincang dengan partner</span><h2 class="D in" style="margin-top:.6rem">Kunci harga &amp; hadiah <em>48 jam</em></h2><p class="lead in">Kunci bermaksud kami simpan harga dan hadiah ini khas untuk anda selama 48 jam. Tiada bayaran, tiada kontrak. Anda bebas bincang dengan partner dulu.</p></div>'+
  '<div class="pkrow in d2">'+PLANS.map(function(q,i){return '<button type="button" data-plan="'+i+'" aria-pressed="'+(i===S.plan)+'"'+(L?' disabled':'')+'><b>'+q.n+'</b><span class="num">'+rm(q.p)+' sebulan</span><em>'+(q.gift?'+ BotKu percuma '+q.gift+' bln':'&nbsp;')+'</em></button>'}).join("")+'</div>'+
- '<div class="keeps in d3"><div><b>Harga '+p.n+'</b><span class="num">'+rm(p.p)+' sebulan, 12 bulan</span></div><div><b>Hadiah BotKu</b><span>'+(p.gift?'RM0 untuk '+p.gift+' bulan pertama':'Tiada untuk pakej ini')+'</span></div><div><b>Tarikh iklan keluar</b><span>Sekitar '+addWD(10)+'</span></div><div><b>Bayaran sekarang</b><span>RM0, tiada bayaran awal</span></div></div></div>'+
+ '<div class="keeps in d3"><p class="kh">Yang dikunci untuk anda</p><div><b>Harga '+p.n+'</b><span class="num">'+rm(p.p)+' sebulan, 12 bulan</span></div><div><b>Hadiah BotKu</b><span>'+(p.gift?'RM0 untuk '+p.gift+' bulan pertama':'Tiada untuk pakej ini')+'</span></div><div><b>Tarikh iklan keluar</b><span>Sekitar '+addWD(10)+'</span></div><div><b>Bayaran sekarang</b><span>RM0, tiada bayaran awal</span></div></div></div>'+
  '<div class="lockcard'+(L?' done':'')+' in d2">'+(L?'<span class="stamp">DIKUNCI</span>':'')+'<span class="k">'+(L?'Pakej anda dikunci':'Pakej dipilih')+'</span><span class="pn">'+p.n+'</span><span class="pp num">'+rm(p.p)+' sebulan'+(p.gift?' + BotKu percuma':'')+'</span>'+
- '<p class="until">'+(L?'Harga dan hadiah ini dipegang untuk anda sehingga <b>'+u+'</b>. Bincang dengan partner dulu pun boleh.':'Kunci sekarang: harga dan hadiah dipegang selama <b>48 jam</b>. Tiada bayaran, tiada komitmen sehingga anda balas YA.')+'</p>'+'<div class="cd num" id="cd">'+cdHTML()+'</div>'+
- '<button type="button" class="lockbtn" id="lock"'+(L?' disabled':'')+'>'+(L?'Dikunci ✓':'Kunci pakej ini')+'</button></div></div>'+
+ '<div class="cd num" id="cd">'+cdHTML()+'</div>'+(L?'<p class="until">Dipegang sehingga <b>'+u+'</b>.</p>':'<p class="until">Masa bermula bila anda tekan butang di bawah.</p>')+
+ '<ul class="ticks"><li>Harga '+rm(p.p)+' sebulan tidak berubah</li><li>'+(p.gift?'Hadiah BotKu RM0 untuk '+p.gift+' bulan disimpan':'Tarikh iklan keluar sekitar '+addWD(10)+' disimpan')+'</li><li>RM0 sekarang, tiada kontrak sehingga anda balas YA</li></ul>'+
+ '<button type="button" class="lockbtn" id="lock"'+(L?' disabled':'')+'>'+(L?'Dikunci ✓':'Kunci harga &amp; hadiah')+'</button></div></div>'+
  say(L?"“Dah dikunci. Anda ada 48 jam, dan langkah seterusnya cuma balas YA.”":"“Saya kunci harga dan hadiah ni untuk anda. Tak perlu bayar apa-apa sekarang.”")},
 function(){var p=PLANS[S.plan];return '<div class="s6" style="position:absolute;inset:0"><div class="top"><span class="kick in">Langkah seterusnya</span><h2 class="D in">Iklan anda keluar <em>'+addWD(10)+'</em></h2></div>'+
  '<div class="line"><div class="st in d2"><span class="w">Hari ini</span><h3>Balas “YA”</h3><p>Pakej '+p.n+' yang dikunci terus didaftarkan. Hantar gambar SSM atau IC pemilik.</p><div class="mk"><div class="bub out">YA, saya setuju</div></div></div>'+
  '<div class="st in d3"><span class="w">Dalam 3 hari bekerja</span><h3>Unifi WhatsApp anda</h3><p>Dari WhatsApp rasmi Unifi yang bertanda sah. Pengurus kempen tanya pasal bisnes anda, dan anda hantar logo serta gambar.</p><div class="mk"><div class="wa-off"><div class="hd"><i>U</i><span>Unifi Business<span class="tick" aria-label="akaun sah">✓</span></span></div><div class="bd"><p>Hi! Saya pengurus kempen DMS anda. Boleh kongsi logo dan gambar produk?</p></div></div></div></div>'+
  '<div class="st in d4"><span class="w">Sekitar '+addWD(10)+'</span><h3>Iklan keluar</h3><p>Anda setuju poster, dan pelanggan mula WhatsApp '+esc(S.biz)+'.</p><div class="mk"><div class="ping"><i></i><span>Pelanggan baru<small>“Hi, nak order…”</small></span></div></div></div></div>'+
- '<div class="band dark"><div><h2 class="D">Jom mula macam '+esc(ST[S.story].name)+'?</h2><p>Ringkasan dihantar ke WhatsApp, senang tunjuk kepada partner.</p></div><div class="acts"><button type="button" class="btn" id="wa">Hantar ke WhatsApp</button><button type="button" class="ghost" id="copy">Salin ringkasan</button><span class="toast" id="toast"></span></div>'+say("“Langkah pertama cuma balas YA. Yang lain, kami uruskan.”")+'</div></div>'}
+ '<div class="band"><div><h2 class="D">Jom mula macam <em>'+esc(ST[S.story].name)+'</em>?</h2><p>Ringkasan dihantar ke WhatsApp, senang tunjuk kepada partner.</p></div><div class="acts"><button type="button" class="btn" id="wa">Hantar ke WhatsApp</button><button type="button" class="ghost" id="copy">Salin ringkasan</button><span class="toast" id="toast"></span></div></div></div>'+say("“Langkah pertama cuma balas YA. Yang lain, kami uruskan.”")}
 ];
 
 function build(){
@@ -556,7 +579,7 @@ function go(n){n=Math.max(0,Math.min(SL.length-1,n));if(n===S.i)return;S.i=n;
   Array.prototype.forEach.call($("stage").children,function(s,i){s.classList.toggle("on",i===n)});
   Array.prototype.forEach.call($("dots").children,function(b,i){if(i===n)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current")});nav();document.querySelector(".viewport").scrollTop=0;}
 var MOB=window.matchMedia("(max-width:53.75em)");
-function fit(){var v=document.querySelector(".viewport");if(MOB.matches){$("stage").style.transform="";return;}var s=Math.min(v.clientWidth/1600,v.clientHeight/900);$("stage").style.transform="scale("+s+")";}
+function fit(){var v=document.querySelector(".viewport");if(MOB.matches){var st0=$("stage");st0.style.transform="";st0.style.width="";st0.style.height="";return;}var W=v.clientWidth,H=v.clientHeight,a=W/H,sw=a>=16/9?900*a:1600,sh=a>=16/9?900:1600/a,st=$("stage");st.style.width=sw+"px";st.style.height=sh+"px";st.style.transform="scale("+(W/sw)+")";}
 document.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
   if(b.dataset.go)return go(+b.dataset.go);
   if(b.id==="next")return go(S.i+1); if(b.id==="prev")return go(S.i-1);

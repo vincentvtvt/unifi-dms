@@ -6,12 +6,12 @@
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>Unifi DMS · Pelan Anda</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Roboto:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
 <style>
 /* Layout: 1600x900 keynote stage. One idea per slide, photo-led, giant type, no boxed cards. Unifi blue + orange on white, with full-bleed blue and ink slides for rhythm. Single look by choice. */
 :root{
   --blue:#1400DD; --blue-d:#0B0090; --or:#EC692C; --ink:#0E1222; --mute:#6B7084; --rule:#E7E3DD; --paper:#FFFFFF; --cream:#FBF6F0; --wa:#25D366;
-  --disp:"Archivo","Arial Black",Arial,sans-serif; --body:"Roboto",Arial,sans-serif;
+  --disp:"Archivo","Noto Sans SC","Arial Black",Arial,sans-serif; --body:"Roboto","Noto Sans SC",Arial,sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -526,6 +526,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   .pr2 span,.lk{font-size:1rem}
   .sendw{font-size:1.0625rem;white-space:normal}
 }
+
+/* language switch */
+.lang{display:flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;flex:none}
+.lang button{border:0;background:transparent;color:var(--mute);font-size:.75rem;font-weight:700;padding:.45rem .7rem;cursor:pointer;font-family:var(--body)}
+.lang button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.cwtop{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+html[lang="zh"] .D{letter-spacing:0;line-height:1.15}
+html[lang="zh"] .kick{letter-spacing:.1em}
 @media (prefers-reduced-motion:reduce){.slide,.slide .in{transition:none}}
 </style>
 </head>
@@ -535,6 +543,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   <div class="logo"><img src="/dms-pitch-n2m6mbss/unifi-business-logo.webp" alt="Unifi Business"><span>Digital Marketing Solutions</span></div>
   <nav class="dots" id="dots"></nav>
   <span class="count num" id="count"></span>
+  <div id="langbox"></div>
   
 </div>
 <div id="cust"></div>
@@ -544,144 +553,269 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
 <script>
 /* Real DMS customer stories (from the pitch page). Only facts stated there. */
 var ST={
- kuih:{tab:"Makanan",img:"/dms-pitch-n2m6mbss/stories/kuih-karas-2.jpg",name:"Kak Ros",who:"Ros Eliana · Kuih Karas Terengganu",plan:"Standard",price:100,prod:"Kuih karas, order borong",
-   before:"Kuih karas dia dikenali sekitar Terengganu sahaja.",v:"+50%",l:"jualan dalam 3 bulan",after:"Order borong masuk banyak. Sekarang orang luar Terengganu pun kenal kuih dia.",quote:"Order borong masuk banyak."},
- kedai:{tab:"Kedai online",img:"/dms-pitch-n2m6mbss/stories/kedai-ibu-anak.jpg",name:"Puan Shahadatul",who:"Shahadatul Fatimah · Kedai Ibu Dan Anak",plan:"Premium",price:200,prod:"Barang ibu & bayi di Shopee",
-   before:"Jual di Shopee, jualan biasa-biasa sahaja.",v:"1,000+",l:"order dalam sebulan",after:"Orang masuk kedai Shopee dia naik 26%, dan jualan online naik berkali ganda.",quote:"Jualan online meningkat berkali ganda."},
- suria:{tab:"Servis",img:"/dms-pitch-n2m6mbss/stories/suria-pest.jpg",name:"Encik Tinesh",who:"Tinesh Rao · Suria Pest Control",plan:"Standard",price:100,prod:"Servis kawalan anai-anai",
-   before:"Dapat 9 hingga 10 pertanyaan sehari.",v:"25+",l:"pertanyaan setiap hari",after:"Lebih 2 kali ganda, dan sekarang pelanggan datang dari seluruh Malaysia.",quote:"Perniagaan meluas ke seluruh negara."},
- mog:{tab:"Bengkel",img:"/dms-pitch-n2m6mbss/stories/mog-autowork.jpg",name:"Encik Dinie",who:"Dinie Hazwan · MOG Autowork Senawang",plan:"Premium",price:200,prod:"Servis & baiki kereta",
-   before:"Belanja RM13,000 setahun untuk iklan.",v:"+RM100K",l:"jualan dalam setahun",after:"Dan belanja iklan setahun turun ke RM2,600 sahaja.",quote:"Kos iklan turun dari RM13,000 ke RM2,600."},
- coffee:{tab:"Francais",img:"/dms-pitch-n2m6mbss/stories/coffee-classic.jpg",name:"Puan Busra",who:"Busra Yahya · Coffee Classic",plan:"Standard",price:100,prod:"Kiosk kopi untuk operator",
-   before:"Cari operator kiosk, hampir tiada siapa bertanya.",v:"3",l:"operator dalam 14 hari",after:"WhatsApp masuk bertalu-talu dari hari pertama iklan keluar.",quote:"Mesej WhatsApp masuk sejak hari pertama."}
+ kuih:{img:"/dms-pitch-n2m6mbss/stories/kuih-karas-2.jpg",who:"Ros Eliana · Kuih Karas Terengganu",plan:"Standard",price:100,v:"+50%"},
+ kedai:{img:"/dms-pitch-n2m6mbss/stories/kedai-ibu-anak.jpg",who:"Shahadatul Fatimah · Kedai Ibu Dan Anak",plan:"Premium",price:200,v:"1,000+"},
+ suria:{img:"/dms-pitch-n2m6mbss/stories/suria-pest.jpg",who:"Tinesh Rao · Suria Pest Control",plan:"Standard",price:100,v:"25+"},
+ mog:{img:"/dms-pitch-n2m6mbss/stories/mog-autowork.jpg",who:"Dinie Hazwan · MOG Autowork Senawang",plan:"Premium",price:200,v:"+RM100K"},
+ coffee:{img:"/dms-pitch-n2m6mbss/stories/coffee-classic.jpg",who:"Busra Yahya · Coffee Classic",plan:"Standard",price:100,v:"3"}
 };
-var INDS=[["food","Makanan & minuman","Kedai makan, kuih, katering, kopi","kuih"],["shop","Kedai & jual online","Butik, Shopee, TikTok Shop, runcit","kedai"],["svc","Servis","Pest control, aircond, cuci, pembaikan","suria"],["auto","Kereta & bengkel","Bengkel, aksesori, cuci kereta","mog"],["agent","Cari ejen / francais","Kiosk, stokis, rakan niaga","coffee"],["other","Lain-lain","Hartanah, pendidikan, kesihatan","kedai"]];
-var WHERE={near:"Sekitar kedai",state:"Satu negeri",all:"Seluruh Malaysia",online:"Online"};
-var WANT={walk:"Orang datang kedai",wa:"WhatsApp",order:"Order online",book:"Tempahan"};
+/* story text per language: tab, name, prod, before, l (label under the big number), after, quote */
+var STX={
+ bm:{
+  kuih:["Makanan","Kak Ros","Kuih karas, order borong","Kuih karas dia dikenali sekitar Terengganu sahaja.","jualan dalam 3 bulan","Order borong masuk banyak. Sekarang orang luar Terengganu pun kenal kuih dia.","Order borong masuk banyak."],
+  kedai:["Kedai online","Puan Shahadatul","Barang ibu & bayi di Shopee","Jual di Shopee, jualan biasa-biasa sahaja.","order dalam sebulan","Orang masuk kedai Shopee dia naik 26%, dan jualan online naik berkali ganda.","Jualan online meningkat berkali ganda."],
+  suria:["Servis","Encik Tinesh","Servis kawalan anai-anai","Dapat 9 hingga 10 pertanyaan sehari.","pertanyaan setiap hari","Lebih 2 kali ganda, dan sekarang pelanggan datang dari seluruh Malaysia.","Perniagaan meluas ke seluruh negara."],
+  mog:["Bengkel","Encik Dinie","Servis & baiki kereta","Belanja RM13,000 setahun untuk iklan.","jualan dalam setahun","Dan belanja iklan setahun turun ke RM2,600 sahaja.","Kos iklan turun dari RM13,000 ke RM2,600."],
+  coffee:["Francais","Puan Busra","Kiosk kopi untuk operator","Cari operator kiosk, hampir tiada siapa bertanya.","operator dalam 14 hari","WhatsApp masuk bertalu-talu dari hari pertama iklan keluar.","Mesej WhatsApp masuk sejak hari pertama."]},
+ en:{
+  kuih:["Food","Kak Ros","Kuih karas, wholesale orders","Her kuih karas was only known around Terengganu.","sales in 3 months","Wholesale orders poured in. Now people outside Terengganu know her kuih too.","Wholesale orders poured in."],
+  kedai:["Online shop","Puan Shahadatul","Mother & baby items on Shopee","Selling on Shopee, sales were just average.","orders in a month","Visitors to her Shopee shop rose 26%, and online sales multiplied.","Online sales multiplied."],
+  suria:["Services","Encik Tinesh","Termite control service","Got 9 to 10 enquiries a day.","enquiries every day","More than double, and customers now come from all over Malaysia.","The business now reaches the whole country."],
+  mog:["Workshop","Encik Dinie","Car service & repairs","Spent RM13,000 a year on ads.","sales in a year","And his yearly ad spend dropped to just RM2,600.","Ad cost dropped from RM13,000 to RM2,600."],
+  coffee:["Franchise","Puan Busra","Coffee kiosk for operators","Looking for kiosk operators, almost nobody asked.","operators in 14 days","WhatsApp messages poured in from the first day the ads ran.","WhatsApp messages came in from day one."]},
+ zh:{
+  kuih:["餐饮","Kak Ros","Kuih karas，批发订单","她的 kuih karas 以前只在登嘉楼一带有人知道。","3个月内销售增长","批发订单大量进来，现在登嘉楼以外的人也认识她的糕点。","批发订单大量进来。"],
+  kedai:["网店","Puan Shahadatul","Shopee 上的母婴用品","在 Shopee 卖东西，生意一般般。","一个月内的订单","Shopee 店铺流量增加26%，网上销售翻了几倍。","网上销售翻了几倍。"],
+  suria:["服务业","Encik Tinesh","白蚁防治服务","以前每天只有9到10个询问。","每天的询问","增加超过一倍，现在全马各地都有顾客。","生意扩展到全国。"],
+  mog:["修车厂","Encik Dinie","汽车保养与维修","以前一年花 RM13,000 做广告。","一年内销售增加","而且一年广告费降到只需 RM2,600。","广告费从 RM13,000 降到 RM2,600。"],
+  coffee:["加盟","Puan Busra","咖啡摊位招营运商","招摊位营运商，几乎没人询问。","14天内招到的营运商","广告上线第一天起，WhatsApp 讯息就不停进来。","第一天就有 WhatsApp 讯息进来。"]}
+};
+var T={
+ bm:{
+  titles:["Bisnes apa?","Kisah sebenar","Apa kami buat","Bisnes anda","Pakej","Kunci pakej","Jom mula"],script:"SKRIP",yes:"YA",
+  ind:{food:["Makanan & minuman","Kedai makan, kuih, katering, kopi"],shop:["Kedai & jual online","Butik, Shopee, TikTok Shop, runcit"],svc:["Servis","Pest control, aircond, cuci, pembaikan"],auto:["Kereta & bengkel","Bengkel, aksesori, cuci kereta"],agent:["Cari ejen / francais","Kiosk, stokis, rakan niaga"],other:["Lain-lain","Hartanah, pendidikan, kesihatan"]},
+  where:{near:"Sekitar kedai",state:"Satu negeri",all:"Seluruh Malaysia",online:"Online"},
+  want:{walk:"Orang datang kedai",wa:"WhatsApp",order:"Order online",book:"Tempahan"},
+  s1k:"Sebelum kita mula",s1h:"Bisnes anda <em>jenis apa?</em>",
+  s2k1:"Bisnes macam anda",s2k2:"Kisah pelanggan sebenar",s2h:"Kenali <em>{n}</em>",before:"Dulu",others:"Kisah lain",plantag:"Pakej {p}",s2say:"“Bisnes ni macam bisnes anda. Dia mula dengan pakej {p} sahaja.”",
+  s3k:"Apa yang kami buat untuk {n}",s3h:"Dia tak perlu <em>pandai marketing</em>",
+  f1h:"Kami tanya pasal bisnes dia",f1p:"Apa yang dia jual, siapa pelanggan dia, apa yang dia nak lebih.",f1q:"Apa yang paling laku di kedai anda?",
+  f2h:"Kami buat poster &amp; ayat iklan",f2p:"Dalam BM atau English. Dia cuma semak dan setuju.",f2a:"Siap ~5 hari",f2b:"1 pindaan percuma",
+  f3h:"Iklan keluar, WhatsApp masuk",f3p:"Di Facebook, Instagram dan Google. Orang berminat terus hubungi dia.",newc:"Pelanggan baru",m1:"“Hi, nak tanya harga…”",m2:"“Masih ada stok?”",
+  ours:"Kerja kami",oursv:"Rancang, reka, tulis, pantau",theirs:"Kerja {n}",theirsv:"Hantar gambar, balas WhatsApp",s3say:"“Anda fokus jual. Bahagian iklan, pasukan kami yang buat.”",
+  s4k:"Sekarang giliran anda",s4h:"Kalau {n} boleh, <em>anda pun boleh</em>",lbiz:"Nama bisnes",lsell:"Paling laku",lwhere:"Pelanggan dari mana",lwant:"Nak lebih",
+  hk_near:"{x}, dekat je dengan rumah anda",hk_online:"{x}, order online sampai depan pintu",hk_all:"{x}, kini untuk seluruh Malaysia",hk_state:"{x}, kini untuk seluruh negeri",
+  cta_walk:"Lihat lokasi",cta_order:"Beli sekarang",cta_book:"Tempah",cta_wa:"WhatsApp",spons:"Ditaja",ptext:"Jom cuba yang paling laku di {b}!",newtag:"Baru · terhad",adnote:"Contoh. Poster sebenar kami reka guna gambar anda.",s4say:"“Ini contoh iklan bisnes anda di telefon pelanggan.”",defprod:"Produk anda",defbiz:"Bisnes anda",
+  s5k:"Pakej untuk {b}",perday:"sehari",cmp1:"Lebih kurang harga secawan kopi",cmp2:"Lebih kurang harga sepinggan nasi berlauk",cmp3:"Lebih kurang harga makan tengah hari berdua",
+  pkline:"{p} · {m} sebulan selama 12 bulan, tiada bayaran awal",fa:"nilai iklan &amp; servis, diberi terus",fb:"3 orang",fbv:"pengurus, pereka poster, penulis iklan",fcv:"tempat iklan anda muncul",
+  tk:"Percuma: AI chatbot BotKu",tkv:"Balas WhatsApp pelanggan 24 jam. {g} bulan pertama percuma, kemudian {a} sebulan.",tko:"Hadiah BotKu",tkov:"Percuma untuk pakej RM450 ke atas sahaja.",
+  vs:"{n} guna <b>{p}</b> dan dapat <b>{v} {l}</b>.",vsx:" Pakej ini beri <b>{x}× bajet</b> dia.",permo:"{m} sebulan",
+  fine:"Harga belum termasuk SST 8%. BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.",s5say:"“RM{d} sehari. Satu pelanggan baru pun dah boleh tutup kos ni.”",
+  s6k:"Sebelum anda bincang dengan partner",s6h:"Kunci harga &amp; hadiah <em>48 jam</em>",lead:"Kunci bermaksud kami simpan harga dan hadiah ini khas untuk anda selama 48 jam. Tiada bayaran, tiada kontrak. Anda bebas bincang dengan partner dulu.",
+  gtag:"+ BotKu percuma {g} bln",kh:"Yang dikunci untuk anda",kprice:"Harga {p}",kpricev:"{m} sebulan, 12 bulan",kgift:"Hadiah BotKu",kgiftv:"RM0 untuk {g} bulan pertama",knone:"Tiada untuk pakej ini",kdate:"Tarikh iklan keluar",kdatev:"Sekitar {d}",kpay:"Bayaran sekarang",kpayv:"RM0, tiada bayaran awal",
+  locked:"Pakej anda dikunci",chosen:"Pakej dipilih",freebot:" + BotKu percuma",stamp:"DIKUNCI",held:"Dipegang sehingga <b>{u}</b>.",starts:"Masa bermula bila anda tekan butang di bawah.",
+  t1:"Harga {m} sebulan tidak berubah",t2:"Hadiah BotKu RM0 untuk {g} bulan disimpan",t2b:"Tarikh iklan keluar sekitar {d} disimpan",t3:"RM0 sekarang, tiada kontrak sehingga anda balas YA",lockbtn:"Kunci harga &amp; hadiah",lockdone:"Dikunci ✓",
+  s6say1:"“Dah dikunci. Anda ada 48 jam, dan langkah seterusnya cuma balas YA.”",s6say0:"“Saya kunci harga dan hadiah ni untuk anda. Tak perlu bayar apa-apa sekarang.”",cdh:"jam",cdm:"minit",cds:"saat",
+  s7k:"Pilihan anda",s7h:"Pelan untuk <em>{b}</em>",rpk:"Pakej",rpkv:"{p}, 12 bulan",rmo:"Bayaran bulanan",rmov:"{m} (belum SST 8%)",rad:"Nilai iklan &amp; servis",radv:"{a}, diberi terus",rteam:"Pasukan",rteamv:"Pengurus kempen, pereka poster, penulis iklan",rplat:"Iklan muncul di",rgift:"Hadiah BotKu",rgiftv:"RM0 untuk {g} bulan, kemudian {a}/bulan",rgiftn:"Untuk pakej RM450 ke atas",rpay:"Bayaran sekarang",
+  fl1:"Balas YA hari ini",fl2:"Unifi WhatsApp anda",fl3:"Iklan keluar {d}",yours:"Pakej anda",pr2:"sebulan · lebih kurang RM{d} sehari",gift2:"AI chatbot BotKu, {g} bulan pertama",
+  lk1:"Harga &amp; hadiah dipegang sehingga <b>{u}</b>",lk0:"Belum dikunci. Tekan butang di bawah untuk kunci harga &amp; hadiah 48 jam dan hantar ringkasan.",send1:"Hantar ringkasan ke WhatsApp",send0:"Kunci &amp; hantar ke WhatsApp",copy:"Salin ringkasan",copied:"Disalin. Tampal dalam WhatsApp pelanggan.",copyp:"Salin ringkasan:",
+  fineb:"BotKu disediakan oleh perunding anda (BotKu.ai), bukan sebahagian kontrak TM.",s7say1:"“Ini pilihan anda. Saya hantar ringkasan ke WhatsApp sekarang, langkah pertama cuma balas YA.”",s7say0:"“Ini pilihan anda. Saya kunci dan hantar ringkasan ke WhatsApp sekarang.”",
+  sm_hi:"Hi, terima kasih atas masa anda tadi. Ini ringkasan pelan DMS untuk {b}:",sm_pk:"• Pakej: {p}, {m} sebulan selama 12 bulan (belum termasuk SST 8%)",sm_ad:"• Nilai iklan & servis: {a}, diberi terus",sm_team:"• Pasukan 3 orang: pengurus kempen, pereka poster, penulis iklan",
+  sm_gift:"• Hadiah: AI chatbot BotKu RM0 untuk {g} bulan pertama (harga biasa RM500), kemudian {a} sebulan. BotKu disediakan oleh perunding anda, bukan sebahagian kontrak TM.",sm_up:"• Tiada bayaran awal",sm_lock:"Pakej dan hadiah ini dikunci untuk anda sehingga {u}.",sm_link:"Lihat pelan anda: {l}",
+  sm_next:"Langkah seterusnya: balas YA dan hantar gambar SSM atau IC pemilik. Dalam 3 hari bekerja, Unifi akan WhatsApp anda dari akaun rasmi yang bertanda sah. Iklan dijangka keluar sekitar {d}.",
+  cvexk:"Tempoh kunci telah tamat",cvexp:"Tempoh 48 jam telah tamat pada {u}. Hubungi perunding anda untuk semak harga dan hadiah semasa.",cvhold:"Harga dan hadiah dipegang sehingga <b>{u}</b>.",cvprice:"Harga",cvteamv:"Pengurus, pereka, penulis iklan",
+  cvsteps:"Langkah seterusnya",cv1:"Balas “YA” kepada perunding anda",cv1v:"Hantar gambar SSM atau IC pemilik.",cv2:"Unifi WhatsApp anda dalam 3 hari bekerja",cv2v:"Dari akaun WhatsApp rasmi Unifi yang bertanda sah. Hantar logo dan gambar produk.",cv3:"Iklan keluar",cv3v:"Anda setuju poster, dan pelanggan mula menghubungi anda.",
+  cnote:"Harga belum termasuk SST 8%. Langganan 12 bulan dengan bil berasingan setiap bulan. BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.",cbtn:"Lihat pembentangan penuh",verified:"akaun sah",prev:"Sebelum",next:"Seterusnya"},
+ en:{
+  titles:["Your business","Real story","What we do","Your turn","Package","Lock it","Let's start"],script:"SCRIPT",yes:"YES",
+  ind:{food:["Food & drinks","Restaurants, kuih, catering, coffee"],shop:["Shops & online selling","Boutiques, Shopee, TikTok Shop, retail"],svc:["Services","Pest control, aircond, cleaning, repairs"],auto:["Cars & workshops","Workshops, accessories, car wash"],agent:["Agents / franchise","Kiosks, stockists, partners"],other:["Others","Property, education, health"]},
+  where:{near:"Near the shop",state:"One state",all:"All Malaysia",online:"Online"},
+  want:{walk:"Walk-in customers",wa:"WhatsApp",order:"Online orders",book:"Bookings"},
+  s1k:"Before we start",s1h:"What kind of <em>business</em> do you run?",
+  s2k1:"A business like yours",s2k2:"A real customer story",s2h:"Meet <em>{n}</em>",before:"Before",others:"Other stories",plantag:"{p} package",s2say:"“This business is like yours. They started with just the {p} package.”",
+  s3k:"What we did for {n}",s3h:"No <em>marketing skills</em> needed",
+  f1h:"We ask about the business",f1p:"What they sell, who buys, and what they want more of.",f1q:"What sells best at your shop?",
+  f2h:"We make the posters &amp; ad copy",f2p:"In BM or English. They just check and approve.",f2a:"Ready in ~5 days",f2b:"1 free revision",
+  f3h:"Ads go live, WhatsApps come in",f3p:"On Facebook, Instagram and Google. Interested people contact them directly.",newc:"New customer",m1:"“Hi, how much is it…”",m2:"“Still in stock?”",
+  ours:"Our work",oursv:"Plan, design, write, monitor",theirs:"{n}'s work",theirsv:"Send photos, reply to WhatsApp",s3say:"“You focus on selling. Our team handles the ads.”",
+  s4k:"Now it's your turn",s4h:"If {n} can, <em>so can you</em>",lbiz:"Business name",lsell:"Best seller",lwhere:"Where customers are",lwant:"Want more",
+  hk_near:"{x}, right near your home",hk_online:"{x}, order online, delivered to your door",hk_all:"{x}, now across Malaysia",hk_state:"{x}, now across the state",
+  cta_walk:"See location",cta_order:"Buy now",cta_book:"Book now",cta_wa:"WhatsApp",spons:"Sponsored",ptext:"Come try the best seller at {b}!",newtag:"New · limited",adnote:"Example. Real posters are designed with your photos.",s4say:"“This is how your ad looks on a customer's phone.”",defprod:"Your product",defbiz:"Your business",
+  s5k:"Package for {b}",perday:"a day",cmp1:"About the price of a cup of coffee",cmp2:"About the price of a plate of rice with dishes",cmp3:"About the price of lunch for two",
+  pkline:"{p} · {m} a month for 12 months, no upfront payment",fa:"ad &amp; service value, given upfront",fb:"3 people",fbv:"manager, poster designer, copywriter",fcv:"where your ads appear",
+  tk:"Free: BotKu AI chatbot",tkv:"Replies to customer WhatsApps 24/7. First {g} month(s) free, then {a} a month.",tko:"BotKu gift",tkov:"Free only for packages RM450 and above.",
+  vs:"{n} used <b>{p}</b> and got <b>{v} {l}</b>.",vsx:" This package gives <b>{x}× their budget</b>.",permo:"{m} a month",
+  fine:"Prices exclude 8% SST. BotKu is provided by your consultant (BotKu.ai), not by TM, and is not part of the TM contract.",s5say:"“RM{d} a day. One new customer can already cover it.”",
+  s6k:"Before you talk to your partner",s6h:"Lock the price &amp; gift for <em>48 hours</em>",lead:"Locking means we hold this price and gift just for you for 48 hours. No payment, no contract. You're free to talk to your partner first.",
+  gtag:"+ BotKu free {g} mo",kh:"What's locked for you",kprice:"{p} price",kpricev:"{m} a month, 12 months",kgift:"BotKu gift",kgiftv:"RM0 for the first {g} month(s)",knone:"Not included in this package",kdate:"Ads go live",kdatev:"Around {d}",kpay:"Payment now",kpayv:"RM0, nothing upfront",
+  locked:"Your package is locked",chosen:"Selected package",freebot:" + free BotKu",stamp:"LOCKED",held:"Held until <b>{u}</b>.",starts:"The clock starts when you press the button below.",
+  t1:"Price stays at {m} a month",t2:"BotKu at RM0 for {g} month(s) is held",t2b:"Go-live around {d} is held",t3:"RM0 now, no contract until you reply YES",lockbtn:"Lock price &amp; gift",lockdone:"Locked ✓",
+  s6say1:"“It's locked. You have 48 hours, and the next step is just to reply YES.”",s6say0:"“I'll lock this price and gift for you. Nothing to pay now.”",cdh:"hours",cdm:"mins",cds:"secs",
+  s7k:"Your choice",s7h:"Plan for <em>{b}</em>",rpk:"Package",rpkv:"{p}, 12 months",rmo:"Monthly payment",rmov:"{m} (before 8% SST)",rad:"Ad &amp; service value",radv:"{a}, given upfront",rteam:"Team",rteamv:"Campaign manager, poster designer, copywriter",rplat:"Ads appear on",rgift:"BotKu gift",rgiftv:"RM0 for {g} month(s), then {a}/month",rgiftn:"For RM450 packages and above",rpay:"Payment now",
+  fl1:"Reply YES today",fl2:"Unifi WhatsApps you",fl3:"Ads live {d}",yours:"Your package",pr2:"a month · about RM{d} a day",gift2:"BotKu AI chatbot, first {g} month(s)",
+  lk1:"Price &amp; gift held until <b>{u}</b>",lk0:"Not locked yet. Press the button below to lock the price &amp; gift for 48 hours and send the summary.",send1:"Send summary to WhatsApp",send0:"Lock &amp; send to WhatsApp",copy:"Copy summary",copied:"Copied. Paste it into the customer's WhatsApp.",copyp:"Copy the summary:",
+  fineb:"BotKu is provided by your consultant (BotKu.ai), not part of the TM contract.",s7say1:"“This is your choice. I'll send the summary to WhatsApp now; the first step is just to reply YES.”",s7say0:"“This is your choice. I'll lock it and send the summary to WhatsApp now.”",
+  sm_hi:"Hi, thank you for your time just now. Here's the DMS plan summary for {b}:",sm_pk:"• Package: {p}, {m} a month for 12 months (before 8% SST)",sm_ad:"• Ad & service value: {a}, given upfront",sm_team:"• 3-person team: campaign manager, poster designer, copywriter",
+  sm_gift:"• Gift: BotKu AI chatbot at RM0 for the first {g} month(s) (usual price RM500), then {a} a month. BotKu is provided by your consultant, not part of the TM contract.",sm_up:"• No upfront payment",sm_lock:"This package and gift are locked for you until {u}.",sm_link:"View your plan: {l}",
+  sm_next:"Next step: reply YES and send a photo of your SSM or the owner's IC. Within 3 working days, Unifi will WhatsApp you from its official verified account. Ads are expected to go live around {d}.",
+  cvexk:"The lock period has ended",cvexp:"The 48 hours ended on {u}. Contact your consultant to check the current price and gift.",cvhold:"Price and gift held until <b>{u}</b>.",cvprice:"Price",cvteamv:"Manager, designer, copywriter",
+  cvsteps:"Next steps",cv1:"Reply “YES” to your consultant",cv1v:"Send a photo of your SSM or the owner's IC.",cv2:"Unifi WhatsApps you within 3 working days",cv2v:"From Unifi's official verified WhatsApp account. Send your logo and product photos.",cv3:"Ads go live",cv3v:"You approve the poster, and customers start contacting you.",
+  cnote:"Prices exclude 8% SST. 12-month subscription with a separate monthly bill. BotKu is provided by your consultant (BotKu.ai), not by TM, and is not part of the TM contract.",cbtn:"View the full presentation",verified:"verified account",prev:"Previous",next:"Next"},
+ zh:{
+  titles:["您的生意","真实案例","我们做什么","轮到您","配套","锁定配套","开始吧"],script:"讲稿",yes:"YES",
+  ind:{food:["餐饮","餐馆、糕点、外烩、咖啡"],shop:["门店与网店","服装店、Shopee、TikTok Shop、零售"],svc:["服务业","除虫、冷气、清洁、维修"],auto:["汽车与修车厂","修车厂、配件、洗车"],agent:["招代理 / 加盟","摊位、经销商、合作伙伴"],other:["其他","房产、教育、健康"]},
+  where:{near:"店铺附近",state:"整个州",all:"全马",online:"网上"},
+  want:{walk:"上门顾客",wa:"WhatsApp",order:"网上订单",book:"预约"},
+  s1k:"开始之前",s1h:"您做的是<em>什么生意？</em>",
+  s2k1:"和您一样的生意",s2k2:"真实顾客案例",s2h:"认识 <em>{n}</em>",before:"以前",others:"其他案例",plantag:"{p} 配套",s2say:"“这门生意和您的很像，他们只是从 {p} 配套开始。”",
+  s3k:"我们为 {n} 做了什么",s3h:"不需要<em>懂营销</em>",
+  f1h:"我们先了解生意",f1p:"卖什么、顾客是谁、想要更多什么。",f1q:"您店里什么卖得最好？",
+  f2h:"我们设计海报和文案",f2p:"马来文或英文，只需检查并批准。",f2a:"约5天完成",f2b:"免费修改1次",
+  f3h:"广告上线，WhatsApp 进来",f3p:"在 Facebook、Instagram 和 Google，有兴趣的人直接联系。",newc:"新顾客",m1:"“你好，请问价钱…”",m2:"“还有货吗？”",
+  ours:"我们的工作",oursv:"策划、设计、文案、跟进",theirs:"{n} 的工作",theirsv:"提供照片，回复 WhatsApp",s3say:"“您专心做生意，广告交给我们的团队。”",
+  s4k:"现在轮到您",s4h:"{n} 做得到，<em>您也可以</em>",lbiz:"生意名称",lsell:"最畅销",lwhere:"顾客在哪里",lwant:"想要更多",
+  hk_near:"{x}，就在您家附近",hk_online:"{x}，网上下单送到家",hk_all:"{x}，现在全马都有",hk_state:"{x}，现在全州都有",
+  cta_walk:"查看地址",cta_order:"立即购买",cta_book:"预约",cta_wa:"WhatsApp",spons:"赞助",ptext:"快来试试 {b} 最受欢迎的！",newtag:"新品 · 限量",adnote:"示例。真正的海报会用您的照片设计。",s4say:"“这是您的广告在顾客手机上的样子。”",defprod:"您的产品",defbiz:"您的生意",
+  s5k:"{b} 的配套",perday:"每天",cmp1:"差不多一杯咖啡的价钱",cmp2:"差不多一盘杂饭的价钱",cmp3:"差不多两人午餐的价钱",
+  pkline:"{p} · 每月 {m}，12个月，无需预付",fa:"广告与服务价值，一次给足",fb:"3人团队",fbv:"经理、海报设计师、文案",fcv:"广告投放平台",
+  tk:"免费：BotKu AI 聊天机器人",tkv:"24小时回复顾客 WhatsApp。前 {g} 个月免费，之后每月 {a}。",tko:"BotKu 礼物",tkov:"仅限 RM450 或以上配套。",
+  vs:"{n} 用 <b>{p}</b> 配套，{l}达到 <b>{v}</b>。",vsx:" 这个配套的预算是他们的 <b>{x} 倍</b>。",permo:"每月 {m}",
+  fine:"价格不含8% SST。BotKu 由您的顾问（BotKu.ai）提供，并非 TM 提供，也不属于 TM 合约。",s5say:"“每天 RM{d}，一个新顾客就能回本。”",
+  s6k:"在您和伙伴商量之前",s6h:"锁定价格和礼物 <em>48小时</em>",lead:"锁定就是我们为您保留这个价格和礼物48小时。不用付款，不签合约，您可以先和伙伴商量。",
+  gtag:"+ BotKu 免费 {g} 个月",kh:"为您锁定的内容",kprice:"{p} 价格",kpricev:"每月 {m}，12个月",kgift:"BotKu 礼物",kgiftv:"前 {g} 个月 RM0",knone:"此配套不包括",kdate:"广告上线",kdatev:"约 {d}",kpay:"现在付款",kpayv:"RM0，无需预付",
+  locked:"您的配套已锁定",chosen:"已选配套",freebot:" + 免费 BotKu",stamp:"已锁定",held:"保留至 <b>{u}</b>。",starts:"按下面的按钮后开始计时。",
+  t1:"每月 {m} 价格不变",t2:"保留 BotKu 前 {g} 个月 RM0",t2b:"保留约 {d} 的上线日期",t3:"现在 RM0，回复 YES 之前不签约",lockbtn:"锁定价格和礼物",lockdone:"已锁定 ✓",
+  s6say1:"“已经锁定了。您有48小时，下一步只需回复 YES。”",s6say0:"“我帮您锁定这个价格和礼物，现在不用付任何钱。”",cdh:"小时",cdm:"分钟",cds:"秒",
+  s7k:"您的选择",s7h:"<em>{b}</em> 的计划",rpk:"配套",rpkv:"{p}，12个月",rmo:"每月付款",rmov:"{m}（不含8% SST）",rad:"广告与服务价值",radv:"{a}，一次给足",rteam:"团队",rteamv:"广告经理、海报设计师、文案",rplat:"广告投放于",rgift:"BotKu 礼物",rgiftv:"前 {g} 个月 RM0，之后每月 {a}",rgiftn:"限 RM450 或以上配套",rpay:"现在付款",
+  fl1:"今天回复 YES",fl2:"Unifi 用 WhatsApp 联系您",fl3:"{d} 广告上线",yours:"您的配套",pr2:"每月 · 每天约 RM{d}",gift2:"BotKu AI 聊天机器人，前 {g} 个月",
+  lk1:"价格和礼物保留至 <b>{u}</b>",lk0:"尚未锁定。按下面的按钮锁定价格和礼物48小时，并发送摘要。",send1:"发送摘要到 WhatsApp",send0:"锁定并发送到 WhatsApp",copy:"复制摘要",copied:"已复制，请贴到顾客的 WhatsApp。",copyp:"复制摘要：",
+  fineb:"BotKu 由您的顾问（BotKu.ai）提供，不属于 TM 合约。",s7say1:"“这是您的选择。我现在把摘要发到 WhatsApp，第一步只需回复 YES。”",s7say0:"“这是您的选择。我现在锁定并把摘要发到 WhatsApp。”",
+  sm_hi:"您好，谢谢您刚才抽空。这是 {b} 的 DMS 计划摘要：",sm_pk:"• 配套：{p}，每月 {m}，12个月（不含8% SST）",sm_ad:"• 广告与服务价值：{a}，一次给足",sm_team:"• 3人团队：广告经理、海报设计师、文案",
+  sm_gift:"• 礼物：BotKu AI 聊天机器人前 {g} 个月 RM0（原价 RM500），之后每月 {a}。BotKu 由您的顾问提供，不属于 TM 合约。",sm_up:"• 无需预付",sm_lock:"这个配套和礼物为您锁定至 {u}。",sm_link:"查看您的计划：{l}",
+  sm_next:"下一步：回复 YES，并发送 SSM 或业主 IC 的照片。3个工作日内，Unifi 会用官方认证的 WhatsApp 账号联系您。广告预计在 {d} 左右上线。",
+  cvexk:"锁定期已结束",cvexp:"48小时已于 {u} 结束。请联系您的顾问了解最新价格和礼物。",cvhold:"价格和礼物保留至 <b>{u}</b>。",cvprice:"价格",cvteamv:"经理、设计师、文案",
+  cvsteps:"下一步",cv1:"回复 “YES” 给您的顾问",cv1v:"发送 SSM 或业主 IC 的照片。",cv2:"Unifi 会在3个工作日内用 WhatsApp 联系您",cv2v:"使用 Unifi 官方认证的 WhatsApp 账号。请提供标志和产品照片。",cv3:"广告上线",cv3v:"您批准海报后，顾客就开始联系您。",
+  cnote:"价格不含8% SST。订阅12个月，每月单独账单。BotKu 由您的顾问（BotKu.ai）提供，并非 TM 提供，也不属于 TM 合约。",cbtn:"查看完整简报",verified:"认证账号",prev:"上一页",next:"下一页"}
+};
+var LOC={bm:"ms-MY",en:"en-MY",zh:"zh-CN"};
+var INDS=[["food","kuih"],["shop","kedai"],["svc","suria"],["auto","mog"],["agent","coffee"],["other","kedai"]];
 var PLANS=[{n:"Standard",p:100,ad:840,gift:0},{n:"Premium",p:200,ad:1680,gift:0},{n:"Prime",p:450,ad:3500,gift:1,after:300},{n:"Pro",p:900,ad:7000,gift:2,after:200}];
-var S={locked:0,i:0,ind:"",story:"kuih",biz:"Kek Lapis Mak Su",sell:"Kek lapis Sarawak",where:"near",want:"wa",plan:2};
-var TITLES=["Bisnes apa?","Kisah sebenar","Apa kami buat","Bisnes anda","Pakej","Kunci pakej","Jom mula"];
+var S={lang:"bm",locked:0,i:0,ind:"",story:"kuih",biz:"Kek Lapis Mak Su",sell:"Kek lapis Sarawak",where:"near",want:"wa",plan:2};
+try{var sl=localStorage.getItem("dms-lang");if(sl&&T[sl])S.lang=sl;}catch(e){}
 var $=function(id){return document.getElementById(id)};
 var rm=function(n){return "RM"+Math.round(n).toLocaleString("en-MY")};
 var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
-function addWD(n){var t=new Date();while(n>0){t.setDate(t.getDate()+1);if(t.getDay()%6)n--;}return t.toLocaleDateString("ms-MY",{day:"numeric",month:"long"})}
-function hook(){var x=S.sell||"Produk anda";return S.where==="near"?x+", dekat je dengan rumah anda":S.where==="online"?x+", order online sampai depan pintu":x+", kini untuk seluruh "+(S.where==="all"?"Malaysia":"negeri")}
-function ctaWord(){return S.want==="walk"?"Lihat lokasi":S.want==="order"?"Beli sekarang":S.want==="book"?"Tempah":"WhatsApp"}
+function t(k,v){var s=T[S.lang][k];if(s==null)s=T.bm[k];if(v)for(var x in v)s=String(s).split("{"+x+"}").join(v[x]);return s;}
+function sx(k){var a=STX[S.lang][k];return {tab:a[0],name:a[1],prod:a[2],before:a[3],l:a[4],after:a[5],quote:a[6]};}
+function addWD(n){var d=new Date();while(n>0){d.setDate(d.getDate()+1);if(d.getDay()%6)n--;}return d.toLocaleDateString(LOC[S.lang],{day:"numeric",month:"long"})}
+function hook(){var x=S.sell||t("defprod");return t("hk_"+S.where,{x:x})}
+function ctaWord(){return t("cta_"+S.want)}
 function seg(key,map){return '<div class="seg">'+Object.keys(map).map(function(k){return '<button type="button" data-k="'+key+'" data-v="'+k+'" aria-pressed="'+(S[key]===k)+'">'+esc(map[k])+'</button>'}).join("")+'</div>'}
-function cdHTML(){var ms=S.locked?Math.max(0,S.locked+48*3600e3-Date.now()):48*3600e3,h=Math.min(99,Math.floor(ms/3600e3)),m=Math.floor(ms%3600e3/60e3),x=Math.floor(ms%60e3/1e3),z=function(n){return(n<10?'0':'')+n};return '<div><b>'+z(h)+'</b><span>jam</span></div><div><b>'+z(m)+'</b><span>minit</span></div><div><b>'+z(x)+'</b><span>saat</span></div>'}
+function cdHTML(){var ms=S.locked?Math.max(0,S.locked+48*3600e3-Date.now()):48*3600e3,h=Math.min(99,Math.floor(ms/3600e3)),m=Math.floor(ms%3600e3/60e3),x=Math.floor(ms%60e3/1e3),z=function(n){return(n<10?'0':'')+n};return '<div><b>'+z(h)+'</b><span>'+t("cdh")+'</span></div><div><b>'+z(m)+'</b><span>'+t("cdm")+'</span></div><div><b>'+z(x)+'</b><span>'+t("cds")+'</span></div>'}
 setInterval(function(){document.querySelectorAll('#cd').forEach(function(c){if(S.locked)c.innerHTML=cdHTML();});},1000);
 
 var BASE="/dms-pitch-n2m6mbss/";
 function dlDate(){return S.locked?new Date(S.locked+48*3600e3):null}
-function fmtMY(d){return d.toLocaleString("ms-MY",{timeZone:"Asia/Kuala_Lumpur",weekday:"long",day:"numeric",month:"long",hour:"numeric",minute:"2-digit"})}
-function code(){var d=dlDate();if(!d)return "";var x=new Date(d.getTime()+8*3600e3),z=function(n){return String(n).padStart(2,"0")};return "o-"+x.getUTCFullYear()+z(x.getUTCMonth()+1)+z(x.getUTCDate())+z(x.getUTCHours())+z(x.getUTCMinutes())+"-p"+S.plan}
+function fmtMY(d){return d.toLocaleString(LOC[S.lang],{timeZone:"Asia/Kuala_Lumpur",weekday:"long",day:"numeric",month:"long",hour:"numeric",minute:"2-digit"})}
+function code(){var d=dlDate();if(!d)return "";var x=new Date(d.getTime()+8*3600e3),z=function(n){return String(n).padStart(2,"0")};return "o-"+x.getUTCFullYear()+z(x.getUTCMonth()+1)+z(x.getUTCDate())+z(x.getUTCHours())+z(x.getUTCMinutes())+"-p"+S.plan+"-"+S.lang}
 function link(){return location.origin+BASE+(S.locked?"#"+code():"")}
 function summary(){var p=PLANS[S.plan],d=dlDate(),L=[];
-  L.push("Hi, terima kasih atas masa anda tadi. Ini ringkasan pelan DMS untuk "+(S.biz||"bisnes anda")+":");
-  L.push("");
-  L.push("• Pakej: "+p.n+", "+rm(p.p)+" sebulan selama 12 bulan (belum termasuk SST 8%)");
-  L.push("• Nilai iklan & servis: "+rm(p.ad)+", diberi terus");
-  L.push("• Pasukan 3 orang: pengurus kempen, pereka poster, penulis iklan");
-  if(p.gift)L.push("• Hadiah: AI chatbot BotKu RM0 untuk "+p.gift+" bulan pertama (harga biasa RM500), kemudian "+rm(p.after)+" sebulan. BotKu disediakan oleh perunding anda, bukan sebahagian kontrak TM.");
-  L.push("• Tiada bayaran awal");
-  L.push("");
-  if(d)L.push("Pakej dan hadiah ini dikunci untuk anda sehingga "+fmtMY(d)+".");
-  L.push("Lihat pelan anda: "+link());
-  L.push("");
-  L.push("Langkah seterusnya: balas YA dan hantar gambar SSM atau IC pemilik. Dalam 3 hari bekerja, Unifi akan WhatsApp anda dari akaun rasmi yang bertanda sah. Iklan dijangka keluar sekitar "+addWD(10)+".");
+  L.push(t("sm_hi",{b:S.biz||t("defbiz")}));L.push("");
+  L.push(t("sm_pk",{p:p.n,m:rm(p.p)}));L.push(t("sm_ad",{a:rm(p.ad)}));L.push(t("sm_team"));
+  if(p.gift)L.push(t("sm_gift",{g:p.gift,a:rm(p.after)}));
+  L.push(t("sm_up"));L.push("");
+  if(d)L.push(t("sm_lock",{u:fmtMY(d)}));
+  L.push(t("sm_link",{l:link()}));L.push("");
+  L.push(t("sm_next",{d:addWD(10)}));
   return L.join("\n");}
-function parseHash(){var m=/^#o-(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(?:-p([0-3]))?$/.exec(location.hash||"");if(!m)return null;
-  return {dl:new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-8,+m[5])),plan:m[6]===undefined?2:+m[6]}}
-function custView(){var h=parseHash();if(!h)return;S.plan=h.plan;S.locked=h.dl.getTime()-48*3600e3;
-  var p=PLANS[S.plan],left=h.dl-Date.now(),exp=left<=0;
-  $("cust").innerHTML='<div class="cw"><div class="logo"><img src="'+BASE+'unifi-business-logo.webp" alt="Unifi Business"><span>Digital Marketing Solutions</span></div>'+
-   '<div class="chero'+(exp?' exp':'')+'">'+(exp?'':'<span class="stamp">DIKUNCI</span>')+'<span class="k">'+(exp?'Tempoh kunci telah tamat':'Pakej anda dikunci')+'</span><span class="pn">'+p.n+'</span><span class="pp num">'+rm(p.p)+' sebulan'+(p.gift?' + BotKu percuma':'')+'</span>'+
-   (exp?'<p>Tempoh 48 jam telah tamat pada '+fmtMY(h.dl)+'. Hubungi perunding anda untuk semak harga dan hadiah semasa.</p>':'<div class="cd num" id="cd">'+cdHTML()+'</div><p>Harga dan hadiah dipegang sehingga <b>'+fmtMY(h.dl)+'</b>.</p>')+'</div>'+
-   '<div class="clist"><div><b>Harga</b><span class="num">'+rm(p.p)+' sebulan, 12 bulan</span></div><div><b>Nilai iklan &amp; servis</b><span class="num">'+rm(p.ad)+'</span></div><div><b>Pasukan</b><span>Pengurus, pereka, penulis iklan</span></div><div><b>Hadiah BotKu</b><span>'+(p.gift?'RM0 untuk '+p.gift+' bulan, kemudian '+rm(p.after)+'/bulan':'Tiada untuk pakej ini')+'</span></div><div><b>Bayaran sekarang</b><span>RM0</span></div></div>'+
-   '<div class="csteps"><h3>Langkah seterusnya</h3><ol><li><i>1</i><div><b>Balas “YA” kepada perunding anda</b><span>Hantar gambar SSM atau IC pemilik.</span></div></li><li><i>2</i><div><b>Unifi WhatsApp anda dalam 3 hari bekerja</b><span>Dari akaun WhatsApp rasmi Unifi yang bertanda sah. Hantar logo dan gambar produk.</span></div></li><li><i>3</i><div><b>Iklan keluar</b><span>Anda setuju poster, dan pelanggan mula menghubungi anda.</span></div></li></ol></div>'+
-   '<p class="cnote">Harga belum termasuk SST 8%. Langganan 12 bulan dengan bil berasingan setiap bulan. BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.</p>'+
-   '<button type="button" class="cbtn" id="cust-close">Lihat pembentangan penuh</button></div>';
+function parseHash(){var m=/^#o-(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(?:-p([0-3]))?(?:-(bm|en|zh))?$/.exec(location.hash||"");if(!m)return null;
+  return {dl:new Date(Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-8,+m[5])),plan:m[6]===undefined?2:+m[6],lang:m[7]||""}}
+function langSwitch(){return '<div class="lang" role="group" aria-label="Language">'+[["bm","BM"],["en","EN"],["zh","中文"]].map(function(x){return '<button type="button" data-lang="'+x[0]+'" aria-pressed="'+(S.lang===x[0])+'">'+x[1]+'</button>'}).join("")+'</div>'}
+var CUST=false;
+function custView(){var h=parseHash();if(!h){CUST=false;return;}if(!CUST&&h.lang)S.lang=h.lang;CUST=true;S.plan=h.plan;S.locked=h.dl.getTime()-48*3600e3;
+  var p=PLANS[S.plan],exp=h.dl-Date.now()<=0;
+  $("cust").innerHTML='<div class="cw"><div class="cwtop"><div class="logo"><img src="'+BASE+'unifi-business-logo.webp" alt="Unifi Business"><span>Digital Marketing Solutions</span></div>'+langSwitch()+'</div>'+
+   '<div class="chero'+(exp?' exp':'')+'">'+(exp?'':'<span class="stamp">'+t("stamp")+'</span>')+'<span class="k">'+(exp?t("cvexk"):t("locked"))+'</span><span class="pn">'+p.n+'</span><span class="pp num">'+t("permo",{m:rm(p.p)})+(p.gift?t("freebot"):'')+'</span>'+
+   (exp?'<p>'+t("cvexp",{u:fmtMY(h.dl)})+'</p>':'<div class="cd num" id="cd">'+cdHTML()+'</div><p>'+t("cvhold",{u:fmtMY(h.dl)})+'</p>')+'</div>'+
+   '<div class="clist"><div><b>'+t("cvprice")+'</b><span class="num">'+t("kpricev",{m:rm(p.p)})+'</span></div><div><b>'+t("rad")+'</b><span class="num">'+rm(p.ad)+'</span></div><div><b>'+t("rteam")+'</b><span>'+t("cvteamv")+'</span></div><div><b>'+t("rgift")+'</b><span>'+(p.gift?t("rgiftv",{g:p.gift,a:rm(p.after)}):t("knone"))+'</span></div><div><b>'+t("rpay")+'</b><span>RM0</span></div></div>'+
+   '<div class="csteps"><h3>'+t("cvsteps")+'</h3><ol><li><i>1</i><div><b>'+t("cv1")+'</b><span>'+t("cv1v")+'</span></div></li><li><i>2</i><div><b>'+t("cv2")+'</b><span>'+t("cv2v")+'</span></div></li><li><i>3</i><div><b>'+t("cv3")+'</b><span>'+t("cv3v")+'</span></div></li></ol></div>'+
+   '<p class="cnote">'+t("cnote")+'</p>'+
+   '<button type="button" class="cbtn" id="cust-close">'+t("cbtn")+'</button></div>';
   $("cust").classList.add("on");}
-function say(t){return '<p class="say"><b>SKRIP</b>'+t+'</p>'}
+function say(x){return '<p class="say"><b>'+t("script")+'</b>'+x+'</p>'}
 
 var SL=[
-function(){return '<div class="s1wrap" style="position:absolute;inset:0"><div class="ask in"><span class="kick">Sebelum kita mula</span><h2 class="D">Bisnes anda <em>jenis apa?</em></h2></div><div class="s1">'+INDS.map(function(x){var o=x[0]==="other";
-   return '<button type="button" class="tile'+(o?' other':'')+'" data-ind="'+x[0]+'" data-story="'+x[3]+'"'+(o?'':' style="background-image:url('+ST[x[3]].img+')"')+'>'+(o?'<span class="q">?</span>':'')+'<span class="t"><b>'+x[1]+'</b><small>'+x[2]+'</small></span></button>'}).join("")+
+function(){return '<div class="s1wrap" style="position:absolute;inset:0"><div class="ask in"><span class="kick">'+t("s1k")+'</span><h2 class="D">'+t("s1h")+'</h2></div><div class="s1">'+INDS.map(function(x){var o=x[0]==="other",lab=t("ind")[x[0]];
+   return '<button type="button" class="tile'+(o?' other':'')+'" data-ind="'+x[0]+'" data-story="'+x[1]+'"'+(o?'':' style="background-image:url('+ST[x[1]].img+')"')+'>'+(o?'<span class="q">?</span>':'')+'<span class="t"><b>'+esc(lab[0])+'</b><small>'+esc(lab[1])+'</small></span></button>'}).join("")+
  '</div></div>'},
-function(){var s=ST[S.story];return '<div class="s2" style="position:absolute;inset:0"><div class="pic"><div class="blur" style="background-image:url('+s.img+')"></div><img src="'+s.img+'" alt="'+esc(s.who)+'"><div class="cap"><div><b>'+esc(s.name)+'</b><small>'+esc(s.who)+'</small></div><span>Pakej '+s.plan+'</span></div></div>'+
- '<div class="tell"><span class="kick in">'+(S.ind?"Bisnes macam anda":"Kisah pelanggan sebenar")+'</span><h2 class="D in">Kenali <em>'+esc(s.name)+'</em></h2>'+
- '<div class="was in d2"><b>Dulu</b><span>'+esc(s.before)+'</span></div>'+
- '<div class="stat in d3"><span class="v num">'+esc(s.v)+'</span><span class="l">'+esc(s.l)+'</span></div><p class="more in d3">'+esc(s.after)+'</p>'+
- '<div class="quote in d4">“'+esc(s.quote)+'”</div>'+
- '<div class="other-st"><small>Kisah lain</small>'+Object.keys(ST).map(function(k){return '<button type="button" data-k="story" data-v="'+k+'" aria-pressed="'+(S.story===k)+'">'+ST[k].tab+'</button>'}).join("")+'</div></div></div>'+
- say("“Bisnes ni macam bisnes anda. Dia mula dengan pakej "+s.plan+" sahaja.”")},
-function(){var s=ST[S.story];return '<div class="s3 dark" style="position:absolute;inset:0"><div><span class="kick in">Apa yang kami buat untuk '+esc(s.name)+'</span><h2 class="D in" style="margin-top:.6rem">Dia tak perlu <em>pandai marketing</em></h2></div>'+
- '<div class="flow"><div class="fl in d2"><span class="n">1</span><h3>Kami tanya pasal bisnes dia</h3><p>Apa yang dia jual, siapa pelanggan dia, apa yang dia nak lebih.</p><div class="mock"><div class="bub in"><small>Unifi Business ✓</small>Apa yang paling laku di kedai anda?</div><div class="bub out">'+esc(s.prod)+'</div></div></div>'+
- '<div class="fl in d3"><span class="n">2</span><h3>Kami buat poster &amp; ayat iklan</h3><p>Dalam BM atau English. Dia cuma semak dan setuju.</p><div class="mock posterm"><img src="'+s.img+'" alt=""><div><span>Siap ~5 hari</span><span>1 pindaan percuma</span></div></div></div>'+
- '<div class="fl in d4"><span class="n">3</span><h3>Iklan keluar, WhatsApp masuk</h3><p>Di Facebook, Instagram dan Google. Orang berminat terus hubungi dia.</p><div class="mock"><div class="ping"><i></i><span>Pelanggan baru<small>“Hi, nak tanya harga…”</small></span></div><div class="ping"><i></i><span>Pelanggan baru<small>“Masih ada stok?”</small></span></div></div></div></div>'+
- '<div class="deal"><div><b>Kerja kami</b><span>Rancang, reka, tulis, pantau</span></div><div><b>Kerja '+esc(s.name)+'</b><span>Hantar gambar, balas WhatsApp</span></div></div></div>'+
- say("“Anda fokus jual. Bahagian iklan, pasukan kami yang buat.”")},
-function(){var s=ST[S.story],cw=ctaWord();return '<div class="s4" style="position:absolute;inset:0"><div class="form"><div><span class="kick in">Sekarang giliran anda</span><h2 class="D in" style="margin-top:.6rem">Kalau '+esc(s.name)+' boleh, <em>anda pun boleh</em></h2></div>'+
- '<div class="f"><label for="biz">Nama bisnes</label><input id="biz" value="'+esc(S.biz)+'"></div>'+
- '<div class="f"><label for="sell">Paling laku</label><input id="sell" value="'+esc(S.sell)+'"></div>'+
- '<div class="f"><span class="fl2">Pelanggan dari mana</span>'+seg("where",WHERE)+'</div>'+
- '<div class="f"><span class="fl2">Nak lebih</span>'+seg("want",WANT)+'</div></div>'+
- '<div class="phonewrap in d2"><div class="phone"><div class="notch"><i></i></div><div class="fbtop">facebook</div><div class="post"><div class="ph"><i></i><div><b id="ad-biz">'+esc(S.biz)+'</b><small>Ditaja</small></div></div><p class="ptext">Jom cuba yang paling laku di '+esc(S.biz)+'!</p><div class="creative"><small>Baru · terhad</small><b id="ad-hook">'+esc(hook())+'</b><span>'+cw+'</span></div><div class="pcta"><span style="background:none;padding:0;font-weight:400">'+esc(S.biz)+'</span><span class="'+(cw==="WhatsApp"?"wa":"")+'">'+cw+'</span></div></div></div><p class="note">Contoh. Poster sebenar kami reka guna gambar anda.</p></div></div>'+
- say("“Ini contoh iklan bisnes anda di telefon pelanggan.”")},
-function(){var p=PLANS[S.plan],s=ST[S.story],day=Math.round(p.p/30),base=PLANS[s.plan==="Standard"?0:1];
- var t=p.gift?'<div class="ticket in d4"><div class="l"><s>RM500</s><b>RM0</b></div><div class="r"><b>Percuma: AI chatbot BotKu</b><span>Balas WhatsApp pelanggan 24 jam. '+p.gift+' bulan pertama percuma, kemudian '+rm(p.after)+' sebulan.</span></div></div>':'<div class="ticket off in d4"><div class="r"><b>Hadiah BotKu</b><span>Percuma untuk pakej RM450 ke atas sahaja.</span></div></div>';
- return '<div class="s5" style="position:absolute;inset:0"><div class="offer"><span class="kick in">Pakej untuk '+esc(S.biz)+'</span>'+
- '<div class="price in d2"><span class="v num">RM'+day+'</span><span class="u">sehari<small>Lebih kurang harga '+(day<=5?"secawan kopi":day<=20?"sepinggan nasi berlauk":"makan tengah hari berdua")+'</small></span></div>'+
- '<p class="pk in d2"><b>'+p.n+'</b> · '+rm(p.p)+' sebulan selama 12 bulan, tiada bayaran awal</p>'+
- '<div class="facts in d3"><div><b class="num">'+rm(p.ad)+'</b><span>nilai iklan &amp; servis, diberi terus</span></div><div><b>3 orang</b><span>pengurus, pereka poster, penulis iklan</span></div><div><b>FB · IG · Google</b><span>tempat iklan anda muncul</span></div></div>'+t+'</div>'+
- '<div class="side"><div class="vs in d2"><img src="'+s.img+'" alt=""><p>'+esc(s.name)+' guna <b>'+s.plan+'</b> dan dapat <b>'+esc(s.v)+' '+esc(s.l)+'</b>.'+(p.ad>base.ad?' Pakej ini beri <b>'+Math.round(p.ad/base.ad)+'× bajet</b> dia.':'')+'</p></div>'+
- '<div class="plans">'+PLANS.map(function(q,i){return '<button type="button" data-plan="'+i+'" aria-pressed="'+(i===S.plan)+'"><b>'+q.n+'</b><span class="num">'+rm(q.p)+' sebulan</span></button>'}).join("")+'</div><p class="fine">Harga belum termasuk SST 8%. BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.</p></div></div>'+
- say("“RM"+day+" sehari. Satu pelanggan baru pun dah boleh tutup kos ni.”")},
-function(){var p=PLANS[S.plan],L=S.locked,until=new Date((L||Date.now())+48*3600e3),u=until.toLocaleString("ms-MY",{weekday:"long",day:"numeric",month:"long",hour:"numeric",minute:"2-digit"});
- return '<div class="s7" style="position:absolute;inset:0"><div class="pick"><div><span class="kick in">Sebelum anda bincang dengan partner</span><h2 class="D in" style="margin-top:.6rem">Kunci harga &amp; hadiah <em>48 jam</em></h2><p class="lead in">Kunci bermaksud kami simpan harga dan hadiah ini khas untuk anda selama 48 jam. Tiada bayaran, tiada kontrak. Anda bebas bincang dengan partner dulu.</p></div>'+
- '<div class="pkrow in d2">'+PLANS.map(function(q,i){return '<button type="button" data-plan="'+i+'" aria-pressed="'+(i===S.plan)+'"'+(L?' disabled':'')+'><b>'+q.n+'</b><span class="num">'+rm(q.p)+' sebulan</span><em>'+(q.gift?'+ BotKu percuma '+q.gift+' bln':'&nbsp;')+'</em></button>'}).join("")+'</div>'+
- '<div class="keeps in d3"><p class="kh">Yang dikunci untuk anda</p><div><b>Harga '+p.n+'</b><span class="num">'+rm(p.p)+' sebulan, 12 bulan</span></div><div><b>Hadiah BotKu</b><span>'+(p.gift?'RM0 untuk '+p.gift+' bulan pertama':'Tiada untuk pakej ini')+'</span></div><div><b>Tarikh iklan keluar</b><span>Sekitar '+addWD(10)+'</span></div><div><b>Bayaran sekarang</b><span>RM0, tiada bayaran awal</span></div></div></div>'+
- '<div class="lockcard'+(L?' done':'')+' in d2">'+(L?'<span class="stamp">DIKUNCI</span>':'')+'<span class="k">'+(L?'Pakej anda dikunci':'Pakej dipilih')+'</span><span class="pn">'+p.n+'</span><span class="pp num">'+rm(p.p)+' sebulan'+(p.gift?' + BotKu percuma':'')+'</span>'+
- '<div class="cd num" id="cd">'+cdHTML()+'</div>'+(L?'<p class="until">Dipegang sehingga <b>'+u+'</b>.</p>':'<p class="until">Masa bermula bila anda tekan butang di bawah.</p>')+
- '<ul class="ticks"><li>Harga '+rm(p.p)+' sebulan tidak berubah</li><li>'+(p.gift?'Hadiah BotKu RM0 untuk '+p.gift+' bulan disimpan':'Tarikh iklan keluar sekitar '+addWD(10)+' disimpan')+'</li><li>RM0 sekarang, tiada kontrak sehingga anda balas YA</li></ul>'+
- '<button type="button" class="lockbtn" id="lock"'+(L?' disabled':'')+'>'+(L?'Dikunci ✓':'Kunci harga &amp; hadiah')+'</button></div></div>'+
- say(L?"“Dah dikunci. Anda ada 48 jam, dan langkah seterusnya cuma balas YA.”":"“Saya kunci harga dan hadiah ni untuk anda. Tak perlu bayar apa-apa sekarang.”")},
-function(){var p=PLANS[S.plan],L=S.locked,day=Math.round(p.p/30),u=L?fmtMY(dlDate()):"";
+function(){var s=ST[S.story],x=sx(S.story);return '<div class="s2" style="position:absolute;inset:0"><div class="pic"><div class="blur" style="background-image:url('+s.img+')"></div><img src="'+s.img+'" alt="'+esc(s.who)+'"><div class="cap"><div><b>'+esc(x.name)+'</b><small>'+esc(s.who)+'</small></div><span>'+t("plantag",{p:s.plan})+'</span></div></div>'+
+ '<div class="tell"><span class="kick in">'+(S.ind?t("s2k1"):t("s2k2"))+'</span><h2 class="D in">'+t("s2h",{n:esc(x.name)})+'</h2>'+
+ '<div class="was in d2"><b>'+t("before")+'</b><span>'+esc(x.before)+'</span></div>'+
+ '<div class="stat in d3"><span class="v num">'+esc(s.v)+'</span><span class="l">'+esc(x.l)+'</span></div><p class="more in d3">'+esc(x.after)+'</p>'+
+ '<div class="quote in d4">“'+esc(x.quote)+'”</div>'+
+ '<div class="other-st"><small>'+t("others")+'</small>'+Object.keys(ST).map(function(k){return '<button type="button" data-k="story" data-v="'+k+'" aria-pressed="'+(S.story===k)+'">'+esc(sx(k).tab)+'</button>'}).join("")+'</div></div></div>'+
+ say(t("s2say",{p:s.plan}))},
+function(){var s=ST[S.story],x=sx(S.story);return '<div class="s3 dark" style="position:absolute;inset:0"><div><span class="kick in">'+t("s3k",{n:esc(x.name)})+'</span><h2 class="D in" style="margin-top:.6rem">'+t("s3h")+'</h2></div>'+
+ '<div class="flow"><div class="fl in d2"><span class="n">1</span><h3>'+t("f1h")+'</h3><p>'+t("f1p")+'</p><div class="mock"><div class="bub in"><small>Unifi Business ✓</small>'+t("f1q")+'</div><div class="bub out">'+esc(x.prod)+'</div></div></div>'+
+ '<div class="fl in d3"><span class="n">2</span><h3>'+t("f2h")+'</h3><p>'+t("f2p")+'</p><div class="mock posterm"><img src="'+s.img+'" alt=""><div><span>'+t("f2a")+'</span><span>'+t("f2b")+'</span></div></div></div>'+
+ '<div class="fl in d4"><span class="n">3</span><h3>'+t("f3h")+'</h3><p>'+t("f3p")+'</p><div class="mock"><div class="ping"><i></i><span>'+t("newc")+'<small>'+t("m1")+'</small></span></div><div class="ping"><i></i><span>'+t("newc")+'<small>'+t("m2")+'</small></span></div></div></div></div>'+
+ '<div class="deal"><div><b>'+t("ours")+'</b><span>'+t("oursv")+'</span></div><div><b>'+t("theirs",{n:esc(x.name)})+'</b><span>'+t("theirsv")+'</span></div></div></div>'+
+ say(t("s3say"))},
+function(){var x=sx(S.story),cw=ctaWord(),b=S.biz||t("defbiz");return '<div class="s4" style="position:absolute;inset:0"><div class="form"><div><span class="kick in">'+t("s4k")+'</span><h2 class="D in" style="margin-top:.6rem">'+t("s4h",{n:esc(x.name)})+'</h2></div>'+
+ '<div class="f"><label for="biz">'+t("lbiz")+'</label><input id="biz" value="'+esc(S.biz)+'"></div>'+
+ '<div class="f"><label for="sell">'+t("lsell")+'</label><input id="sell" value="'+esc(S.sell)+'"></div>'+
+ '<div class="f"><span class="fl2">'+t("lwhere")+'</span>'+seg("where",t("where"))+'</div>'+
+ '<div class="f"><span class="fl2">'+t("lwant")+'</span>'+seg("want",t("want"))+'</div></div>'+
+ '<div class="phonewrap in d2"><div class="phone"><div class="notch"><i></i></div><div class="fbtop">facebook</div><div class="post"><div class="ph"><i></i><div><b id="ad-biz">'+esc(b)+'</b><small>'+t("spons")+'</small></div></div><p class="ptext" id="ad-text">'+esc(t("ptext",{b:b}))+'</p><div class="creative"><small>'+t("newtag")+'</small><b id="ad-hook">'+esc(hook())+'</b><span>'+cw+'</span></div><div class="pcta"><span style="background:none;padding:0;font-weight:400" id="ad-biz2">'+esc(b)+'</span><span class="'+(S.want==="wa"?"wa":"")+'">'+cw+'</span></div></div></div><p class="note">'+t("adnote")+'</p></div></div>'+
+ say(t("s4say"))},
+function(){var p=PLANS[S.plan],s=ST[S.story],x=sx(S.story),day=Math.round(p.p/30),base=PLANS[s.plan==="Standard"?0:1],b=S.biz||t("defbiz");
+ var tk=p.gift?'<div class="ticket in d4"><div class="l"><s>RM500</s><b>RM0</b></div><div class="r"><b>'+t("tk")+'</b><span>'+t("tkv",{g:p.gift,a:rm(p.after)})+'</span></div></div>':'<div class="ticket off in d4"><div class="r"><b>'+t("tko")+'</b><span>'+t("tkov")+'</span></div></div>';
+ return '<div class="s5" style="position:absolute;inset:0"><div class="offer"><span class="kick in">'+t("s5k",{b:esc(b)})+'</span>'+
+ '<div class="price in d2"><span class="v num">RM'+day+'</span><span class="u">'+t("perday")+'<small>'+t(day<=5?"cmp1":day<=20?"cmp2":"cmp3")+'</small></span></div>'+
+ '<p class="pk in d2">'+t("pkline",{p:'<b>'+p.n+'</b>',m:rm(p.p)})+'</p>'+
+ '<div class="facts in d3"><div><b class="num">'+rm(p.ad)+'</b><span>'+t("fa")+'</span></div><div><b>'+t("fb")+'</b><span>'+t("fbv")+'</span></div><div><b>FB · IG · Google</b><span>'+t("fcv")+'</span></div></div>'+tk+'</div>'+
+ '<div class="side"><div class="vs in d2"><img src="'+s.img+'" alt=""><p>'+t("vs",{n:esc(x.name),p:s.plan,v:esc(s.v),l:esc(x.l)})+(p.ad>base.ad?t("vsx",{x:Math.round(p.ad/base.ad)}):'')+'</p></div>'+
+ '<div class="plans">'+PLANS.map(function(q,i){return '<button type="button" data-plan="'+i+'" aria-pressed="'+(i===S.plan)+'"><b>'+q.n+'</b><span class="num">'+t("permo",{m:rm(q.p)})+'</span></button>'}).join("")+'</div><p class="fine">'+t("fine")+'</p></div></div>'+
+ say(t("s5say",{d:day}))},
+function(){var p=PLANS[S.plan],L=S.locked,u=fmtMY(new Date((L||Date.now())+48*3600e3));
+ return '<div class="s7" style="position:absolute;inset:0"><div class="pick"><div><span class="kick in">'+t("s6k")+'</span><h2 class="D in" style="margin-top:.6rem">'+t("s6h")+'</h2><p class="lead in">'+t("lead")+'</p></div>'+
+ '<div class="pkrow in d2">'+PLANS.map(function(q,i){return '<button type="button" data-plan="'+i+'" aria-pressed="'+(i===S.plan)+'"'+(L?' disabled':'')+'><b>'+q.n+'</b><span class="num">'+t("permo",{m:rm(q.p)})+'</span><em>'+(q.gift?t("gtag",{g:q.gift}):'&nbsp;')+'</em></button>'}).join("")+'</div>'+
+ '<div class="keeps in d3"><p class="kh">'+t("kh")+'</p><div><b>'+t("kprice",{p:p.n})+'</b><span class="num">'+t("kpricev",{m:rm(p.p)})+'</span></div><div><b>'+t("kgift")+'</b><span>'+(p.gift?t("kgiftv",{g:p.gift}):t("knone"))+'</span></div><div><b>'+t("kdate")+'</b><span>'+t("kdatev",{d:addWD(10)})+'</span></div><div><b>'+t("kpay")+'</b><span>'+t("kpayv")+'</span></div></div></div>'+
+ '<div class="lockcard'+(L?' done':'')+' in d2">'+(L?'<span class="stamp">'+t("stamp")+'</span>':'')+'<span class="k">'+(L?t("locked"):t("chosen"))+'</span><span class="pn">'+p.n+'</span><span class="pp num">'+t("permo",{m:rm(p.p)})+(p.gift?t("freebot"):'')+'</span>'+
+ '<div class="cd num" id="cd">'+cdHTML()+'</div>'+(L?'<p class="until">'+t("held",{u:u})+'</p>':'<p class="until">'+t("starts")+'</p>')+
+ '<ul class="ticks"><li>'+t("t1",{m:rm(p.p)})+'</li><li>'+(p.gift?t("t2",{g:p.gift}):t("t2b",{d:addWD(10)}))+'</li><li>'+t("t3")+'</li></ul>'+
+ '<button type="button" class="lockbtn" id="lock"'+(L?' disabled':'')+'>'+(L?t("lockdone"):t("lockbtn"))+'</button></div></div>'+
+ say(L?t("s6say1"):t("s6say0"))},
+function(){var p=PLANS[S.plan],L=S.locked,day=Math.round(p.p/30),u=L?fmtMY(dlDate()):"",b=S.biz||t("defbiz");
  return '<div class="s9" style="position:absolute;inset:0"><div class="rc">'+
- '<span class="kick in">Pilihan anda</span><h2 class="D in">Pelan untuk <em>'+esc(S.biz||"bisnes anda")+'</em></h2>'+
+ '<span class="kick in">'+t("s7k")+'</span><h2 class="D in">'+t("s7h",{b:esc(b)})+'</h2>'+
  '<div class="rows in d2">'+
- '<div><b>Pakej</b><span>'+p.n+', 12 bulan</span></div>'+
- '<div><b>Bayaran bulanan</b><span class="num">'+rm(p.p)+' (belum SST 8%)</span></div>'+
- '<div><b>Nilai iklan &amp; servis</b><span class="num">'+rm(p.ad)+', diberi terus</span></div>'+
- '<div><b>Pasukan</b><span>Pengurus kempen, pereka poster, penulis iklan</span></div>'+
- '<div><b>Iklan muncul di</b><span>Facebook, Instagram, Google</span></div>'+
- '<div><b>Hadiah BotKu</b><span>'+(p.gift?'RM0 untuk '+p.gift+' bulan, kemudian '+rm(p.after)+'/bulan':'Untuk pakej RM450 ke atas')+'</span></div>'+
- '<div><b>Bayaran sekarang</b><span>RM0</span></div>'+
+ '<div><b>'+t("rpk")+'</b><span>'+t("rpkv",{p:p.n})+'</span></div>'+
+ '<div><b>'+t("rmo")+'</b><span class="num">'+t("rmov",{m:rm(p.p)})+'</span></div>'+
+ '<div><b>'+t("rad")+'</b><span class="num">'+t("radv",{a:rm(p.ad)})+'</span></div>'+
+ '<div><b>'+t("rteam")+'</b><span>'+t("rteamv")+'</span></div>'+
+ '<div><b>'+t("rplat")+'</b><span>Facebook, Instagram, Google</span></div>'+
+ '<div><b>'+t("rgift")+'</b><span>'+(p.gift?t("rgiftv",{g:p.gift,a:rm(p.after)}):t("rgiftn"))+'</span></div>'+
+ '<div><b>'+t("rpay")+'</b><span>RM0</span></div>'+
  '</div>'+
- '<div class="flow3 in d3"><span><i>1</i>Balas YA hari ini</span><em>›</em><span><i>2</i>Unifi WhatsApp anda <span class="tick" aria-label="akaun sah">✓</span></span><em>›</em><span><i>3</i>Iklan keluar '+addWD(10)+'</span></div>'+
+ '<div class="flow3 in d3"><span><i>1</i>'+t("fl1")+'</span><em>›</em><span><i>2</i>'+t("fl2")+' <span class="tick" aria-label="'+t("verified")+'">✓</span></span><em>›</em><span><i>3</i>'+t("fl3",{d:addWD(10)})+'</span></div>'+
  '</div>'+
- '<div class="mine2 in d2'+(L?' locked':'')+'">'+(L?'<span class="stamp">DIKUNCI</span>':'')+
- '<span class="k">Pakej anda</span><span class="pn">'+p.n+'</span>'+
- '<div class="pr2"><b class="num">'+rm(p.p)+'</b><span>sebulan · lebih kurang RM'+day+' sehari</span></div>'+
- (p.gift?'<div class="gift2"><s>RM500</s><b>RM0</b><span>AI chatbot BotKu, '+p.gift+' bulan pertama</span></div>':'')+
- (L?'<div class="cd num" id="cd">'+cdHTML()+'</div><p class="lk">Harga &amp; hadiah dipegang sehingga <b>'+u+'</b></p>':'<div class="cd num" id="cd">'+cdHTML()+'</div><p class="lk">Belum dikunci. Tekan butang di bawah untuk kunci harga &amp; hadiah 48 jam dan hantar ringkasan.</p>')+
- '<div class="acts2"><button type="button" class="btn sendw" id="wa">'+(L?'Hantar ringkasan ke WhatsApp':'Kunci &amp; hantar ke WhatsApp')+'</button><button type="button" class="ghost" id="copy">Salin ringkasan</button><span class="toast" id="toast"></span></div>'+
- '<p class="fineb">BotKu disediakan oleh perunding anda (BotKu.ai), bukan sebahagian kontrak TM.</p></div></div>'+
- say(L?"“Ini pilihan anda. Saya hantar ringkasan ke WhatsApp sekarang, langkah pertama cuma balas YA.”":"“Ini pilihan anda. Saya kunci dan hantar ringkasan ke WhatsApp sekarang.”")}
+ '<div class="mine2 in d2'+(L?' locked':'')+'">'+(L?'<span class="stamp">'+t("stamp")+'</span>':'')+
+ '<span class="k">'+t("yours")+'</span><span class="pn">'+p.n+'</span>'+
+ '<div class="pr2"><b class="num">'+rm(p.p)+'</b><span>'+t("pr2",{d:day})+'</span></div>'+
+ (p.gift?'<div class="gift2"><s>RM500</s><b>RM0</b><span>'+t("gift2",{g:p.gift})+'</span></div>':'')+
+ '<div class="cd num" id="cd">'+cdHTML()+'</div><p class="lk">'+(L?t("lk1",{u:u}):t("lk0"))+'</p>'+
+ '<div class="acts2"><button type="button" class="btn sendw" id="wa">'+(L?t("send1"):t("send0"))+'</button><button type="button" class="ghost" id="copy">'+t("copy")+'</button><span class="toast" id="toast"></span></div>'+
+ '<p class="fineb">'+t("fineb")+'</p></div></div>'+
+ say(L?t("s7say1"):t("s7say0"))}
 ];
 
+function chrome(){document.documentElement.lang=S.lang==="bm"?"ms":S.lang;$("langbox").innerHTML=langSwitch();
+  $("dots").innerHTML=t("titles").map(function(x,i){return '<button type="button" data-go="'+i+'"'+(i===S.i?' aria-current="true"':'')+'>'+x+'</button>'}).join("");
+  $("prev").setAttribute("aria-label",t("prev"));$("next").setAttribute("aria-label",t("next"));nav();}
 function build(){
-  $("stage").innerHTML=SL.map(function(f,i){return '<section class="slide'+(i===S.i?' on':'')+'">'+f()+'</section>'}).join("");
-  $("dots").innerHTML=TITLES.map(function(t,i){return '<button type="button" data-go="'+i+'"'+(i===S.i?' aria-current="true"':'')+'>'+t+'</button>'}).join("");nav();
+  $("stage").innerHTML=SL.map(function(f,i){return '<section class="slide'+(i===S.i?' on':'')+'">'+f()+'</section>'}).join("");chrome();
 }
 function redraw(skip){Array.prototype.forEach.call($("stage").children,function(sec,i){if(i!==skip)sec.innerHTML=SL[i]();});}
-function nav(){var c=$("count");if(c)c.textContent=(S.i+1)+" / "+SL.length+" · "+TITLES[S.i];$("prev").disabled=S.i===0;$("next").disabled=S.i===SL.length-1;}
+function nav(){var c=$("count");if(c)c.textContent=(S.i+1)+" / "+SL.length+" · "+t("titles")[S.i];$("prev").disabled=S.i===0;$("next").disabled=S.i===SL.length-1;}
 function go(n){n=Math.max(0,Math.min(SL.length-1,n));if(n===S.i)return;S.i=n;
   Array.prototype.forEach.call($("stage").children,function(s,i){s.classList.toggle("on",i===n)});
   Array.prototype.forEach.call($("dots").children,function(b,i){if(i===n)b.setAttribute("aria-current","true");else b.removeAttribute("aria-current")});nav();document.querySelector(".viewport").scrollTop=0;}
+function setLang(l){if(!T[l]||l===S.lang)return;S.lang=l;try{localStorage.setItem("dms-lang",l);}catch(e){}redraw();chrome();if($("cust").classList.contains("on"))custView();}
 var MOB=window.matchMedia("(max-width:53.75em)");
 function fit(){var v=document.querySelector(".viewport");if(MOB.matches){var st0=$("stage");st0.style.transform="";st0.style.width="";st0.style.height="";return;}var W=v.clientWidth,H=v.clientHeight,a=W/H,sw=a>=16/9?900*a:1600,sh=a>=16/9?900:1600/a,st=$("stage");st.style.width=sw+"px";st.style.height=sh+"px";st.style.transform="scale("+(W/sw)+")";}
 document.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.lang)return setLang(b.dataset.lang);
   if(b.dataset.go)return go(+b.dataset.go);
   if(b.id==="next")return go(S.i+1); if(b.id==="prev")return go(S.i-1);
   if(b.dataset.ind){S.ind=b.dataset.ind;S.story=b.dataset.story;redraw(0);setTimeout(function(){go(1)},200);return;}
@@ -689,11 +823,11 @@ document.addEventListener("click",function(e){var b=e.target.closest("button");i
   if(b.dataset.plan){S.plan=+b.dataset.plan;redraw();return;}
   if(b.id==="lock"&&!S.locked){S.locked=Date.now();redraw();return;}
   if(b.id==="wa"){if(!S.locked){S.locked=Date.now();redraw();}window.open("https://wa.me/?text="+encodeURIComponent(summary()),"_blank");return;}
-  if(b.id==="copy"){var tx=summary();var done=function(){var t=$("toast");if(t)t.textContent="Disalin. Tampal dalam WhatsApp pelanggan.";};try{navigator.clipboard.writeText(tx).then(done,function(){prompt("Salin ringkasan:",tx);});}catch(e){prompt("Salin ringkasan:",tx);}return;}
+  if(b.id==="copy"){var tx=summary();var done=function(){var el=$("toast");if(el)el.textContent=t("copied");};try{navigator.clipboard.writeText(tx).then(done,function(){prompt(t("copyp"),tx);});}catch(err){prompt(t("copyp"),tx);}return;}
   if(b.id==="cust-close"){$("cust").classList.remove("on");return;}
 });
-document.addEventListener("input",function(e){var t=e.target;if(t.id!=="biz"&&t.id!=="sell")return;S[t.id]=t.value;
-  $("ad-biz").textContent=S.biz||"Bisnes anda";$("ad-hook").textContent=hook();redraw(3);});
+document.addEventListener("input",function(e){var el=e.target;if(el.id!=="biz"&&el.id!=="sell")return;S[el.id]=el.value;var b=S.biz||t("defbiz");
+  $("ad-biz").textContent=b;$("ad-biz2").textContent=b;$("ad-text").textContent=t("ptext",{b:b});$("ad-hook").textContent=hook();redraw(3);});
 document.addEventListener("keydown",function(e){if(e.target.tagName==="INPUT")return;if(e.key==="ArrowRight"||e.key==="PageDown")go(S.i+1);if(e.key==="ArrowLeft"||e.key==="PageUp")go(S.i-1);});
 window.addEventListener("resize",fit);
 custView();build();fit();
@@ -708,13 +842,13 @@ custView();build();fit();
   if(now<lockUntil||!fresh){if(fresh)hist=[Math.abs(d)];return;}
   hist=[Math.abs(d)];lockUntil=now+420;go(S.i+dir);
  },{passive:false});
- var sx=0,sy=0,st=0;
- document.addEventListener("touchstart",function(e){if(e.target.closest&&e.target.closest("input"))return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;st=Date.now();},{passive:true});
- document.addEventListener("touchend",function(e){if(!st||$("cust").classList.contains("on"))return;var t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+ var sx0=0,sy0=0,st=0;
+ document.addEventListener("touchstart",function(e){if(e.target.closest&&e.target.closest("input"))return;var p=e.touches[0];sx0=p.clientX;sy0=p.clientY;st=Date.now();},{passive:true});
+ document.addEventListener("touchend",function(e){if(!st||$("cust").classList.contains("on"))return;var p=e.changedTouches[0],dx=p.clientX-sx0,dy=p.clientY-sy0;
   if(Date.now()-st<700&&Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)go(S.i+(dx<0?1:-1));st=0;},{passive:true});
 })();
 
-window.addEventListener("hashchange",function(){custView();redraw();});
+window.addEventListener("hashchange",function(){custView();redraw();chrome();});
 </script>
 
 </body>

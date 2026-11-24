@@ -480,6 +480,52 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--or);outline-off
   .cbd{max-height:26rem}
   .msg{font-size:.875rem}
 }
+
+/* last slide: what they chose */
+.s9{display:grid;grid-template-columns:1.25fr 1fr;gap:4rem;padding:4rem 4rem 5rem}
+.rc{display:flex;flex-direction:column;gap:1.3rem;min-width:0}
+.s9 h2{font-size:4rem;overflow-wrap:anywhere}
+.s9 h2 em{font-style:normal;color:var(--blue)}
+.rows{display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.rows div{display:flex;justify-content:space-between;align-items:baseline;gap:1.5rem;padding:.95rem 0;border-bottom:1px solid var(--rule);font-size:1.375rem}
+.rows b{font-weight:700;flex:none}
+.rows span{color:var(--mute);text-align:right}
+.flow3{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:auto;font-size:1.125rem;font-weight:700}
+.flow3>span{display:inline-flex;align-items:center;gap:.5rem;background:var(--cream);border-radius:999px;padding:.55rem 1rem .55rem .55rem}
+.flow3 i{width:1.8rem;height:1.8rem;border-radius:50%;background:var(--or);color:#fff;font-style:normal;font-size:.9375rem;display:flex;align-items:center;justify-content:center}
+.flow3>em{font-style:normal;color:var(--or);font-weight:900}
+.flow3 .tick{width:1.1rem;height:1.1rem;font-size:.6875rem}
+.mine2{position:relative;overflow:hidden;background:var(--ink);color:#fff;border-radius:2rem;padding:2.2rem;display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.mine2.locked{background:var(--blue)}
+.mine2 .k{font-size:.875rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#FFB487}
+.mine2 .pn{font-family:var(--disp);font-stretch:112%;font-weight:900;font-size:4rem;line-height:.95;text-transform:uppercase;overflow-wrap:anywhere}
+.pr2{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap}
+.pr2 b{font-family:var(--disp);font-stretch:115%;font-weight:900;font-size:2.5rem}
+.pr2 span{font-size:1.125rem;opacity:.8}
+.gift2{display:flex;align-items:center;gap:.8rem;background:var(--or);border-radius:1rem;padding:.8rem 1rem;flex-wrap:wrap}
+.gift2 s{opacity:.8}
+.gift2 b{font-family:var(--disp);font-stretch:125%;font-weight:900;font-size:1.75rem}
+.gift2 span{font-size:1.0625rem}
+.lk{font-size:1.125rem;line-height:1.45;opacity:.9}
+.lk b{color:#FFB487}
+.mine2.locked .lk b{color:#FFD9C2}
+.acts2{display:flex;flex-direction:column;gap:.6rem;margin-top:auto}
+.sendw{background:var(--wa);color:#073B1C;width:100%;font-size:1.25rem;padding:1.05rem}
+.acts2 .ghost{width:100%}
+.acts2 .toast{text-align:center}
+.fineb{font-size:.875rem;opacity:.65}
+@media (max-width:53.75em){
+  .s9{grid-template-columns:1fr;gap:2rem;padding:1.8rem max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+  .s9 h2{font-size:2rem}
+  .rows div{font-size:1rem;flex-direction:column;gap:.15rem}
+  .rows span{text-align:left}
+  .flow3{font-size:.9375rem}
+  .mine2{padding:1.5rem;border-radius:1.6rem}
+  .mine2 .pn{font-size:2.5rem}
+  .pr2 b{font-size:1.75rem}
+  .pr2 span,.lk{font-size:1rem}
+  .sendw{font-size:1.0625rem;white-space:normal}
+}
 @media (prefers-reduced-motion:reduce){.slide,.slide .in{transition:none}}
 </style>
 </head>
@@ -600,16 +646,28 @@ function(){var p=PLANS[S.plan],L=S.locked,until=new Date((L||Date.now())+48*3600
  '<ul class="ticks"><li>Harga '+rm(p.p)+' sebulan tidak berubah</li><li>'+(p.gift?'Hadiah BotKu RM0 untuk '+p.gift+' bulan disimpan':'Tarikh iklan keluar sekitar '+addWD(10)+' disimpan')+'</li><li>RM0 sekarang, tiada kontrak sehingga anda balas YA</li></ul>'+
  '<button type="button" class="lockbtn" id="lock"'+(L?' disabled':'')+'>'+(L?'Dikunci ✓':'Kunci harga &amp; hadiah')+'</button></div></div>'+
  say(L?"“Dah dikunci. Anda ada 48 jam, dan langkah seterusnya cuma balas YA.”":"“Saya kunci harga dan hadiah ni untuk anda. Tak perlu bayar apa-apa sekarang.”")},
-function(){var p=PLANS[S.plan],n=ST[S.story].name;return '<div class="s8" style="position:absolute;inset:0"><div class="go">'+
- '<span class="kick in">Langkah seterusnya · iklan keluar sekitar '+addWD(10)+'</span><h2 class="D in">Jom mula macam <em>'+esc(n)+'</em></h2>'+
- '<ol class="steps3">'+
- '<li class="in d2"><i>1</i><div><span class="w">Hari ini</span><b>Balas “YA”</b><p>Pakej '+p.n+' yang dikunci terus didaftarkan. Hantar gambar SSM atau IC pemilik.</p></div></li>'+
- '<li class="in d3"><i>2</i><div><span class="w">Dalam 3 hari bekerja</span><b>Unifi WhatsApp anda <span class="tick" aria-label="akaun sah">✓</span></b><p>Dari WhatsApp rasmi Unifi yang bertanda sah. Hantar logo dan gambar produk.</p></div></li>'+
- '<li class="in d4"><i>3</i><div><span class="w">Sekitar '+addWD(10)+'</span><b>Iklan keluar</b><p>Anda setuju poster, dan pelanggan mula WhatsApp '+esc(S.biz)+'.</p></div></li>'+
- '</ol></div>'+
- '<div class="send in d2"><div class="chat"><div class="chd"><i></i><span>'+esc(S.biz)+'<small>Ringkasan yang pelanggan terima</small></span></div><div class="cbd"><div class="msg">'+esc(summary())+'</div></div></div>'+
- '<button type="button" class="btn wa2" id="wa">Hantar ke WhatsApp</button><button type="button" class="ghost2" id="copy">Salin ringkasan</button><span class="toast2" id="toast"></span></div></div>'+
- say("“Saya hantar ringkasan ni sekarang. Langkah pertama cuma balas YA, yang lain kami uruskan.”")}
+function(){var p=PLANS[S.plan],L=S.locked,day=Math.round(p.p/30),u=L?fmtMY(dlDate()):"";
+ return '<div class="s9" style="position:absolute;inset:0"><div class="rc">'+
+ '<span class="kick in">Pilihan anda</span><h2 class="D in">Pelan untuk <em>'+esc(S.biz||"bisnes anda")+'</em></h2>'+
+ '<div class="rows in d2">'+
+ '<div><b>Pakej</b><span>'+p.n+', 12 bulan</span></div>'+
+ '<div><b>Bayaran bulanan</b><span class="num">'+rm(p.p)+' (belum SST 8%)</span></div>'+
+ '<div><b>Nilai iklan &amp; servis</b><span class="num">'+rm(p.ad)+', diberi terus</span></div>'+
+ '<div><b>Pasukan</b><span>Pengurus kempen, pereka poster, penulis iklan</span></div>'+
+ '<div><b>Iklan muncul di</b><span>Facebook, Instagram, Google</span></div>'+
+ '<div><b>Hadiah BotKu</b><span>'+(p.gift?'RM0 untuk '+p.gift+' bulan, kemudian '+rm(p.after)+'/bulan':'Untuk pakej RM450 ke atas')+'</span></div>'+
+ '<div><b>Bayaran sekarang</b><span>RM0</span></div>'+
+ '</div>'+
+ '<div class="flow3 in d3"><span><i>1</i>Balas YA hari ini</span><em>›</em><span><i>2</i>Unifi WhatsApp anda <span class="tick" aria-label="akaun sah">✓</span></span><em>›</em><span><i>3</i>Iklan keluar '+addWD(10)+'</span></div>'+
+ '</div>'+
+ '<div class="mine2 in d2'+(L?' locked':'')+'">'+(L?'<span class="stamp">DIKUNCI</span>':'')+
+ '<span class="k">Pakej anda</span><span class="pn">'+p.n+'</span>'+
+ '<div class="pr2"><b class="num">'+rm(p.p)+'</b><span>sebulan · lebih kurang RM'+day+' sehari</span></div>'+
+ (p.gift?'<div class="gift2"><s>RM500</s><b>RM0</b><span>AI chatbot BotKu, '+p.gift+' bulan pertama</span></div>':'')+
+ (L?'<div class="cd num" id="cd">'+cdHTML()+'</div><p class="lk">Harga &amp; hadiah dipegang sehingga <b>'+u+'</b></p>':'<div class="cd num" id="cd">'+cdHTML()+'</div><p class="lk">Belum dikunci. Tekan butang di bawah untuk kunci harga &amp; hadiah 48 jam dan hantar ringkasan.</p>')+
+ '<div class="acts2"><button type="button" class="btn sendw" id="wa">'+(L?'Hantar ringkasan ke WhatsApp':'Kunci &amp; hantar ke WhatsApp')+'</button><button type="button" class="ghost" id="copy">Salin ringkasan</button><span class="toast" id="toast"></span></div>'+
+ '<p class="fineb">BotKu disediakan oleh perunding anda (BotKu.ai), bukan sebahagian kontrak TM.</p></div></div>'+
+ say(L?"“Ini pilihan anda. Saya hantar ringkasan ke WhatsApp sekarang, langkah pertama cuma balas YA.”":"“Ini pilihan anda. Saya kunci dan hantar ringkasan ke WhatsApp sekarang.”")}
 ];
 
 function build(){
@@ -630,7 +688,7 @@ document.addEventListener("click",function(e){var b=e.target.closest("button");i
   if(b.dataset.k){S[b.dataset.k]=b.dataset.v;redraw();return;}
   if(b.dataset.plan){S.plan=+b.dataset.plan;redraw();return;}
   if(b.id==="lock"&&!S.locked){S.locked=Date.now();redraw();return;}
-  if(b.id==="wa"){window.open("https://wa.me/?text="+encodeURIComponent(summary()),"_blank");return;}
+  if(b.id==="wa"){if(!S.locked){S.locked=Date.now();redraw();}window.open("https://wa.me/?text="+encodeURIComponent(summary()),"_blank");return;}
   if(b.id==="copy"){var tx=summary();var done=function(){var t=$("toast");if(t)t.textContent="Disalin. Tampal dalam WhatsApp pelanggan.";};try{navigator.clipboard.writeText(tx).then(done,function(){prompt("Salin ringkasan:",tx);});}catch(e){prompt("Salin ringkasan:",tx);}return;}
   if(b.id==="cust-close"){$("cust").classList.remove("on");return;}
 });

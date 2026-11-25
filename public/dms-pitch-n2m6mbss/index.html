@@ -301,6 +301,9 @@ tr.tot td{border-top-color:#1400DD}
 .viewer,.picker{min-height:0}
 .viewer{display:flex;flex-direction:column;gap:14px;padding:18px}
 .v-img{border-radius:14px;overflow:hidden;background:#D8DEE8;aspect-ratio:16/9;flex:none}
+/* image gives up height so the story text and numbers always fit below it */
+.viewer .v-img{flex:1 1 auto;min-height:7rem;aspect-ratio:auto}
+.viewer .v-body{flex:none}
 .v-img img{width:100%;height:100%;object-fit:contain;display:block}
 .v-body{display:flex;flex-direction:column;gap:6px}
 .v-tags{display:flex;gap:8px;align-items:center}
@@ -314,6 +317,11 @@ tr.tot td{border-top-color:#1400DD}
 .v-met b{display:block;font-family:var(--display);font-weight:900;font-size:1.375rem;color:#1400DD}
 .v-met span{font-size:0.9375rem;color:rgba(18,23,37,.7)}
 .v-met:empty{display:none}
+/* numbers never break mid-number; boxes wrap to a new row instead */
+.v-met{flex-wrap:wrap}
+.v-met div{min-width:6.5rem}
+.v-met b{white-space:nowrap}
+@media (max-width:53.75em){.v-met b{font-size:1.125rem}.v-met div{padding:8px}}
 .swap{animation:swapIn .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes swapIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .picker{display:flex;flex-direction:column;gap:10px;min-height:0}
@@ -665,7 +673,7 @@ tr.tot td{border-top-color:#1400DD}
 var PLANS=[{id:"Standard",p:100,cr:840,fee:360,tot:1296,lab:"aw",bon:0},{id:"Premium",p:200,cr:1680,fee:720,tot:2592,bon:0},{id:"Prime",p:450,cr:3500,fee:1500,tot:5400,lab:"bv",bon:1,after:300},{id:"Pro",p:900,cr:7000,fee:3000,tot:10800,bon:2,after:200}];
 /* Typical 2026 Malaysian ad-cost ranges (RM) from published market guides; a guide only, not TM figures. */
 var BENCH=[{cpm:[8.5,18],cpc:[0.85,2.40]},{cpm:[4.5,11],cpc:[0.40,1.20]},{cpm:null,cpc:[1.20,5.50]}];
-/* Testimonials: Unifi Business published success stories. cat: food | retail | services. m = [seen, people, clicks] where published. */
+/* Testimonials: Unifi Business published success stories. cat: food | retail | services | health. m = [seen, people, clicks] where published. */
 var STORIES=[
  {id:"mog",img:"mog-autowork.jpg",cat:"services",plan:"Premium",who:"Dinie Hazwan · MOG Autowork Senawang",
   h:{en:"Sales up by RM100,000",bm:"Jualan naik sebanyak RM100,000",zh:"销售额增加 RM100,000"},
@@ -706,12 +714,24 @@ var STORIES=[
  {id:"hedy",img:"hedys.jpg",cat:"food",plan:"Premium",who:"Nor Hedayah Kaulan · Hedy’s",
   h:{en:"Got known for just RM200 a month",bm:"Makin dikenali dengan RM200 sebulan",zh:"每月只需 RM200，知名度大增"},
   d:{en:"Far cheaper than the agencies she paid before.",bm:"Jauh lebih murah berbanding agensi yang dibayar sebelum ini.",zh:"比她以前请的代理公司便宜很多。"}},
+ {id:"alarra",img:"klinik-alarra.jpg",cat:"health",plan:"Premium",who:"SHS Doctors PLT · Klinik Alarra Banting",
+  h:{en:"8 to 10 customer messages from Facebook every day",bm:"8 hingga 10 mesej pelanggan dari Facebook setiap hari",zh:"每天从 Facebook 收到 8 到 10 条顾客讯息"},
+  d:{en:"The ads brought in more new patients, including walk-ins.",bm:"Iklan banyak membantu menarik lebih ramai pesakit baharu, termasuk pesakit walk-in.",zh:"广告带来更多新病人，包括直接上门的病人。"},m:["115,890","41,184","343"]},
+ {id:"dentadee",img:"dentadee.jpg",cat:"health",plan:"Standard",who:"Nur Dhaniah binti Morad · Klinik Gigi DentaDee Dungun",
+  h:{en:"Appointments up 40–50%",bm:"Temujanji pelanggan naik sehingga 40–50%",zh:"预约增加 40–50%"},
+  d:{en:"She is happy with the number of leads and how many of them turn into patients.",bm:"Beliau berpuas hati dengan jumlah leads yang banyak dan conversionnya.",zh:"她对询问数量和转化成病人的比例都很满意。"},m:["126,295","25,511","2,316"]},
+ {id:"unilabuan",img:"uni-labuan.jpg",cat:"health",plan:"Standard",who:"Mohamad bin Nasip · U.n.i Klinik Labuan",
+  h:{en:"Walk-in patients up 60%",bm:"Pelanggan walk-in naik sehingga 60%",zh:"上门病人增加 60%"},
+  d:{en:"Many patients came to the clinic after the ads, up to 20–30 a day.",bm:"Ramai pesakit datang ke klinik selepas iklan, sehari sehingga 20–30 orang.",zh:"广告后很多病人上门，每天多达 20–30 人。"},m:["80,421","18,835","3,882"]},
+ {id:"unisikamat",img:"uni-sikamat.jpg",cat:"health",plan:"Premium",who:"Muhammad Haziq · U.n.i Klinik Sikamat, Seremban",
+  h:{en:"Leads and sales up 50%",bm:"Leads dan jualan naik sehingga 50%",zh:"询问和销售增加 50%"},
+  d:{en:"Reach and views rose up to 190% in a 2-month campaign.",bm:"Reach dan tontonan naik sehingga 190% dalam 2 bulan tempoh kempen.",zh:"两个月的广告期内，触及和观看次数增加多达 190%。"},m:["36,669","8,740","432"]},
  {id:"angah",img:"angah-katering.jpg",cat:"food",plan:"Starter",who:"Angah Katering · Kuantan",
   h:{en:"New customers for her catering",bm:"Pelanggan baru untuk katering",zh:"到会生意迎来新顾客"},
   d:{en:"So many customers came from the ads that she wants to run them again for Ramadan.",bm:"Ramai pelanggan datang dari iklan, jadi beliau mahu buat lagi untuk bulan puasa.",zh:"很多顾客都是看到广告找来的，她打算在斋戒月再投放一次。"},m:["8,273","3,429","284"]}
 ];
 var T={
-en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["services","Services"]], pick_hint:"Tap a story to show it on the left.",tabs:["Why DMS","How it works","Results","Price","Your package"],
+en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["services","Services"],["health","Healthcare"]], pick_hint:"Tap a story to show it on the left.",tabs:["Why DMS","How it works","Results","Price","Your package"],
  s1_e:"Unifi Business · Digital Marketing Solution",s1_h:"Run your ads now. Pay monthly for 12 months.",s1_p:"You get the full ad budget from day one, and pay a small amount every month. Our team handles the ads for you.",
  st1:"The year DMS started",st2:"businesses already joined DMS",st3:"businesses served by Unifi Business",
  s1_what:"What you get",facts:["No deposit and no setup fee","Your own campaign manager, copywriter and designer","A report every month showing how your ads did","Open to everyone, Unifi customer or not"],best:"Great for shops, restaurants, clinics, property agents and service businesses.",
@@ -736,7 +756,7 @@ en:{ cats:[["all","All"],["food","Food & drinks"],["retail","Online shops"],["se
  v48:"48 hours",v48long:"Valid for 48 hours after today’s presentation",k_ad:"Ad credit",k_svc:"Service fee · your 3-person team",k_yr:"per year",k_mo:"per month",k_sst:"SST (8%)",k_bill:"Monthly bill (with SST)",k_first:"First bill (covers 2 months)",k_tot:"Total for 12 months (with SST)",bc1:"Bill 1 · {a} (2 months)",bc2:"Bills 2–11 · {b} each",g_name:"BotKu AI chatbot for your WhatsApp",g_norm:"Usual price RM{l}/month",g_free:"FREE",g_mo1:"first month",g_mo2:"first 2 months",g_then:"then",g_save:"Save RM{x} every month",c_until:"offer valid until",c_ph:"e.g. Siti",c_title:"Let’s get started",c_nl:"Customer name",c_pl:"Customer WhatsApp",c_yes:"Yes, I agree",c_par:"Need to check with partner",c_steps:["Reply YES and send a photo of your SSM (or owner’s IC)", "We call you before {c} to collect your photos and details", "Your ads go live around {l}"],c_send_yes:"Send summary to customer on WhatsApp",c_when:"When can we call back, with your partner?",c_send_par:"Send partner summary on WhatsApp",c_cal:"Add callback to Google Calendar",c_need:"Type the customer’s WhatsApp number first.",c_tonight:"Tonight",c_tmr:"Tomorrow",c_after:"Day after",c_anon:"there",c_cust:"customer",msg_hi:"Hi, thank you for your time just now. Here is your DMS package:",msg_yes:"To get started, reply YES and send a photo of your SSM (or the owner’s IC). We will take care of the rest.",msg_par:"Here is a summary you can share with your partner. I will call you back {slot}. If you have any questions before that, just reply here.",cal_t:"Callback with partner – DMS {p}",gshort:"RM0 for {n} month{s}, then RM{a}/mo",gsum:"RM0 for {n} month{s} (usual price RM{l}), then RM{a}/month",pl:"s",ends:"Offer ends in",dd:"days",hh:"hours",mm:"min",ended:"This offer has ended.",by:"BotKu is provided by your consultant (BotKu.ai). It is not provided by TM and is not part of the TM contract.",
  confirm:"I’ll take {p}",copy:"Copy summary",copied:"Copied! Send it to your consultant and we’ll do the rest.",copy2:"Copy the summary below and send it to your consultant.",
  mk:"Copy 48-hour link for customer",mkd:"Link copied. Offer ends:",close:"Close",head:"My DMS package"},
-bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"],["services","Servis"]], pick_hint:"Tekan satu kisah untuk paparkan di sebelah kiri.",tabs:["Kenapa DMS","Cara ia berfungsi","Hasil","Harga","Pakej anda"],
+bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"],["services","Servis"],["health","Kesihatan"]], pick_hint:"Tekan satu kisah untuk paparkan di sebelah kiri.",tabs:["Kenapa DMS","Cara ia berfungsi","Hasil","Harga","Pakej anda"],
  s1_e:"Unifi Business · Digital Marketing Solution",s1_h:"Iklan sekarang. Bayar bulanan selama 12 bulan.",s1_p:"Bajet iklan penuh dah tersedia dari hari pertama, anda cuma bayar sikit setiap bulan. Pasukan kami uruskan iklan untuk anda.",
  st1:"Tahun DMS bermula",st2:"perniagaan dah sertai DMS",st3:"perniagaan menggunakan Unifi Business",
  s1_what:"Apa yang anda dapat",facts:["Tiada deposit, tiada yuran pasang","Pengurus kempen, penulis iklan dan pereka khas untuk anda","Laporan prestasi iklan setiap bulan","Terbuka kepada semua, pelanggan Unifi atau tidak"],best:"Sesuai untuk kedai, restoran, klinik, ejen hartanah dan perniagaan servis.",
@@ -761,7 +781,7 @@ bm:{ cats:[["all","Semua"],["food","Makanan & minuman"],["retail","Kedai online"
  v48:"48 jam",v48long:"Sah selama 48 jam selepas pembentangan hari ini",k_ad:"Kredit iklan",k_svc:"Yuran servis · pasukan 3 orang",k_yr:"setahun",k_mo:"sebulan",k_sst:"SST (8%)",k_bill:"Bil bulanan (dengan SST)",k_first:"Bil pertama (untuk 2 bulan)",k_tot:"Jumlah 12 bulan (dengan SST)",bc1:"Bil 1 · {a} (2 bulan)",bc2:"Bil 2–11 · {b} sebulan",g_name:"BotKu, AI chatbot untuk WhatsApp anda",g_norm:"Harga biasa RM{l}/bulan",g_free:"PERCUMA",g_mo1:"bulan pertama",g_mo2:"2 bulan pertama",g_then:"kemudian",g_save:"Jimat RM{x} setiap bulan",c_until:"sah sehingga",c_ph:"cth: Kak Siti",c_title:"Jom mula",c_nl:"Nama pelanggan",c_pl:"WhatsApp pelanggan",c_yes:"Ya, saya setuju",c_par:"Nak bincang dengan partner dulu",c_steps:["Balas YA dan hantar gambar SSM (atau IC pemilik)", "Kami telefon sebelum {c} untuk ambil gambar dan maklumat", "Iklan anda keluar sekitar {l}"],c_send_yes:"Hantar ringkasan ke WhatsApp pelanggan",c_when:"Bila kami boleh call semula bersama partner?",c_send_par:"Hantar ringkasan untuk partner",c_cal:"Tambah ke Google Calendar",c_need:"Masukkan nombor WhatsApp pelanggan dahulu.",c_tonight:"Malam ini",c_tmr:"Esok",c_after:"Lusa",c_anon:"Tuan/Puan",c_cust:"pelanggan",msg_hi:"Hi, terima kasih atas masa anda tadi. Ini ringkasan pakej DMS anda:",msg_yes:"Untuk mula, balas YA dan hantar gambar SSM (atau IC pemilik). Selebihnya kami uruskan.",msg_par:"Ini ringkasan untuk dikongsi dengan partner anda. Saya akan call semula {slot}. Kalau ada soalan sebelum itu, balas sahaja mesej ini.",cal_t:"Call semula bersama partner – DMS {p}",gshort:"RM0 selama {n} bulan, kemudian RM{a}/bln",gsum:"RM0 selama {n} bulan (harga biasa RM{l}), kemudian RM{a}/bulan",pl:"",ends:"Tawaran tamat dalam",dd:"hari",hh:"jam",mm:"min",ended:"Tawaran ini dah tamat.",by:"BotKu disediakan oleh perunding anda (BotKu.ai), bukan oleh TM, dan bukan sebahagian kontrak TM.",
  confirm:"Saya ambil {p}",copy:"Salin ringkasan",copied:"Dah disalin! Hantar kepada perunding anda, kami uruskan selebihnya.",copy2:"Salin ringkasan di bawah dan hantar kepada perunding anda.",
  mk:"Salin link 48 jam untuk pelanggan",mkd:"Link disalin. Tawaran tamat:",close:"Tutup",head:"Pakej DMS saya"},
-zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["services","服务业"]], pick_hint:"点击案例，左边会显示详情。",tabs:["为什么选 DMS","运作方式","成效","配套价格","你的配套"],
+zh:{ cats:[["all","全部"],["food","餐饮食品"],["retail","网店"],["services","服务业"],["health","医疗保健"]], pick_hint:"点击案例，左边会显示详情。",tabs:["为什么选 DMS","运作方式","成效","配套价格","你的配套"],
  s1_e:"Unifi Business · Digital Marketing Solution",s1_h:"现在打广告，分 12 个月付款。",s1_p:"第一天就能用上整笔广告预算，每个月只需付一小笔。广告由我们的团队全程负责。",
  st1:"DMS 开始的年份",st2:"家商家已加入 DMS",st3:"家商家使用 Unifi Business",
  s1_what:"你会得到",facts:["无需订金，无开通费","专属广告经理、文案和设计师","每月提供广告成效报告","所有商家都可申请，不必是 Unifi 用户"],best:"适合店铺、餐馆、诊所、房地产经纪和服务业。",
